@@ -1,0 +1,70 @@
+
+<div class="header__top pt-2 pb-2">
+    <div class="header__left">
+        <p>{{ Welcome_to_Sonora_Online_Store }}</p>
+    </div>
+    <div class="header__right">
+        <ul class="navigation__extra">
+            <li class='hidden-mobile'>
+                <a href="/{{ LANGUAGE_CODE }}/orders/shopping-cart/" class="hv-yellow">
+                    <i class="fa fa-check"></i>
+                    {{ Order }}
+                </a>
+            </li>
+            <li>
+                <div class="ps-dropdown"><a href="#">{{ Customer_service }}</a>
+                    <ul class="ps-dropdown-menu">
+                        <li><a class="hv-yellow"
+                               href="/{{ LANGUAGE_CODE }}/pages/contact-us">{{ Contact }} </a></li>
+                        <li><a class="hv-yellow"
+                               href="/{{ LANGUAGE_CODE }}/pages/faq">{{ Question_answer }}</a></li>
+                        <li><a class="hv-yellow"
+                               href="/{{ LANGUAGE_CODE }}/pages/about-us">{{ About_us }}</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <div class="ps-dropdown language">
+                        <a href="#">
+                            {% if LANGUAGE_CODE == 'uz' %}
+                               <img style="height: 20px; margin-right:5px"
+
+                                         src="{{ url_for('static', path='/assets/img/logo/uz.png') }}"
+
+                                         alt="">
+                            {{ Uzbek }}
+                            {% else %}
+                                <img style="height: 20px; margin-right:5px"
+
+                                         src="{{ url_for('static', path='/assets/img/logo/ru.png') }}"
+
+                                         alt="">
+                            {{ Russian }}
+                            {% endif %}
+                        </a>
+                        <ul class="ps-dropdown-menu">
+
+                                <li>
+                                    <a href="#" onclick="goToLang('{{ LANGUAGE_CODE }}', 'uz')"
+                                       class="hv-yellow ac-yellow">
+                                        <img style="height: 20px"
+                                             src="{{ url_for('static', path='/assets/img/logo/uz.png') }}"
+                                             alt="uz">
+                                        {{ Uzbek }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="goToLang('{{ LANGUAGE_CODE }}', 'ru')"
+                                       class="hv-yellow ac-yellow">
+                                        <img style="height: 20px"
+                                             src="{{ url_for('static', path='/assets/img/logo/ru.png') }}"
+                                             alt="ru">
+                                        {{ Russian }}
+                                    </a>
+                                </li>
+                        </ul>
+                    </div>
+            </li>
+        </ul>
+    </div>
+</div>

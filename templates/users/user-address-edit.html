@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block title %}{{ Edit_My_Address }}{% endblock %}
+
+
+{% block metadata %}
+    <meta property="og:title" content="{{ Edit_My_Address }}">
+    <meta name="description"
+          content="{{ Online_store_GoSia }}">
+    <meta property="og:description"
+          content="{{ Online_store_GoSia }}">
+    <meta property='og:image' content='/cdn/static/assets/img/logo/logo_sia.jpg'/>
+{% endblock %}
+
+
+
+
+{% block content %}
+
+    <section class="ps-section--account">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <!-- sidebar menu | START -->
+                    {% include 'users/sections/account-menu.html' %}
+                    <!-- sidebar menu | END -->
+                </div>
+                <div class="col-lg-9">
+                    <div class="ps-section__right">
+                        <form class="ps-form--account-setting" method="post"
+                                {% if address_item %}
+                              action="/{{ LANGUAGE_CODE }}/users/address-list/{{ address_item.id }}/edit"
+                                {% else %}
+                              action="/{{ LANGUAGE_CODE }}/users/address-list/add"
+                                {% endif %}>
+                            <div class="ps-form__header">
+                                <h3> {{ Edit_My_Address }} </h3>
+                            </div>
+                            <div class="ps-form__content">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>{{ Region }} <span class="cl-yellow">*</span></label>
+                                            <select name="region" id="region" class="form-control" required
+                                                    onchange="show_cities(this)">
+                                                <option value=""> --- {{ Please_select_region }} ---</option>
+                                                {% for key, value in regions %}
+                                                    {% if key == address_item.region %}
+                                                        <option selected="selected"
+                                                                value="{{ key }}">{{ value }}</option>
+                                                    {% else %}
+                                                        <option value="{{ key }}">{{ value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>{{ City }} <span class="cl-yellow">*</span></label>
+                                            <select name="city" id="city" class="form-control" required>
+                                                <option value=""> --- {{ Please_select_district }} ---</option>
+                                                {% if cur_cities %}
+                                                    {% for key, value in cur_cities|items %}
+                                                        {% if key == address_item.city %}
+                                                            <option selected="selected"
+                                                                    value="{{ key }}">{{ value }}</option>
+                                                        {% else %}
+                                                            <option value="{{ key }}">{{ value }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <option selected="selected" value="{{ address_item.city }}">{{ address_item.get_city }}</option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>{{ Address }} <span class="cl-yellow">*</span></label>
+                                            <input class="form-control" type="text" name="street_address_1" required
+                                                   value="{{ address_item.street_address_1|default('', true) }} ">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>{{ Phone }} <span class="cl-yellow">*</span></label>
+                                            <input class="form-control" name="phone" required type="tel"
+                                                   value="{{ address_item.phone |default('', true) }}"
+                                                   pattern="^[\+]{1}?[0-9]{5}?[\s]{1}?[0-9]{3}?[\s]{1}?[0-9]{2}?[\s]{1}?[0-9]{2}$">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label for="note">{{ Note }}</label>
+                                        <textarea name="note" id="note"
+                                                  class="form-control">{{ address_item.note|default('', true) }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group submit">
+                                <button class="ps-btn mt-20">{{ Save }}</button>
+                            </div>
+                            {{ csrf_token }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        var cities = JSON.parse('{{cities|safe}}');
+
+        function show_cities(select) {
+            var val = select.value;
+            var cur_cities = cities[parseInt(val)];
+            console.log(cur_cities);
+            $('#city').html('<option value=""> --- {{Please_select_district}} ---</option>');
+            for (var key in cur_cities) {
+                if (cur_cities.hasOwnProperty(key)) {
+                    $('#city').append(`<option value="${key}">${cur_cities[key]}</option>`);
+                }
+            }
+        }
+    </script>
+{% endblock %}

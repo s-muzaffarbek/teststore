@@ -1,0 +1,38 @@
+
+<nav class="navigation d-flex align-items-center">
+    <div class="container d-flex">
+        <a href="/{{ LANGUAGE_CODE }}/category" class="all-category {% if all_categories_ %}active{% endif %}">
+            {{ All_Categories }}
+        </a>
+        <ul class="menu menu--market-2 owl-carousel owl-theme" style='width: calc(100% - 180px)'>
+            {% for category in top_category_list %}
+                <li class="item">
+                    <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}">
+                        {{ category.names[LANGUAGE_CODE] }}
+                    </a>
+                </li>
+            {% endfor %}
+            {% for collection in top_collection_list %}
+                <li class="item">
+                    <a href="/{{ LANGUAGE_CODE }}/products/?collection_id={{ collection.id }}">
+                        {{ collection.names[LANGUAGE_CODE] }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</nav>
+<script>
+    // Navigation Menu Slider
+    $(document).ready(function () {
+        $('.menu.owl-carousel').owlCarousel({
+            margin: 30,
+            loop: true,
+            autoWidth: true,
+            items: 5,
+            dots: false,
+            nav: true,
+            mouseDrag: false,
+        })
+    });
+</script>

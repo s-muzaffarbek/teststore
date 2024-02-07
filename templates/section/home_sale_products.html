@@ -1,0 +1,57 @@
+{% if sale_product_list %}
+    <div class="ps-deal-of-day pt-4">
+        <div class="container">
+
+            <div class="ps-section__header">
+                <div class="ps-block--countdown-deal">
+                    <div class="ps-block__left">
+                        <h3>{{ Sale_Products }}</h3>
+                    </div>
+                </div>
+                <a href="/{{ LANGUAGE_CODE }}/products?in_sale=true">{{ View_All }}</a>
+            </div>
+
+            <div class="ps-section__content">
+                <div class="ps-carousel--nav owl-slider owl-carousel owl-loaded owl-drag" data-owl-auto="false"
+                     data-owl-loop="true" data-owl-speed="5000" data-owl-gap="22" data-owl-nav="true"
+                     data-owl-dots="true" data-owl-item="5" data-owl-item-xs="2" data-owl-item-sm="3"
+                     data-owl-item-md="4" data-owl-item-lg="4" data-owl-item-xl="5" data-owl-duration="1000"
+                     data-owl-mousedrag="on">
+                    {% for product in sale_product_list %}
+                        <div class="ps-product ps-product--inner">
+                            <div class="ps-product__thumbnail">
+                                <!-- product image | START -->
+                                {% include 'products/sections/product_list_image.html' %}
+                                <!-- product image | END -->
+
+                                <!-- product sale badge | START -->
+                                {% include 'products/sections/product_sale_badge.html' %}
+                                <!-- product sale badge | END -->
+
+                                <!-- product hover action/ compare button | START -->
+                                {% include 'tag-templates/product_hover_action.html' %}
+                                <!-- product hover action/ compare button | END -->
+
+                            </div>
+                            <div class="ps-product__container">
+                                <!-- product sale price | START -->
+                                {% include 'tag-templates/sale_product_price.html' %}
+                                <!-- product sale price | END -->
+                                <div class="ps-product__content">
+                                    <a class="ps-product__title" title="{{ product.names[LANGUAGE_CODE] }}"
+                                       href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                                        {{ product.names[LANGUAGE_CODE] }}
+                                    </a>
+                                    <!-- product rating | START -->
+                                    {% include 'products/sections/product_list_rating.html' %}
+                                    <!-- product rating | END -->
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endif %}

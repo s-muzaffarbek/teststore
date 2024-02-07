@@ -1,0 +1,1317 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.names[LANGUAGE_CODE] }}{% endblock %}
+
+
+{% block metadata %}
+    <meta property="og:title" content="{{ product.names[LANGUAGE_CODE] }}"/>
+    <meta name="description"
+          content="{% if product.discount_price %}{{ product.discount_price|sum_format }}{% else %}{{ product.retail_price|sum_format }}{% endif %} {{ SUM }}
+                   "/>
+    <meta property="og:description"
+          content="{{ product.descriptions[LANGUAGE_CODE]|striptags }}"/>
+    <meta property='og:image' content='/cdn/media/{{ product.image }}'/>
+    <meta name="keywords"
+          content="{{ Product }}" {{ product.names[LANGUAGE_CODE] }}{{ product.brand.name }}{{ product.category.names[LANGUAGE_CODE] }}>
+
+    <link rel="stylesheet" href="{{ url_for('static', path='new-template/css/product_detail.css') }}">
+{% endblock %}
+
+{% block header %}
+    {% include 'layout/header.html' %}
+        <header class="header header--product" data-sticky="true">
+        <nav class="navigation">
+            <div class="container">
+                <article class="ps-product--header-sticky">
+                    <div class="ps-product__thumbnail">
+                        <img src="{{ django_host }}{{ product.image }}" alt=""/>
+                    </div>
+                    <div class="ps-product__wrapper">
+                        <div class="ps-product__content">
+                            <a class="ps-product__title" href="#">
+                                {{ product.names[LANGUAGE_CODE] }}
+                            </a>
+                            <ul class="ps-tab-list">
+                                <li class="active"><a href="#tab-1" id="#tab-1#"
+                                                      onclick='clickTwins(this)'>{{ More_info }}</a></li>
+                                <li><a href="#tab-2" id="#tab-2#"
+                                       onclick='clickTwins(this)'>{{ Data_sheet }}</a></li>
+                                <li><a href="#tab-4" id="tab-3" onclick='clickTwins(this)'>{{ Reviews }}
+                                    ({{ product.review_set}})</a></li>
+                                <li><a href="#tab-5" onclick='clickTwins(this)'>{{ Questions_and_Answers }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="ps-product__shopping">
+                        <span class="ps-product__price current-pr-price">
+                          {% if product.discount_price %}
+                              <span>{{ product.discount_price|sum_format }} {{ SUM }}</span>
+                              <del>{{ product.retail_price|sum_format }} {{ SUM }}</del>
+                          {% else %}
+                              <span>{{ product.retail_price|sum_format }} {{ SUM }}</span>
+                              <del></del>
+                          {% endif %}
+                        </span>
+                            <a class="ps-btn text-white addToCart" href="#"
+                               onclick='clickAddToCart(this)'> {{ Add_to_cart }} </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </nav>
+    </header>
+    <header class="header header--product data-sticky">
+        <nav class="navigation">
+            <div class="container">
+                <article class="ps-product--header-sticky">
+                    <div class="ps-product__thumbnail">
+                        <img src="{{ django_host }}{{ product.image }}" alt=""/>
+                    </div>
+                    <div class="ps-product__wrapper">
+                        <div class="ps-product__content">
+                            <a class="ps-product__title" href="#">
+                                {{ product.names[LANGUAGE_CODE] }}
+                            </a>
+                            <ul class="ps-tab-list">
+                                <li class="active"><a href="#tab-1" id="#tab-1#"
+                                                      onclick='clickTwins(this)'>{{ More_info }}</a></li>
+                                <li><a href="#tab-2" id="#tab-2#"
+                                       onclick='clickTwins(this)'>{{ Data_sheet }}</a></li>
+                                <li><a href="#tab-4" id="tab-3" onclick='clickTwins(this)'>{{ Reviews }}
+                                    ({{ product.reviews_count }})</a></li>
+                                <li><a href="#tab-5" onclick='clickTwins(this)'>{{ Questions_and_Answers }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="ps-product__shopping">
+                        <span class="ps-product__price current-pr-price">
+                          {% if product.discount_price %}
+                              <span>{{ product.discount_price|sum_format }} {{ SUM }}</span>
+                              <del>{{ product.retail_price|sum_format }} {{ SUM }}</del>
+                          {% else %}
+                              <span>{{ product.retail_price|sum_format }} {{ SUM }}</span>
+                              <del></del>
+                          {% endif %}
+                        </span>
+                            <a class="ps-btn text-white addToCart" href="javascript:"
+                               onclick='clickAddToCart(this)'> {{ Add_to_cart }}</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </nav>
+    </header>
+{#        {{ block.super }}#}
+{% endblock header %}
+
+{% block content %}
+
+
+    <div class="ps-page--product">
+        <div class="container">
+            <div class="ps-page__container">
+                <div class="ps-page__left">
+                    <div class="ps-product--detail" id="product_details">
+                        <div class="ps-product__header">
+
+                            <!-- product images | START -->
+                            {% include 'products/sections/product_images-new.html' %}
+                            <!-- product images | END -->
+
+                            <div class="ps-product__info">
+                                <h1>{{ product.names[LANGUAGE_CODE] }}</h1>
+                                <div class="ps-product__meta">
+                                    <p>{{ Brand }}:
+                                        <a href="/{{ LANGUAGE_CODE }}/products?brand_id={{ product.brand.id }}">{{ product.brand.name }}</a>
+                                    </p>
+                                    <div class="ps-product__rating">
+                                        <span style='margin:0;margin-right:4px;font-weight:600;font-size:15px'>{% if not product.rating %}
+                                            0.0{% else %}{{ product.rating }}{% endif %}</span>
+{#                                        <select class="ps-rating" data-read-only="true">#}
+{#                                            <option value="1">1</option>#}
+{#                                            <option value="1">2</option>#}
+{#                                            <option value="1">3</option>#}
+{#                                            <option value="1">4</option>#}
+{#                                            <option value="2">5</option>#}
+{#                                        </select>#}
+                                        <form>
+                                            <fieldset class="rate lr" style='height:25px;margin-top:-2px;'>
+                                                <input type="radio"
+                                                       {% if product.rating_star == 5 %}checked{% endif %}/>
+                                                <label></label>
+                                                <input type="radio"
+                                                       {% if product.rating_star == 4.5 %}checked{% endif %}/>
+                                                <label class="half"></label>
+                                                <input type="radio"
+                                                       {% if product.rating_star == 4 %}checked{% endif %}/>
+                                                <label></label>
+                                                <input type="radio"
+                                                       {% if product.rating_star == 3.5 %}checked{% endif %}/>
+                                                <label class="half"></label>
+                                                <input type="radio"
+                                                       {% if product.rating_star == 3 %}checked{% endif %}/>
+                                                <label></label>
+                                                <input type="radio"
+                                                       {% if product.rating_star == 2.5 %}checked{% endif %}/>
+                                                <label class="half"></label>
+                                                <input type="radio"
+                                                       {% if product.rating_star == 2 %}checked{% endif %}/>
+                                                <label></label>
+                                                <input type="radio"
+                                                       {% if product.rating_star == 1.5 %}checked{% endif %}/>
+                                                <label class="half"></label>
+                                                <input type="radio"
+                                                       {% if product.rating_star == 1 %}checked{% endif %}/>
+                                                <label></label>
+                                                <input type="radio"
+                                                       {% if product.rating_star == 0.5 %}checked{% endif %}/>
+                                                <label class="half"></label>
+                                            </fieldset>
+                                        </form>
+                                        <span class='rcount'><a href='#tab-4'
+                                                                onclick="clickTwins(this)">{{ Reviews }} ({{ product.reviews_count }})</a></span>
+                                    </div>
+                                </div>
+
+                                <h4 class="ps-product__price current-pr-price">
+                                    {% if product.discount_price %}
+                                        <span id="discount_price" style='font-weight:inherit;'>{{ product.discount_price|sum_format }} {{ SUM }}</span>
+                                        <del id="retail_price_del" style='color:#8DA59D;font-size:1.4rem;font-weight:500;'>{{ product.retail_price|sum_format }} {{ SUM }}
+
+                                        </del>
+                                    {% else %}
+                                        <span id="discount_price" style='font-weight:inherit;'>{{ product.retail_price|sum_format }} {{ SUM }}</span>
+                                        <del id="retail_price_del" style='color:red;font-size:1.4rem;font-weight:500;'></del>
+                                    {% endif %}
+                                </h4>
+
+                                <div class="ps-product__desc">
+
+                                    <p>
+                                        <span id="sku">{{ SKU }}: </span>
+                                    <span id="sku-val"></span>
+                                    </p>
+                                    <div class="ps-product__specification">
+                                        <p class="categories"><strong> {{ Categories }}:</strong>
+                                            {% for category in pcategories %}
+                                                <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}"></a>
+                                                <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}"></a>
+                                                <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}"
+                                                   style='font-size:14px;font-weight:400;text-transform: none;'>
+                                                    {{ category.names[LANGUAGE_CODE] }}</a>
+                                            {% endfor %}
+                                        </p>
+                                    </div>
+                                </div>
+                                {% for attribute in product.attributes %}
+
+                                    {% if attribute.isColor %}
+                                <div class="ps-product__variations">
+                                    <figure>
+                                        <figcaption class="product-detail-attrs" id="attribute_id_{{ attribute.attribute_id }}">
+                                            {{ attribute.name }}
+                                        </figcaption>
+                                        <div>
+                                            {% for value in attribute.value %}
+                                            {% if value.show_name %}
+                                            {% if value.isAvailable %}
+                                            <div id="attribute_value_id_{{ value.attribute_value_id }}" class="product-attr-value {% if value.isSelected %}ps-variant ps-variant--color selected{% else %}ps-variant ps-variant--color{% endif %}" style="background-color: {{ value.color }}" data-sku="{{ value.sku }}" data-attr="{{ value.attribute_id }}" data-value="{{ value.attribute_value_id }}">
+                                                <span class="ps-variant__tooltip">{{ value.name }}</span>
+                                            </div>
+                                            {% else %}
+                                            <div id="attribute_value_id_{{ value.attribute_value_id }}" class="product-attr-value {% if value.isSelected %}ps-variant ps-variant--color selected{% else %}ps-variant ps-variant--color disabled{% endif %}" style="background-color: {{ value.color }}" data-sku="{{ value.sku }}" data-attr="{{ value.attribute_id }}" data-value="{{ value.attribute_value_id }}">
+                                                <span class="ps-variant__tooltip">{{ value.name }}</span>
+                                            </div>
+                                            {% endif %}
+                                            {% else %}
+                                            <div id="attribute_value_id_{{ value.attribute_value_id }}" class="product-attr-value {% if value.isSelected %}ps-variant ps-variant--color selected{% else %}ps-variant ps-variant--color{% endif %}" style="background-color: {{ value.color }}" data-sku="{{ value.sku }}" data-attr="{{ value.attribute_id }}" data-value="{{ value.attribute_value_id }}">
+                                                <span class="ps-variant__tooltip">{{ value.name }}</span>
+                                            </div>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </figure>
+                                </div>
+                               {% endif %}
+
+                                {% if attribute.slug == 'default' %}
+                                <figure style='display:none;'>
+                                    <figcaption class="product-detail-attrs" id="attribute_id_{{ attribute.attribute_id }}">
+                                        {{ Size }} {{ attribute.name }}
+                                    </figcaption>
+                                    <div class="product-detail-attrs">
+                                        {% for value in attribute.value %}
+                                        <div class="selected" id="attribute_value_id_{{ value.attribute_value_id }}">
+                                            <a  data-sku="{{ value.sku }}" class="product-attr-value" title="{{ value.name }}" data-attr="{{ value.attribute_id }}" data-value="{{ value.attribute_value_id }}" href="javascript:void(0)">{{ value.name }}</a>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </figure>
+                                {% endif %}
+
+                                {% if not attribute.isColor and attribute.slug != 'default' %}
+                                <div class="ps-product__variations">
+                                    <figure>
+                                        <figcaption class="product-detail-attrs" id="attribute_id_{{ attribute.attribute_id }}">{{ attribute.name }}</figcaption>
+                                        <div class="product-detail-attrs">
+                                            {% for value in attribute.value %}
+                                            {% if value.show_name %}
+                                            <div class="{% if value.isSelected %}selected{% endif %}" id="attribute_value_id_{{ value.attribute_value_id }}">
+                                                <a data-sku="{{ value.sku }}" class="product-attr-value {% if not value.isAvailable %}disabled{% endif %}" title="{{ value.name }}" data-attr="{{ value.attribute_id }}" data-value="{{ value.attribute_value_id }}" href="javascript:void(0)">{{ value.name }}</a>
+                                            </div>
+                                            {% else %}
+                                            <div class="{% if value.isSelected %}selected{% endif %}" id="attribute_value_id_{{ value.attribute_value_id }}">
+                                               <a data-sku="{{ value.sku }}" class="product-attr-value {% if not value.isAvailable %}disabled{% endif %}" title="{{ value.name }}" data-attr="{{ value.attribute_id }}" data-value="{{ value.attribute_value_id }}" href="javascript:void(0)">{{ value.name }}</a>
+                                            </div>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </figure>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                <div class="ps-product__shopping extend">
+                                    <div class="ps-product__btn-group">
+                                        <figure>
+                                            <figcaption class="product-detail-attrs">{{ Quantity }}</figcaption>
+                                            <div class="form-group--number">
+                                                <button class="up" onclick="incrementValue()"><i class="fa fa-plus"></i>
+                                                </button>
+                                                <button class="down" onclick="decrementValue()"><i
+                                                        class="fa fa-minus"></i></button>
+                                                <input class="form-control" id="order_qty" type="number" value="1"
+                                                       min="1" max="100">
+                                            </div>
+                                        </figure>
+
+                                        <a class="ps-btn addToCart"  style="position: relative" data-id="{{ product.id }}" href="javascript:">
+                                            {{ Add_to_cart }}
+                                            <span id="alart-msg">
+                                                <i class="fa fa-check-circle"></i>
+                                                 {{ Product_added_to_cart }}
+                                            </span>
+                                        </a>
+
+                                        <div class="ps-product__actions pr-deatil">
+                                            <!-- add to compare button | START -->
+                                            {% include 'products/sections/product_add_copm.html' %}
+                                            <!-- add to compare button | END -->
+
+                                            <!-- add to wishlist button | START -->
+                                            {% include 'products/sections/product_add_to_wishlist_link.html' %}
+                                            <!-- add to wishlist button | END -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ps-product__content ps-tab-root">
+                            <ul class="ps-tab-list" style="margin-bottom:30px;">
+                                <li class="active"><a href="#tab-1" id="#tab-1">{{ More_info }}</a></li>
+                                <li><a href="#tab-2" id="#tab-2">{{ Data_sheet }}</a></li>
+                                <!-- <li><a href="#tab-3">Vendor</a></li> -->
+                                <li><a href="#tab-4" id="#tab-4">{{ Reviews }}
+                                    ({{ product.reviews_count }})</a></li>
+                                <li><a href="#tab-5" id="#tab-5">{{ Questions_and_Answers }}</a></li>
+                            </ul>
+                            <div class="ps-tabs">
+
+                                <div class="ps-tab active" id="tab-1">
+                                    <div class="ps-document">
+                                        <p>  {{ product.descriptions[LANGUAGE_CODE]|description_image(django_host)|safe }} </p>
+                                    </div>
+                                </div>
+                                <div class="ps-tab" id="tab-2">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered ps-table ps-table--specification">
+                                            <tbody>
+                                            {% for attribute in product.attributes %}
+                                                <tr>
+                                                    <td>{{ attribute.name }}</td>
+                                                    <td>
+                                                        <div>
+                                                            <ul class="pr-deatil">
+                                                                {% for value in attribute.value %}
+                                                                    <li>
+                                                                        <a href="javascript:void(0)">
+                                                                            {{ value.name }}{% if not loop.last %}
+                                                                                ,{% endif %}
+
+                                                                        </a>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="ps-tab" id="tab-4" style="overflow-x:hidden;">
+                                    <div class="row">
+                                        <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12 ">
+                                            <div class="ps-block--average-rating">
+                                                <div class="ps-block__header">
+                                                    <h3>{% if product.rating %}
+                                                        {{ product.rating }}{% else %}
+                                                        0.0{% endif %}</h3>
+                                                    <form>
+                                                        <fieldset class="rate lr rs"
+                                                                  style='height:25px;margin-top:-2px;'>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 5 %}checked{% endif %}/>
+                                                            <label></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 4.5 %}checked{% endif %}/>
+                                                            <label class="half"></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 4 %}checked{% endif %}/>
+                                                            <label></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 3.5 %}checked{% endif %}/>
+                                                            <label class="half"></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 3 %}checked{% endif %}/>
+                                                            <label></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 2.5 %}checked{% endif %}/>
+                                                            <label class="half"></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 2 %}checked{% endif %}/>
+                                                            <label></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 1.5 %}checked{% endif %}/>
+                                                            <label class="half"></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 1 %}checked{% endif %}/>
+                                                            <label></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 0.5 %}checked{% endif %}/>
+                                                            <label class="half"></label>
+                                                        </fieldset>
+                                                    </form>
+                                                    <span>{{ Reviews }} {{ product.review_count }}</span>
+                                                </div>
+                                                {% if product.ratings %}
+                                                    <div class="ps-block__star"><span>5 <small
+                                                            class='star'></small></span>
+                                                        <div class="ps-progress"
+                                                             data-value="{{ product.ratings.1 }}"><span></span>
+                                                        </div>
+                                                        <span>{{ product.ratings.0 }}</span>
+                                                    </div>
+                                                    <div class="ps-block__star"><span>4 <small
+                                                            class='star'></small></span>
+                                                        <div class="ps-progress"
+                                                             data-value="{{ product.ratings.3 }}"><span></span>
+                                                        </div>
+                                                        <span>{{ product.ratings.2 }}</span>
+                                                    </div>
+                                                    <div class="ps-block__star"><span>3 <small
+                                                            class='star'></small></span>
+                                                        <div class="ps-progress"
+                                                             data-value="{{ product.ratings.5 }}"><span></span>
+                                                        </div>
+                                                        <span>{{ product.ratings.4 }}</span>
+                                                    </div>
+                                                    <div class="ps-block__star"><span>2 <small
+                                                            class='star'></small></span>
+                                                        <div class="ps-progress"
+                                                             data-value="{{ product.ratings.7 }}"><span></span>
+                                                        </div>
+                                                        <span>{{ product.ratings.6 }}</span>
+                                                    </div>
+                                                    <div class="ps-block__star"><span>1 <small
+                                                            class='star'></small></span>
+                                                        <div class="ps-progress"
+                                                             data-value="{{ product.ratings.9 }}"><span></span>
+                                                        </div>
+                                                        <span>{{ product.ratings.8 }}</span>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="ps-block__star"><span>5 <small
+                                                            class='star'></small></span>
+                                                        <div class="ps-progress" data-value="0"><span></span></div>
+                                                        <span>0</span>
+                                                    </div>
+                                                    <div class="ps-block__star"><span>4 <small
+                                                            class='star'></small></span>
+                                                        <div class="ps-progress" data-value="0"><span></span></div>
+                                                        <span>0</span>
+                                                    </div>
+                                                    <div class="ps-block__star"><span>3 <small
+                                                            class='star'></small></span>
+                                                        <div class="ps-progress" data-value="0"><span></span></div>
+                                                        <span>0</span>
+                                                    </div>
+                                                    <div class="ps-block__star"><span>2 <small
+                                                            class='star'></small></span>
+                                                        <div class="ps-progress" data-value="0"><span></span></div>
+                                                        <span>0</span>
+                                                    </div>
+                                                    <div class="ps-block__star"><span>1 <small
+                                                            class='star'></small></span>
+                                                        <div class="ps-progress" data-value="0"><span></span></div>
+                                                        <span>0</span>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% if current_user %}
+                                        {% set check_per = product.id|write_review(current_user.id) %}
+                                        {% if not check_per %}
+                                            <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12 ">
+                                                <h4>{{ Submit_Your_Review }}</h4>
+                                                <form class="ps-form--review"
+                                                      action="/{{ LANGUAGE_CODE }}/rqa/{{ product.id }}/wreview"
+                                                      enctype="multipart/form-data" method="POST">
+                                                    <div class="form-group form-group__rating">
+                                                        <label>{{ Your_rating_of_this_product }}</label>
+                                                        <select class="ps-rating" name='rating' data-read-only="false">
+                                                            <option value="0">0</option>
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group" style="margin-bottom:10px;">
+                                                        <textarea class="form-control" name='comment' rows="6"
+                                                                  placeholder="{{ Write_your_review_here }}"></textarea>
+                                                    </div>
+                                                    <input name="owner" value="{{ current_user.id }}" hidden/>
+                                                    <input name="product" value="{{ product.id }}" hidden/>
+                                                    <output id="images-list"></output>
+                                                    <div class="input-group mb-3">
+                                                        <div class="custom-file">
+                                                            <input type="file" name="images" class="custom-file-input"
+                                                                   multiple id="inputGroupFile01"
+                                                                   aria-describedby="inputGroupFileAddon01">
+                                                            <label class="custom-file-label" for="inputGroupFile01"
+                                                                   id='choose-img'>{{ Choose_files }}</label>
+                                                        </div>
+                                                    </div>
+                                                    <input name='next' type='hidden' value='{{ request.path }}'>
+                                                    <div class="form-group submit">
+                                                        <button class="ps-btn">{{ Save }}</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        {% endif %}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12" id='reviewList'>
+
+                                            {% for review in reviews %}
+                                                {% if review.comment %}
+                                                    <div class="ps-product__review mt-10">
+                                                        <div class="ps-block__header">
+                                                            <h4>
+                                                                {{ review.owner.get_full_name }}
+                                                                <span class='ps-product__review--date d-flex align-items-end flex-column'>
+                                                              {{ review.created_date|date("%m-%d-%Y %H:%M") }}
+                                                                    {% if request.user == review.owner %}
+                                                                        <a href="/{{ LANGUAGE_CODE }}/rqa/my-reviews/{{ review.id }}/edit">
+                                                                  <i class="fa fa-pencil"></i> {{ Edit }}
+                                                                </a>
+                                                                    {% endif %}
+                                                          </span>
+                                                            </h4>
+                                                            <form>
+                                                                <fieldset class="rate lr rs"
+                                                                          style='height:25px;margin-top:-2px;'>
+                                                                    <input type="radio"
+                                                                           {% if review.rating == 5 %}checked{% endif %}/>
+                                                                    <label></label>
+                                                                    <input type="radio"
+                                                                           {% if review.rating == 4 %}checked{% endif %}/>
+                                                                    <label></label>
+                                                                    <input type="radio"
+                                                                           {% if review.rating == 3 %}checked{% endif %}/>
+                                                                    <label></label>
+                                                                    <input type="radio"
+                                                                           {% if review.rating == 2 %}checked{% endif %}/>
+                                                                    <label></label>
+                                                                    <input type="radio"
+                                                                           {% if review.rating == 1 %}checked{% endif %}/>
+                                                                    <label></label>
+                                                                </fieldset>
+                                                            </form>
+                                                            <div class='ps-product__review--content'>
+                                                                {{ review.comment }}
+                                                            </div>
+                                                            {% if review.get_images_url %}
+                                                                <div class='ps-product__review--images mt-10'
+                                                                     id='{{ forloop.counter }}'>
+                                                                    {% for img in review.get_images_url %}
+                                                                        <a href="{{ img }}">
+                                                                            <img src="{{ img }}" height='50'/>
+                                                                        </a>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        {% if product.reviews_count > 5 %}
+                                            <div class='col-12'><span class='loadmore'
+                                                                      id='loadMoreBtn'>{{ load_more }} ></span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="ps-tab" id="tab-5" style="overflow-x:hidden;">
+                                    <div class="ps-block--questions-answers">
+                                        <h3>{{ Questions_and_Answers }}</h3>
+                                        <form action='/{{ LANGUAGE_CODE }}/rqa/{{ product.id }}/pquestion'
+                                              method='post'>{{ csrf_token }}
+                                            <div class="form-group" style='margin-bottom:5px;'>
+                                                <textarea class="form-control" name='content' type="text"
+                                                          placeholder="{{ Have_a_question }}"></textarea>
+                                                <div style='height:44px;margin-top:5px;'>
+                                                    <button type='submit' class='ps-btn'
+                                                            style='float:right;padding:12px 25px;'>{{ Send }}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <input type='text' name='next'
+                                                   value='/{{ LANGUAGE_CODE }}/products/{{ product.slug }}'
+                                                   hidden/>
+                                        </form>
+                                        <div class='question--container' id='questionList'>
+
+                                            {% for question in questions %}
+                                                <div class='question-box'>
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            <b>{{ Question }}:</b>
+                                                        </div>
+                                                        <div class="col-10">
+                                                            <p style="color:#007185;margin-bottom:5px;">{{ question.content }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            {% if question.answers|length > 0 %}
+                                                                <b>{{ Answer }}:</b>
+                                                                {% endif %}
+                                                        </div>
+                                                        <div class="col-10">
+                                                            {% for answer in question.answers %}
+                                                                <div class="ans {% if not loop.first %}not-show-ans{% endif %}">
+                                                                    <p style="margin-bottom:5px;color:black;">{{ answer.content }}</p>
+                                                                    <p class="author"
+                                                                       style="margin-bottom:5px;">{{ answer.owner.user_name }}
+                                                                        &nbsp;&nbsp;&nbsp; {{ answer.created_date|date }}</p>
+                                                                </div>
+                                                            {% endfor %}
+                                                            <span class='btn btn-link btn-all-ans-def {% if question.answers|length > 1 %} btn-all-ans {% endif %}'
+                                                                  ans-count="{{ question.answers|length }}"
+                                                                  onclick='toggleAnswers(this)'>
+                                                            {% if question.answers|length > 1 %}
+                                                                <i class='fa fa-chevron-down'></i>{% else %}
+                                                                <i class='fa fa-circle'></i>{% endif %}
+                                                                All answers ({{ question.answers|length }})
+                                                        </span>
+                                                            {% if current_user %}
+                                                                <form action='/{{ LANGUAGE_CODE }}/rqa/{{ question.id }}/panswer'
+                                                                      method='post' style='display:none;'>
+                                                                    <textarea
+                                                                            placeholder="{{ Input_your_answer_here }}"
+                                                                            name='content' required
+                                                                            style='width:100%;border-color:#dddddd;padding:6px 10px;height:75px'></textarea>
+                                                                    <input type='text' name='next'
+                                                                           value='/{{ LANGUAGE_CODE }}/products/{{ product.slug }}'
+                                                                           hidden/>
+                                                                </form>
+                                                                <button class='btn btn-light btn-ans'
+                                                                        onclick='answerButton(this)'>{{ Answering }}
+                                                                </button>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                                                                {% if questions|length > 5 %}
+                                        <div><span class='loadmore'
+                                                   id='loadMoreBtn2'>{{ load_more }} ></span></div>
+                                                                                {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ps-page__right">
+                    <aside class="widget widget_product widget_features">
+                        <div class="d-flex">
+                          <span class="icon">
+                            <svg width="27" height="18" viewBox="0 0 27 18" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                      d="M2.78126 0.219783C2.35041 0.546097 2.34888 1.1237 2.7781 1.44866C3.08278 1.67938 3.18641 1.68289 9.82011 1.68289H16.5529V4.55882C16.5529 7.60796 16.5963 7.89009 17.0994 8.11087C17.2871 8.19313 18.5436 8.23765 20.7542 8.24013L24.123 8.24397L24.7418 9.05592L25.3604 9.86775L25.3286 11.9051L25.2967 13.9423H24.4795H23.6624L23.5504 13.5664C23.402 13.0686 22.51 12.1262 21.9063 11.8294C21.2366 11.5002 20.0424 11.4298 19.2773 11.6745C18.4858 11.9276 17.6938 12.6184 17.3177 13.3837L17.0133 14.0033L14.528 13.9728L12.0429 13.9423L11.9309 13.5664C11.7828 13.0687 10.8907 12.1262 10.287 11.8294C9.62457 11.5037 8.42227 11.4298 7.67804 11.6689C6.88394 11.9242 6.06918 12.629 5.70006 13.3803L5.39608 13.9988H4.16725C2.78162 13.9988 2.46883 14.1444 2.46883 14.7897C2.46883 15.4352 2.7815 15.5806 4.16866 15.5806H5.39901L5.68281 16.1173C6.32105 17.3248 7.40681 17.9904 8.75218 17.9986C10.148 18.0071 11.322 17.2821 11.8806 16.0666L12.1039 15.5806H14.5611H17.0183L17.3037 16.1173C17.6488 16.7668 18.3051 17.387 19.0176 17.7368C19.4167 17.9328 19.7475 17.9971 20.3715 18C21.7685 18.0062 22.942 17.281 23.4999 16.0666L23.7233 15.5806H25.1056C27.1228 15.5806 26.9985 15.8071 26.9985 12.1313V9.20484L26.1235 8.10816C25.4716 7.29113 24.9299 6.39716 23.999 4.60141C23.3117 3.27593 22.6399 2.07688 22.5062 1.93711C22.2726 1.69294 22.1852 1.68289 20.3027 1.68289H18.3425L18.2884 1.05568C18.194 -0.0400935 18.8613 0.0488297 10.4647 0.0138029C3.137 -0.0167043 3.09193 -0.0154616 2.78126 0.219783ZM22.1978 4.8466C22.6374 5.68555 22.9996 6.41015 23.0025 6.4567C23.0056 6.50325 21.9517 6.54145 20.6607 6.54145H18.3134V4.89982V3.25819L19.8559 3.28971L21.3986 3.32124L22.1978 4.8466ZM1.72179 3.61196C1.34833 3.89477 1.31324 4.36459 1.63694 4.74932L1.86123 5.01608H5.87247H9.88372L10.108 4.74932C10.4317 4.36459 10.3966 3.89477 10.0232 3.61196C9.72457 3.38587 9.58103 3.37773 5.87247 3.37773C2.16391 3.37773 2.02038 3.38587 1.72179 3.61196ZM0.520544 6.70042C-0.0720413 6.95261 -0.173329 7.51078 0.292265 7.9589L0.580283 8.23629H4.51747C8.29809 8.23629 8.46381 8.22736 8.68928 8.01031C9.00558 7.7058 8.99936 7.09408 8.67707 6.81319C8.44656 6.61218 8.18131 6.59624 4.65726 6.57173C1.67086 6.55105 0.808562 6.57783 0.520544 6.70042ZM1.70067 10.0955C1.35514 10.4281 1.33178 10.8269 1.6367 11.1897C1.85512 11.4498 1.91451 11.4574 4 11.4921C6.34605 11.5311 6.70613 11.4654 6.92396 10.9591C7.08534 10.5842 6.93159 10.114 6.59005 9.93803C6.44992 9.86583 5.48833 9.81815 4.173 9.81815C2.0104 9.81815 1.98587 9.82086 1.70067 10.0955ZM9.50662 13.3491C10.9806 14.0767 10.6215 16.1658 8.99197 16.3426C7.33252 16.5227 6.42374 14.7186 7.61854 13.6165C7.93109 13.3284 8.40091 13.1266 8.8111 13.1046C8.9104 13.0993 9.22341 13.2092 9.50662 13.3491ZM21.0984 13.3168C22.2387 13.815 22.4051 15.1513 21.4357 16.0232C21.0042 16.4112 20.0459 16.4736 19.5084 16.1488C19.0029 15.8434 18.6146 15.0292 18.7191 14.4932C18.8562 13.7901 19.6552 13.1413 20.426 13.1075C20.5228 13.1033 20.8254 13.1974 21.0984 13.3168Z"
+                                      fill="white"></path>
+                            </svg>
+                          </span>
+                            <p class="text">
+                                {{ Delivery_throughout_Uzbekistan }}
+                                <span class='light-text d-block'>
+                                  <span class="color:#F97316">*</span> {{ from_10_15_days }}
+                            </span>
+                            </p>
+                        </div>
+                        <div class="d-flex">
+                          <span class="icon">
+                            <svg width="19" height="15" viewBox="0 0 19 15" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.6661 0.31012C19.1113 0.723613 19.1113 1.39403 18.6661 1.80753L8.02607 11.6899C7.58086 12.1034 6.85916 12.1034 6.41391 11.6899L0.333895 6.04279C-0.111298 5.62929 -0.111298 4.95898 0.333895 4.54547C0.779089 4.13196 1.50091 4.13196 1.9461 4.54547L7.22001 9.44374L17.054 0.31012C17.4992 -0.103373 18.2209 -0.103373 18.6661 0.31012Z"
+                                      fill="white"></path>
+                            </svg>                                
+                          </span>
+                            <p class="text mt-1">
+                                {{ Payment_online }}
+                            </p>
+                        </div>
+                        <div class="d-flex">
+                          <span class="icon">
+                            <svg width="17" height="19" viewBox="0 0 17 19" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                      d="M1.82118 0.0783906C0.902445 0.325175 0.186693 1.10389 0.03428 2.02251C0.00402177 2.20507 -0.0051486 4.58402 0.00262878 10.2529L0.0135791 18.2264L0.094371 18.3851C0.271161 18.7323 0.696983 18.9268 1.06422 18.8281C1.17701 18.7977 1.73265 18.4819 2.458 18.0359C3.12144 17.628 3.68346 17.2942 3.70694 17.2942C3.73043 17.2942 4.37874 17.678 5.14762 18.1471C6.54302 18.9985 6.54596 19 6.7729 19C6.89792 19 7.06101 18.974 7.13526 18.9422C7.20951 18.9103 7.85446 18.5248 8.56843 18.0854C9.42731 17.5568 9.89136 17.2931 9.93976 17.3061C9.98 17.3169 10.5552 17.6612 11.218 18.0714C12.3636 18.7802 12.4345 18.8179 12.6525 18.8341C12.9604 18.8569 13.1825 18.7669 13.3769 18.5405C13.4651 18.4378 13.5459 18.2914 13.5711 18.1887C13.6019 18.0635 13.6143 16.464 13.6143 12.638V7.26314L14.7655 7.25056L15.9166 7.23799L16.1378 7.13167C16.4468 6.98323 16.7235 6.70463 16.8746 6.39009L17 6.12891V4.06526V2.00161L16.9065 1.70901C16.6514 0.910459 15.9952 0.291019 15.1772 0.0765261C14.886 0.000162294 14.7256 -0.0016625 8.49092 0.000479654C2.3331 0.00258214 2.09289 0.00539863 1.82118 0.0783906ZM12.5872 1.33714C12.571 1.37531 12.5212 1.50475 12.4766 1.62475C12.3955 1.84289 12.3955 1.8438 12.3761 9.56417L12.3568 17.2854L11.4308 16.7178C10.9215 16.4055 10.4253 16.1267 10.3281 16.098C10.1104 16.0339 9.70257 16.0334 9.48778 16.0971C9.39952 16.1232 8.76015 16.493 8.06696 16.9187L6.80664 17.6928L5.67369 16.9931C5.05054 16.6082 4.48848 16.2614 4.42463 16.2224C4.25953 16.1213 3.91659 16.0248 3.72304 16.0248C3.34942 16.0248 3.18544 16.0979 2.20746 16.7L1.25177 17.2884L1.24198 9.78846C1.23575 4.99321 1.24585 2.23657 1.27007 2.14446C1.36491 1.78335 1.65793 1.46912 2.01914 1.34115C2.20719 1.27455 2.52935 1.27022 7.41784 1.26903C12.3547 1.2678 12.6151 1.27121 12.5872 1.33714ZM15.1403 1.40359C15.3693 1.51847 15.5389 1.69298 15.6745 1.95313C15.761 2.11915 15.7619 2.13684 15.773 3.98032C15.7831 5.68159 15.7785 5.8463 15.7186 5.91421C15.6578 5.98312 15.5804 5.9884 14.6337 5.9884H13.6143L13.6152 4.03467C13.616 2.1558 13.619 2.07412 13.6948 1.90244C13.8218 1.61439 14.0536 1.40185 14.3493 1.30239C14.5289 1.24198 14.9171 1.29164 15.1403 1.40359ZM3.61207 4.85397C3.14891 5.06354 3.14678 5.75748 3.60855 5.98665C3.77454 6.06904 3.80333 6.06976 6.40957 6.05889C9.01243 6.04802 9.04412 6.04695 9.15208 5.96491C9.21217 5.91925 9.30047 5.82289 9.34837 5.75078C9.52849 5.47948 9.41868 5.05112 9.12573 4.88233C8.98113 4.79898 8.95834 4.79831 6.35404 4.79986C4.26165 4.80109 3.70455 4.81208 3.61207 4.85397ZM3.70044 8.21707C3.50616 8.27074 3.29931 8.51039 3.26441 8.7221C3.22966 8.93303 3.36099 9.2219 3.55008 9.35035L3.68156 9.43964H6.35605H9.03054L9.16941 9.34289C9.54428 9.08175 9.52094 8.50955 9.12577 8.27154C8.99324 8.19172 8.93756 8.18994 6.41734 8.18371C4.79992 8.1797 3.79083 8.19208 3.70044 8.21707ZM3.60081 11.7273C3.11037 11.9751 3.17592 12.7353 3.70118 12.8919C3.79873 12.921 4.67068 12.9308 6.44354 12.9227C9.0112 12.9109 9.0442 12.9097 9.15208 12.8277C9.54153 12.5318 9.53069 12.0289 9.1289 11.7513L8.99835 11.6611L6.36325 11.6621C4.012 11.6628 3.71441 11.6699 3.60081 11.7273Z"
+                                      fill="white"></path>
+                            </svg>
+                          </span>
+                            <p class="text mt-1 mb-4">
+                                {{ Issues_a_check_for_goods }}
+                            </p>
+                        </div>
+                    </aside>
+
+                    {% if banner.images %}
+                        <aside class="widget widget_ads d-none">
+                            <a href="{{ banner.urls[LANGUAGE_CODE] }}">
+                                <img src="{{ banner.images[LANGUAGE_CODE] }}" alt="" class="w-100">
+                            </a>
+                        </aside>
+                    {% endif %}
+
+                </div>
+            </div>
+            {% if related_products %}
+                <!-- realated products | START -->
+                {% include 'tag-templates/related_products.html' %}
+                <!-- related products | END -->
+            {% endif %}
+        </div>
+    </div>
+
+
+    <script>
+
+        var attributes = JSON.parse({{ product.get_attribute_data_as_jsons[LANGUAGE_CODE]|safe }})
+        var variants = JSON.parse(`{{ variants|safe }}`)
+        var variants_combinate = JSON.parse(`{{ variants_combinate|safe }}`)
+        var current_attributes = JSON.parse(`{{ get_default_variant|safe }}`)
+        console.log(attributes)
+        console.log(variants)
+        console.log(variants_combinate)
+        console.log(current_attributes)
+        var current_variant = {}
+
+
+        $('.product-attr-value').on('click', function (){
+            let attr = $(this).data('attr');
+            let value = $(this).data('value');
+            console.log(attr, value)
+            set_valid_values(attr, value)
+            set_current_variant();
+            render_current_variant();
+        })
+
+
+        function set_valid_values(attr_id, value_id) {
+            let current_attribute_values = get_current_attribute_values(attr_id, value_id)
+            set_current_attribute_values_enabled(current_attribute_values, attr_id, value_id)
+            for (let attr of attributes){
+                if (attr_id !== attr.attribute_id && 'default' !== attr.slug) {
+                    let valid = get_valid_values(attr.attribute_id, attr_id, value_id)
+                    let invalid = get_invalid_values(attr.attribute_id, attr_id, value_id, valid)
+                    set_invalid_values_disabled(invalid)
+                    set_valid_values_enabled(valid, attr.attribute_id)
+
+                }
+
+
+            }
+
+        }
+
+        function get_valid_values(request_attr_id, current_attr_id, current_value_id) {
+            let res = []
+            for (let obj of variants_combinate) {
+                if (obj[request_attr_id] !== undefined) {
+                    if (obj[current_attr_id].includes(current_value_id)) {
+                        for (let val_id of obj[request_attr_id]){
+                            if (!(res.includes(val_id))){
+                                res.push(val_id);
+                            }
+                        }
+                    }
+                }
+            }
+            return res;
+        }
+
+        function get_invalid_values(request_attr_id, current_attr_id, current_value_id, valid) {
+            let res = []
+            for (let obj of variants_combinate){
+                if (obj[request_attr_id] !== undefined){
+                    if (!(obj[current_attr_id].includes(current_value_id))){
+                        for (let attr_val_id of obj[request_attr_id]){
+                            if (!(valid.includes(attr_val_id) || res.includes(attr_val_id))){
+                                res.push(attr_val_id);
+                            }
+                        }
+                }
+            }}
+            return res;
+        }
+
+        function get_current_attribute_values(current_attr_id, current_value_id) {
+            let res = []
+            for (let obj of variants_combinate){
+                if (obj[current_attr_id] !== undefined){
+                    for (let val_id of obj[current_attr_id]){
+                        if (!(res.includes(val_id) || val_id === current_value_id)){
+                        res.push(val_id);
+                    }
+
+                }
+            }}
+            return res;
+        }
+
+        function set_valid_values_enabled(values, attr_id) {
+            if (current_attributes[attr_id] !== undefined){
+                if (!(values.includes(current_attributes[attr_id]) || values.length === 0)){
+                $(`#attribute_value_id_${current_attributes[attr_id]}`).removeClass('selected');
+                $(`#attribute_value_id_${values[0]}`).addClass(' selected');
+                current_attributes[attr_id] = values[0]
+            }}
+            for (let value of values){
+                $(`#attribute_value_id_${value}`).css('pointer-events','auto').removeClass('disabled')
+            }
+        }
+        function set_current_attribute_values_enabled(values, attr_id, value_id) {
+            if (current_attributes[attr_id] !== undefined){
+                if (current_attributes[attr_id] !== value_id){
+                $(`#attribute_value_id_${current_attributes[attr_id]}`).removeClass('selected');
+                $(`#attribute_value_id_${value_id}`).addClass(' selected');
+                current_attributes[attr_id] = value_id;
+            }}
+            for (let value of values){
+                $(`#attribute_value_id_${value}`).css('pointer-events','auto').removeClass('disabled')
+            }
+        }
+
+        function set_invalid_values_disabled(values) {
+            for (let value of values){
+                $(`#attribute_value_id_${value}`).css('pointer-events','none').addClass(' disabled')
+            }
+
+        }
+
+    function set_default_variant() {
+            for (let item in current_attributes) {
+                if (item !== 'variant_id'){
+                    current_attributes[item] = current_attributes[item][0]
+                    $(`#attribute_value_id_${current_attributes[item]}`).addClass(' selected');
+                }
+            }
+            set_current_variant();
+            render_current_variant();
+
+    }
+
+    function get_default_attribute_id() {
+            for (let attribute of attributes){
+                if (attribute.slug === 'default'){
+                    return attribute.attribute_id;
+                }
+            }
+            return 0;
+    }
+
+    function set_current_variant() {
+        let default_id = get_default_attribute_id()
+        for(let variant of variants_combinate){
+            let check = true;
+            for (let keys in current_attributes){
+                if (keys !== 'variant_id' && keys !== `${default_id}`){
+                    check = check && variant[keys].includes(current_attributes[keys])
+                }
+            }
+            if (check){
+                current_attributes.variant_id = variant.variant_id;
+                break;
+                }
+
+        }
+    }
+
+    function render_current_variant() {
+        for (let variant of variants){
+            if (variant.id === current_attributes.variant_id){
+                if (variant.discount_price !== null){
+                    $('#discount_price').text(`${sum_format_js(variant.discount_price)} {{SUM}}`)
+                    $('#retail_price_del').text(`${sum_format_js(variant.retail_price)} {{SUM}}`)
+                }
+                else{
+                    $('#discount_price').text(`${sum_format_js(variant.retail_price)} {{SUM}}`)
+                    $('#retail_price_del').text(``)
+                }
+                 $('#sku-val').text(`${variant.sku}`);
+                if (variant.images.length > 0) {
+                    $('#head_image').attr("src",`{{ django_host }}${variant.images[0]}`);
+                    $('#head_image_url').attr("href",`{{ django_host }}${variant.images[0]}`);
+                }
+                current_variant = variant
+                break;
+
+            }
+        }
+
+    }
+
+
+
+
+    $(document).ready(function (){
+        set_default_variant()
+        console.log('instalization default variant')
+        slickConfig();
+        console.log(2)
+            // on hover product images make it active in product__gallery
+        $('.ps-product__variants .slick-slide.item').hover(
+                function () {
+                    $('#main-variant-image').addClass('d-none');
+                    var index = $('.ps-product__variants .slick-track .item').index($(this));
+                    $('.ps-product__gallery').slick('slickGoTo', index);
+                }
+            );
+            $('.ps-product__variants .slick-list').mouseleave(function () {
+                if ($('#main-variant-image') && $('#main-variant-image').attr('show') === "true") {
+                    $('#main-variant-image').removeClass('d-none')
+                    setTimeout(() => {
+                        $('.ps-product__gallery').slick('slickGoTo', $('.ps-product__gallery .item').length - 1)
+                    }, 70);
+                } else {
+                    // if no variant is selected show first image of gallery
+                    setTimeout(() => {
+                        $('.ps-product__gallery').slick('slickGoTo', 0)
+                    }, 100);
+                }
+            });
+
+
+        $('.addToCart').on('click', function (){
+            let order_qty = parseInt($('#order_qty').val())
+            if (order_qty>0 && order_qty<=100){
+                let image = ''
+                if (current_variant.images){
+                    image = current_variant.images[0]
+                }
+                let OrderItem = {
+                    variant: current_attributes.variant_id,
+                    product_id: current_variant.product_id,
+                    product_slug: current_variant.product_slug,
+                    product_names: current_variant.product_names,
+                    image: image,
+                    sku: current_variant.sku,
+                    combine_attributes: current_attributes,
+                    quantity: order_qty,
+                    retail_price: current_variant.retail_price,
+                    discount_price: current_variant.discount_price,
+
+                }
+                var jsonObj = JSON.parse(localStorage.getItem('shopping_card'))
+                if (jsonObj) {
+                    if (jsonObj.variants.includes(OrderItem.variant)){
+                        for (let item of jsonObj.orderItems){
+                            if (item.variant === OrderItem.variant){
+                                item.quantity = item.quantity + OrderItem.quantity
+                                jsonObj.itemCount = jsonObj.itemCount+OrderItem.quantity
+                                if (OrderItem.discount_price>0){
+                                    jsonObj.total_discount = jsonObj.total_discount+OrderItem.discount_price*OrderItem.quantity
+                                    jsonObj.subtotal = jsonObj.subtotal+OrderItem.discount_price*OrderItem.quantity
+
+                                }
+                                else{
+                                    jsonObj.subtotal = jsonObj.subtotal+OrderItem.retail_price*OrderItem.quantity
+
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        jsonObj.orderItems.push(OrderItem);
+                        jsonObj.variants.push(OrderItem.variant);
+                        jsonObj.itemCount = jsonObj.itemCount+OrderItem.quantity;
+                        if (OrderItem.discount_price>0){
+                            jsonObj.total_discount = jsonObj.total_discount+OrderItem.discount_price*OrderItem.quantity
+                            jsonObj.subtotal = jsonObj.subtotal+OrderItem.discount_price*OrderItem.quantity
+
+                        }
+                        else{
+                            jsonObj.subtotal = jsonObj.subtotal+OrderItem.retail_price*OrderItem.quantity
+                        }
+                    }
+                }
+                else{
+                    let subtotal = OrderItem.retail_price*OrderItem.quantity
+                    let total_discount = 0
+                    if (OrderItem.discount_price>0){
+                        subtotal = OrderItem.discount_price*OrderItem.quantity
+                        total_discount = OrderItem.discount_price*OrderItem.quantity
+                    }
+                    jsonObj = {
+                        orderItems: [OrderItem],
+                        variants: [OrderItem.variant],
+                        subtotal: subtotal,
+                        total_discount: total_discount,
+                        itemCount: OrderItem.quantity,
+                    }
+                }
+                localStorage.setItem('shopping_card', JSON.stringify(jsonObj));
+                $(".badge-count").text(jsonObj.itemCount)
+                shopping_cart_badge_update()
+                $("#alart-msg").css("display", "block");
+                    setTimeout(function () {
+                                $("#alart-msg").css("display", "none");
+                            },
+                            4000);
+                }
+            else{
+            alert("{{Maximum_available_quantity_of_product_is_100|safe}}")
+            }
+
+        })
+    })
+
+
+        function slickConfig() {
+            var product = $('.ps-product--detail');
+            if (product.length > 0) {
+                var primary = product.find('.ps-product__gallery'),
+                    second = product.find('.ps-product__variants'),
+                    vertical = product
+                        .find('.ps-product__thumbnail')
+                        .data('vertical');
+                primary.slick({
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    asNavFor: '.ps-product__variants',
+                    fade: true,
+                    dots: false,
+                    infinite: false,
+                    arrows: primary.data('arrow'),
+                    prevArrow: "<a href='#'><i class='fa fa-angle-left'></i></a>",
+                    nextArrow: "<a href='#'><i class='fa fa-angle-right'></i></a>",
+                });
+                second.slick({
+                    slidesToShow: second.data('item'),
+                    slidesToScroll: 1,
+                    infinite: false,
+                    arrows: second.data('arrow'),
+                    focusOnSelect: true,
+                    prevArrow: "<a href='#'><i class='fa fa-angle-up'></i></a>",
+                    nextArrow: "<a href='#'><i class='fa fa-angle-down'></i></a>",
+                    asNavFor: '.ps-product__gallery',
+                    vertical: vertical,
+                    responsive: [
+                        {
+                            breakpoint: 1200,
+                            settings: {
+                                arrows: second.data('arrow'),
+                                slidesToShow: 4,
+                                vertical: false,
+                                prevArrow:
+                                    "<a href='#'><i class='fa fa-angle-left'></i></a>",
+                                nextArrow:
+                                    "<a href='#'><i class='fa fa-angle-right'></i></a>",
+                            },
+                        },
+                        {
+                            breakpoint: 992,
+                            settings: {
+                                arrows: second.data('arrow'),
+                                slidesToShow: 4,
+                                vertical: false,
+                                prevArrow:
+                                    "<a href='#'><i class='fa fa-angle-left'></i></a>",
+                                nextArrow:
+                                    "<a href='#'><i class='fa fa-angle-right'></i></a>",
+                            },
+                        },
+                        {
+                            breakpoint: 480,
+                            settings: {
+                                slidesToShow: 3,
+                                vertical: false,
+                                prevArrow:
+                                    "<a href='#'><i class='fa fa-angle-left'></i></a>",
+                                nextArrow:
+                                    "<a href='#'><i class='fa fa-angle-right'></i></a>",
+                            },
+                        },
+                    ],
+                });
+            }
+         }
+
+    </script>
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script>
+        function handleFileSelect(evt) {
+            var files = evt.target.files;
+            var output = document.getElementById('images-list')
+            // remove old images
+            while (output.firstChild) {
+                output.removeChild(output.firstChild);
+            }
+            // Show output element.
+            if (files.length > 0) {
+                output.style.width = '100%';
+            }
+
+            // Loop through the FileList and render image files as thumbnails.
+            for (var i = 0, f; f = files[i]; i++) {
+
+                // Only process image files.
+                if (!f.type.match('image.*')) {
+                    alert("{{Please_choose_only_images}}");
+                    return;
+                }
+                if (i > 4) {
+                    alert("{{You_can_upload_a_maximum_of_5_images}}");
+                    document.getElementById('choose-img-1').style.color = 'transparent';
+                    return;
+                }
+
+                var reader = new FileReader();
+
+                // Closure to capture the file information.
+                reader.onload = (function (theFile) {
+                    return function (e) {
+                        // Render thumbnail.
+                        var span = document.createElement('span');
+                        span.innerHTML =
+                            [
+                                '<img style="height:75px;max-width:19%;border:0.5px solid #666;margin:5px 2px;border-radius:6px;" src="',
+                                e.target.result,
+                                '" title="', escape(theFile.name),
+                                '"/>'
+                            ].join('');
+
+                        document.getElementById('images-list').insertBefore(span, null);
+                    };
+                })(f);
+
+                // Read in the image file as a data URL.
+                reader.readAsDataURL(f);
+            }
+            document.getElementById('choose-img').innerHTML = '{{Choose_other_files}}';
+        }
+
+        if (document.getElementById('inputGroupFile01') != null) {
+            document.getElementById('inputGroupFile01').addEventListener('change', handleFileSelect, false);
+        }
+
+        // reviews loader
+        {#const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;#}
+
+        function stars(rating) {
+            _html = '<form><fieldset class="rate lr rs" style="height:25px;margin-top:-2px;">';
+            for (var i = 0; i < 5; i++) {
+                if ((5 - rating) === i) {
+                    _html += '<input type="radio" checked/><label></label>';
+                } else {
+                    _html += '<input type="radio"/><label></label>';
+                }
+            }
+            _html += '</fieldset></form>';
+            return _html;
+        }
+
+        // Q&A
+        function toggleAnswers(elem) {
+            if (elem.classList.contains('btn-all-ans')) {
+                var siblings = getSiblings(elem);
+                for (sibling of siblings) {
+                    if (sibling.classList.contains('not-show-ans')) {
+                        sibling.style.display = 'block';
+                    }
+                }
+                elem.innerHTML = "<i class='fa fa-chevron-up'></i> {{Hide_answers}}";
+                elem.classList.remove('btn-all-ans');
+                elem.classList.add('hide-all-ans');
+            } else if (elem.classList.contains('hide-all-ans')) {
+                var siblings = getSiblings(elem);
+                for (sibling of siblings) {
+                    if (sibling.classList.contains('not-show-ans')) {
+                        sibling.style.display = 'none';
+                    }
+                }
+                elem.innerHTML = "<i class='fa fa-chevron-down'></i> {{All_answers}}" + " (" + elem.getAttribute('ans-count') + ")";
+                elem.classList.add('btn-all-ans');
+                elem.classList.remove('hide-all-ans');
+            }
+        }
+
+            $('#loadMoreBtn').on('click', function () {
+                var _currentResult = $('.ps-product__review').length;
+                // run ajax
+                $.ajax({
+                    url: "#",
+                    type: "post",
+                    data: {
+                        "csrfmiddlewaretoken": "{{csrf_token}}",
+                        "offset": _currentResult,
+                        "id": {{product.id}},
+                    },
+                    beforeSend: function () {
+                        $('#loadMoreBtn').addClass('disabled').text("{{Loading}}");
+                    },
+                    success: function (res) {
+                        var _html = '';
+                        $.each(res.reviews, function (index, data) {
+                            _html += `
+                        <div class="ps-product__review mt-10">
+                          <div class="ps-block__header">
+                            <h4>
+                              ${data.fields.owner}
+                              <span class="ps-product__review--date d-flex align-items-end flex-column">
+                                ${data.fields.created_date}
+                                ${data.fields.show_edit_btn ? '<a href="/{{LANG}}/rqa/my-reviews/' + data.pk + '/edit"><i class="fa fa-pencil"></i> Edit</a>' : ''}
+                              </span>
+                            </h4>
+                            ${stars(data.fields.rating)}
+                            <div class="ps-product__review--content">${data.fields.comment}</div>
+                            <div class="ps-product__review--images mt-10">
+                        `;
+
+                            for (i in data.fields.images) {
+                                _html += '<a href="' + data.fields.images[i] + '"><img src="' +
+                                    data.fields.images[i] + '" height="50" style="margin-right:5px;"/></a>';
+                            }
+                            _html += '</div></div></div>'
+                            console.log(data);
+                        })
+                        $('#reviewList').append(_html);
+                        var countTotal = $('#reviewList div.ps-product__review').length;
+                        console.log(countTotal)
+                        if (res.totalResult == countTotal) {
+                            $('#loadMoreBtn').remove();
+                        } else {
+                            $('#loadMoreBtn').removeClass('disabled').text("{{load_more}}>");
+                            console.log(res.totalResult);
+                        }
+                        $('.ps-product__review--images').each(function () {
+                            $(this).lightGallery({
+                                selector: 'a',
+                                thumbnail: true,
+                                share: false,
+                                fullScreen: false,
+                                autoplay: false,
+                                autoplayControls: false,
+                                actualSize: false,
+                            })
+                        });
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR);
+                        // error handling logic here..
+                    }
+                })
+            });
+            $('#loadMoreBtn2').on('click', function () {
+                var _currentResult = $('.question-box').length;
+                // run ajax
+                $.ajax({
+                    url: "#",
+                    type: "post",
+                    data: {
+                        "csrfmiddlewaretoken": "{{csrf_token}}",
+                        "offset": _currentResult,
+                        "id": {{product.id}},
+                    },
+                    beforeSend: function () {
+                        $('#loadMoreBtn2').addClass('disabled').text("{{Loading}}");
+                    },
+                    success: function (res) {
+                        var _html = '';
+                        $.each(res.questions, function (index, data) {
+                            _html += '<div class="question-box"><div class="row"><div class="col-2">\
+                               <b>Question:</b></div><div class="col-10">\
+                               <p style="color:#007185;margin-bottom:5px;">' + data.fields.content +
+                                '</p></div></div><div class="row"><div class="col-2">';
+                            if (data.fields.answers.length > 0) {
+                                _html += '<b>{{Answer}}:</b>';
+                            }
+                            _html += '</div><div class="col-10">';
+                            for (i in data.fields.answers) {
+                                _html += '<div class="ans '
+                                if (i != 0) {
+                                    _html += 'not-show-ans'
+                                }
+                                _html += '"><p style="margin-bottom:5px;color:black;">' + data.fields.answers[i].content + '</p>'
+                                _html += '<p class="author" style="margin-bottom:5px;">' + data.fields.answers[i].owner + '&nbsp;&nbsp;&nbsp;'
+                                _html += data.fields.answers[i].created_date + '</p></div>'
+                            }
+                            _html += '<span class="btn btn-link btn-all-ans-def '
+                            if (data.fields.answers.length > 1) {
+                                _html += 'btn-all-ans'
+                            }
+                            _html += '" onclick="toggleAnswers(this)" ans-count="' + data.fields.answers.length + '">'
+                            if (data.fields.answers.length > 1) {
+                                _html += '<i class="fa fa-chevron-down"></i> '
+                            } else {
+                                _html += '<i class="fa fa-circle"></i> '
+                            }
+                            _html += '{{All_answers}} (' + data.fields.answers.length + ')</span>\
+                        {% if current_user %}<form action="/{{ LANGUAGE_CODE }}/rqa/' + data.pk + '/panswer" method="post" style="display:none;">\
+                        <textarea placeholder="{{Input_your_answer_here}}" name="content" required style="width:100%;border-color:#dddddd;padding:6px 10px;height:75px"></textarea>\
+                        <input type="text" name="next" value="/{{ LANGUAGE_CODE }}/products/'
+                                + data.fields.product + '" hidden/></form>\
+                        <button class="btn btn-light btn-ans" onclick="answerButton(this)">{{Answering}}</button>'
+                                _html += '{%endif%}</div></div></div>'
+                        })
+                        $('#questionList').append(_html);
+                        var countTotal = $('#questionList div.question-box').length;
+                        if (res.totalResult == countTotal) {
+                            $('#loadMoreBtn2').remove();
+                        } else {
+                            $('#loadMoreBtn2').removeClass('disabled').text("{{load_more}}>");
+                        }
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR);
+                        // error handling logic here..
+                    }
+                })
+        });
+    </script>
+{% endblock scripts %}

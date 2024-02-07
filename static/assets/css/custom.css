@@ -1,0 +1,10 @@
+.card_old_price {
+    color: #999999;
+    text-decoration: line-through;
+    display: block;
+}
+
+.cart_price {
+    font-weight: 600;
+    display: block;
+}

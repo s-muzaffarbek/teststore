@@ -1,0 +1,143 @@
+
+
+<div class="ps-layout__right">
+    <div class="ps-shopping ps-tab-root">
+
+        <!-- product listing top toolbar | START -->
+        {% include 'products/sections/product_top_toolbar-new.html' %}
+        <!-- product listing top toolbar | END -->
+
+        {% if object_list %}
+
+            <div class="ps-tabs">
+                <div class="ps-tab active" id="tab-1">
+                    <div class="ps-shopping-product">
+                        <div class="row">
+                            {% for product in object_list %}
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 ">
+                                    <div class="ps-product ps-product--inner">
+                                        <div class="ps-product__thumbnail">
+
+                                            <!-- product image | START -->
+                                            {% include 'products/sections/product_list_image.html' %}
+                                            <!-- product image | END -->
+
+                                            <!-- product sale badge | START -->
+                                            {% include 'products/sections/product_sale_badge.html' %}
+                                            <!-- product sale badge | END -->
+
+                                            <!-- product hover effect/compare button | START -->
+                                            {% include 'tag-templates/product_hover_action.html' %}
+                                            <!-- product hover effect/compare button | END -->
+
+                                        </div>
+
+                                        <div class="ps-product__container">
+                                            <a class="ps-product__vendor" href="#"></a>
+                                            <div class="ps-product__content">
+                                                <a class="ps-product__title"
+                                                   href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                                                    {{ product.names[LANGUAGE_CODE] }}
+                                                </a>
+
+                                                <!-- product price | START -->
+                                                {% include 'products/sections/product_list_price.html' %}
+                                                <!-- product price | END -->
+
+                                                <!-- product rating | START -->
+                                                {% include 'products/sections/product_list_rating.html' %}
+                                                <!-- product rating | END -->
+                                            </div>
+                                            <div class="ps-product__content hover">
+                                                <a class="ps-product__title"
+                                                   href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                                                    {{ product.names[LANGUAGE_CODE] }}
+                                                </a>
+                                                <!-- product price | START -->
+                                                {% include 'products/sections/product_list_price.html' %}
+                                                <!-- product price | END -->
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- pagination | START -->
+                    {% include 'section/pagination.html' %}
+                    <!-- pagination | END -->
+
+                </div>
+
+                <div class="ps-tab" id="tab-2">
+                    <div class="ps-shopping-product">
+
+                        {% for product in object_list %}
+                            <div class="ps-product ps-product--wide">
+                                <div class="ps-product__thumbnail">
+
+                                    <!-- product image | START -->
+                                    {% include 'products/sections/product_list_image.html' %}
+                                    <!-- product image | END -->
+
+                                    <!-- product sale badge | START -->
+                                    {% include 'products/sections/product_sale_badge.html' %}
+                                    <!-- product sale badge | END -->
+
+                                </div>
+
+                                <div class="ps-product__container">
+                                    <div class="ps-product__content">
+                                        <a class="ps-product__title" href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                                            {{ product.names[LANGUAGE_CODE] }}
+                                        </a>
+                                        <p class="ps-product__vendor">{{ Sold_by }}:<a href="#">{{ ROBERTS_STORE }}</a></p>
+                                        <ul class="ps-product__desc">
+                                            <li> {{ Unrestrained_and_portable }}</li>
+                                            <li> {{ Free_from_the_confines }}</li>
+                                            <li> {{ portable_capabilities }}</li>
+                                            <li> {{ Double_ended_Coil_Cord }}</li>
+                                            <li> {{ Dome_Tweeters }}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="ps-product__shopping">
+                                        <p class="ps-product__price {% if product.discount_price%} sale {% endif %}">
+                                            {{ product.discount_price|default(product.retail_price, true)|sum_format }}
+                                            {% if product.discount_price %}
+                                                <del> {{ product.retail_price|sum_format }}</del>
+                                            {% endif %}
+                                        </p>
+                                        <a class="ps-btn" href="#">{{ Add_to_cart}}</a>
+                                        <ul class="ps-product__actions">
+                                            <li>
+                                                <a class="add-to-compare add-to-compare-{{ product.id }}" data-id="{{ product.id }}">
+                                                    <i class="icon-chart-bars"></i>
+                                                    {{ Compare }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                    <!-- pagination | START -->
+                    {% include 'section/pagination.html' %}
+                    <!-- pagination | END -->
+
+                </div>
+            </div>
+
+        {% else %}
+            <div class="ps-tabs">
+                <h2>{{ Not_found_products }}</h2>
+            </div>
+        {% endif %}
+
+    </div>
+</div>

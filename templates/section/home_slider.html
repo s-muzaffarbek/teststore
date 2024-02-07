@@ -1,0 +1,21 @@
+{% if slider_list %}
+    <div class="ps-home-banner pt-4">
+        <div class="container">
+            <div class="ps-section__left w-100">
+                <div class="ps-carousel--nav-inside owl-slider" data-owl-auto="true"
+                     data-owl-loop="true" data-owl-speed="5000" data-owl-gap="0" data-owl-nav="true"
+                     data-owl-dots="true" data-owl-item="1" data-owl-item-xs="1" data-owl-item-sm="1"
+                     data-owl-item-md="1" data-owl-duration="1000" data-owl-item-lg="1" data-owl-mousedrag="on">
+
+                    {% for slider in slider_list %}
+                        <a href="{{ slider.urls[LANGUAGE_CODE] }}">
+                            <img src="{{ django_host }}{{ slider.images[LANGUAGE_CODE] }}" alt="" class="lazyload">
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+{% endif %}

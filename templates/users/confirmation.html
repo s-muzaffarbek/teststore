@@ -1,0 +1,113 @@
+{% extends 'base.html'%}
+
+
+{% block content %}
+
+    <!--breadcuzmbs area start-->
+    <!--breadcuzmbs area end-->
+
+    <!-- accont area start -->
+    <div class="ps-my-account pb-20">
+        <div class="container">
+            <div class="ps-form--account ps-tab-root" style="max-width:700px;">
+                <ul class="ps-tab-list">
+                    <li class="active confirmation">
+                        <p><a>{{ Login }}</a></p>
+                    </li>
+                </ul>
+                <div class="ps-tabs">
+                    <div class="ps-tab active register-confirm" style="max-width:430px;margin:auto;">
+                        <form class="ps-form--account ps-tab-root pt-0 pb-10" action="/{{ LANGUAGE_CODE }}/users/confirmation"
+                              method="post">
+                            <div class="ps-form__content">  {{ csrf_token }}
+                                <div class="alert alert-secondary text-center" role="alert">
+                                    <p style="font-weight:600;font-size:17px;margin-bottom:-9px;">{{ phone }}</p>
+                                    <a href='javascript:;' onclick='goBack()'
+                                       style="margin-top:-9px;color:blue;margin-bottom:3px;">{{ Change_phone_number }}</a>
+                                    <p class='mb-1'>{{ We_sent_you_confirmation_code }}</p>
+                                    <p style='font-weight:500;' id='time-p'>
+                                        <span id='time'
+                                              style='font-weight:600;'>10:00</span> {{ After_that }}
+                                    </p>
+                                    <a href='javascript:;' style="font-weight:500;color:blue;display:none;" id='send-a'
+                                       onclick='resendSms()'> {{ Send_code_again }}</a>
+                                </div>
+                                {% if errors %}
+                                    <div class="alert alert-danger" role="alert" style="width:100%;margin-top:-18px;">
+                                        <ul>
+                                            {% for error in errors %}
+                                                <li>{{ Code_is_not_valid }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                <input name="code_token" id="code_token" value="{% if code_token %}{{ code_token }}{% endif %}" type="hidden">
+                                {% if go_checkout %}
+                                    <input id="next" type="hidden" name="next"
+                                           value="/{{ LANGUAGE_CODE }}/orders/checkout-confirm">
+                                {% elif not created %}
+                                    <input type="hidden" name="next" value="/{{ LANGUAGE_CODE }}/users/profile">
+                                {% else %}
+                                    <input type="hidden" name="next" value="NONE">
+                                {% endif %}
+                                <div class="form-group">
+                                    <input class="form-control" id="code" name="code" type="number" placeholder="_ _ _ _ _"
+                                           requeried value="">
+                                </div>
+                                <div class="form-group submtit  mb-3 register">
+                                    <button class="ps-btn ps-btn--fullwidth"
+                                            type="submit">{{ Continue }}</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- resend sms form -->
+                        <form class="d-none" id='resend-sms' action="/{{ LANGUAGE_CODE }}/users/register" method="post">
+                            {{ csrf_token }}
+                            <input class="form-control" name="phone" type="tel" value="{{ phone }}">
+                        </form>
+                        <!-- resend sms form end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- accont area end -->
+
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            var coutdown = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                display.textContent = minutes + ":" + seconds;
+                if (--timer < 0) {
+                    clearInterval(coutdown);
+                    document.getElementById('send-a').style.display = 'block';
+                    document.getElementById('time-p').style.display = 'none';
+                }
+            }, 1000);
+        }
+
+        window.onload = function () {
+            var fiveMinutes = 60 * 10,
+                display = document.querySelector('#time');
+            startTimer(fiveMinutes, display);
+        };
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function resendSms() {
+            document.getElementById('resend-sms').submit()
+        }
+
+
+    </script>
+{% endblock scripts %}

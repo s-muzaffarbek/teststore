@@ -1,0 +1,44 @@
+<div class="ps-product__thumbnail current-pr-thumbnail" data-vertical="false">
+    <figure>
+        <div class="ps-wrapper">
+            <div class="ps-product__gallery" data-arrow="true">
+
+                    <div class="item default" id="n-{{ product.id }}">
+                        <a id="head_image_url" href="{{ django_host }}{{product.image}}">
+                            <img id="head_image" src="{{ django_host }}{{ product.image }}" alt="">
+                        </a>
+                    </div>
+
+                    {% for product_image in product_images %}
+                    <div class="item default" id="n-{{ product_image.id }}">
+                        <a href="{{ django_host }}{{product_image.image}}">
+                            <img src="{{ django_host }}{{ product_image.image }}" alt="">
+                        </a>
+                    </div>
+                    {% endfor %}
+                <div class="item default main-variant-image" id="main-variant-image">
+                    <img src="{{ django_host }}{{ product.image }}" alt="">
+                </div>
+
+            </div>
+        </div>
+    </figure>
+    <div class="ps-product__variants" data-item="4" data-md="3" data-sm="3" data-arrow="false">
+
+            <div class="item default" id="n-{{ product.id }}">
+                <img src="{{ django_host }}{{ product.image }}" alt="">
+            </div>
+
+            {% for product_image in product_images %}
+            <div class="item default" id="n-{{ product_image.id }}">
+                <img src="{{ django_host }}{{ product_image.image }}" alt="">
+            </div>
+            {% endfor %}
+            {% for image in product.variants %}
+        <div class="item default variant-image d-none" id="variant-image">
+            <img src="{{ django_host }}{{ image.images.0 }}" alt="">
+        </div>
+            {% endfor %}
+
+    </div>
+</div>

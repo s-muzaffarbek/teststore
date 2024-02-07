@@ -1,0 +1,131 @@
+
+<div class="ps-filter--sidebar">
+    <div class="ps-filter__header">
+        <h3>{{ Filter_Products }}</h3>
+        <a class="ps-btn--close ps-btn--no-boder" href="#"></a>
+    </div>
+    <div class="ps-filter__content">
+        <!-- categories | START -->
+        {% include 'products/page_categories.html' %}
+        <!-- categories | END -->
+
+        <aside class="widget widget_shop">
+            {% for attribute in attributes %}
+                {% if attribute.attribute_slug == "brand" %}
+                    <h4 class="widget-title">
+                        {{ BY_BRANDS}}
+                    </h4>
+                    <!-- <form class="ps-form--widget-search" action="do_action" method="get">
+                        <input class="form-control" type="text" placeholder="">
+                        <button><i class="icon-magnifier"></i></button>
+                    </form> -->
+                    <figure class="ps-custom-scrollbar" data-height="250">
+                        {% for brand in attribute.attribute_values %}
+                            <div class="ps-checkbox">
+                                <input class="form-control" type="checkbox" id="mbrand-{{ brand.id }}" name="brand"
+                                       onclick="attr_click('brand_id={{ brand.id }}')"
+                                        >
+                                <label for="mbrand-{{ brand.id }}">{{ brand.name }}</label>
+                            </div>
+                        {% endfor %}
+                    </figure>
+                {% endif %}
+
+                {% if attribute.attribute_slug == "collection" %}
+                    <figure class="ps-custom-scrollbar" data-height="250">
+                        <h4 class="widget-title">
+                            {{ BY_COLLECTIONS }}
+                        </h4>
+                        {% for collection in attribute.attribute_values %}
+                            <div class="ps-checkbox">
+                                <input class="form-control" type="checkbox" id="mcollection-{{ collection.id }}"
+                                      name="collection"
+                                       onclick="attr_click('collection_id={{ collection.id }}')">
+                                <label for="mcollection-{{ collection.id }}">{{ collection.name }}</label>
+                            </div>
+                        {% endfor %}
+                    </figure>
+                {% endif %}
+
+                {% if attribute.attribute_slug == "color" %}
+                    <figure>
+                        <h4 class="widget-title">{{ BY_COLORS }}</h4>
+
+                        {% for color in attribute.attribute_values %}
+                            <div class="ps-checkbox ps-checkbox--color ps-checkbox--inline">
+                                <input class="form-control" type="checkbox" data-attr="color" id="mattr-{{ color.attribute_value_id }}"
+                                        name="{{ color.attribute_value_name }}"
+                                       onclick='attr_click("attr_id={{ color.attribute_value_id }}")'>
+                                <label for="mattr-{{ color.attribute_value_id }}"
+                                       style="background-color:{{ color.attribute_value_color }}"></label>
+                            </div>
+                        {% endfor %}
+                    </figure>
+                {% endif %}
+
+                {% if attribute.attribute_slug == "size" %}
+                    <figure class="sizes">
+                        <h4 class="widget-title">{{ attribute.name }}</h4>
+                        {% for size in attribute.attribute_values %}
+
+                            <a onclick="attr_click('attr_id={{ size.attribute_value_id }}')" data-attr="size" id="mattr-{{ size.attribute_value_id }}"
+                               {% if checked %}class="cl-yellow br-yellow"{% endif %}>
+                                {{ size.attribute_value_name }}
+                            </a>
+                        {% endfor %}
+                    </figure>
+                {% endif %}
+
+            {% endfor %}
+        </aside>
+    </div>
+    <script>
+         $(document).ready(function (){
+        const params = (new URL(location)).searchParams;
+
+        for (let b of params.getAll('brand_id')){
+            let btn = $(`#brand-${b}`)[0]
+            if (btn !== undefined){
+                  btn.checked=true;
+            }
+
+        }
+        for (let b of params.getAll('collection_id')){
+            let btn = $(`#collection-${b}`)[0]
+            if (btn !== undefined){
+                        btn.checked=true;
+            }
+
+        }
+        for (let b of params.getAll('attr_id')){
+            let el = $(`#mattr-${b}`)
+
+            if (el.data("attr") === 'color'){
+
+                el[0].checked=true
+            }else{
+                el.addClass('cl-yellow')
+                el.addClass('br-yellow')
+            }
+
+        }
+    })
+    function attr_click(target) {
+        var url = window.location.href;
+
+        if (target){
+            if (url.indexOf(target)>0){
+                url = url.replace(target, '')
+            }else if (url.indexOf('?')>0){
+                url = url + '&' + target;
+            }else {
+                url = url + '?' + target;
+            }
+
+            window.location.href = url.replace('&&', '&');
+
+    }
+
+    }
+    </script>
+</div>

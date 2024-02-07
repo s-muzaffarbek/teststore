@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}{% if category %}{{ category.names[LANGUAGE_CODE] }}{% else %}{{ Product_List}}{% endif %}{% endblock %}
+
+
+{% block metadata %}
+    <meta property="og:title"
+          content="{% if category %}{{ category.names[LANGUAGE_CODE] }}{% else %}{{ Product_List }}{% endif %}">
+    <meta name="description"
+          content="{{ Online_store_GoSia }}">
+    <meta property="og:description"
+          content="{{ Online_store_GoSia }}">
+    <meta property='og:image' content='/cdn/static/assets/img/logo/logo_sia.jpg'/>
+{% endblock %}
+
+{% block content %}
+
+    <div class="ps-page--shop" id="shop-sidebar">
+        <div class="container">
+            <div class="ps-layout--shop" data-select2-id="10">
+                <!-- product filter / left tab | START -->
+                {% include 'products/sections/product_filter-new.html' %}
+                <!-- product filter / left tab | END -->
+
+                <!-- product list / right tab | START -->
+                {% include 'products/sections/product_listing-new.html' %}
+                <!-- product list / right tab | END -->
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

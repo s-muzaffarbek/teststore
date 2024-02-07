@@ -1,0 +1,251 @@
+
+<script>
+    const add_to_cart = '{{Add_to_cart}}';
+    const add_to_wishlist = "{{Add_to_Whishlist}}"
+    const add_to_compare = "{{Add_to_Compare}}";
+    const remove_from_cart = "{{Remove_from_Cart}}";
+    const remove_from_wishlist = "{{Remove_from_Whishlist}}";
+    const remove_from_compare = "{{Remove_from_Compare}}";
+    const LANGUAGE_CODE = "{{LANGUAGE_CODE}}";
+    const SUM = "{{SUM}}";
+
+
+ function shopping_cart_page_update() {
+         let ShoppingCard = JSON.parse(localStorage.getItem('shopping_card'))
+        if (ShoppingCard && ShoppingCard.variants.length>0){
+             let _html = `<div class="ps-section__content">
+                <div class="table-responsive my-shopping-cart">
+                    <table class="table ps-table--shopping-cart">
+                        <thead>
+                        <tr>
+                            <th>{{PRODUCT_NAME}}</th>
+                            <th>{{PRICE}}</th>
+                            <th>{{QUANTITY}}</th>
+                            <th>{{TOTAL}}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-center">`;
+
+             for (let item of ShoppingCard.orderItems){
+                 _html += `<tr id="table_row_${ item.variant }">
+                            <td>
+                                <div class="ps-product--cart">
+                                    <div class="ps-product__thumbnail">
+                                        <a href = '/{{ LANGUAGE_CODE }}/products/${ item.product_slug }'
+                                           target="_blank">
+                                            <img src="${ django_host }${ item.image }" alt="no-image">
+                                        </a>
+                                    </div>
+                                    <div class="ps-product__content">
+                                        <a href='/{{ LANGUAGE_CODE }}/products/${ item.product_slug }' >${ item.product_names[LANGUAGE_CODE] }
+                                        </a>
+                                        <p>
+                                            <strong style="color:#079811;font-size:11px;background:beige;border-radius:3px;padding:2px;">
+                                            {{SKU}}: ${ item.sku }
+                                            </strong>
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price">`
+                 if (item.discount_price>0){
+                     _html += `<span class="cart_price">
+                                     ${ sum_format_js(item.discount_price) } / {{piece}}
+                                </span>`
+                 }
+                 if (item.retail_price>0) {
+                     _html += `<span class="`
+                     if (item.discount_price>0) {
+                         _html += `card_old_price `
+                     }
+                     else {
+                         _html += `cart_price`
+                     }
+                    _html += `"> ${ sum_format_js(item.retail_price) } / {{piece}}
+                                </span>`
+                 }
+                 _html += `</td>
+                            <td>
+                                <div class="form-group--number">
+                                    <button class="up " onclick="change_quantity(${ item.variant }, 1)" >+</button>
+                                    <button class="down " onclick="change_quantity(${ item.variant }, -1)" >-</button>
+                                    <input class="form-control input-quantity" onkeyup="change_input_quantity(${ item.variant })" value="${ item.quantity }" min="1" max="100"
+                                           type="number" data-id="${ item.variant }" id='order_qty_${ item.variant }'>
+                                </div>
+                            </td>`
+                 if (item.discount_price>0) {
+                         _html += ` <td style="color:#00A000;font-weight:600;" id="o_item_${ item.variant }">
+                                 ${ sum_format_js(item.discount_price*item.quantity) } {{SUM}}</td> `
+                 }
+                 else {
+                         _html += `<td style="color:#00A000;font-weight:600;" id="o_item_${ item.variant }">
+                                ${ sum_format_js(item.retail_price*item.quantity) } {{SUM}}</td>`
+                 }
+                 _html += `  <td>
+                                <a class="remove-item" onclick="Remove_item(${item.variant})" href="javascript:void(0)">
+                                    <i class="icon-cross"></i>
+                                </a>
+                            </td>
+                        </tr>`
+             }
+             _html += `</tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="ps-section__footer">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 ">
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 ">
+                        <div class="ps-block--shopping-total">
+                            <div class="ps-block__content">
+                                <h3>
+                                    {{Total}}
+                                    <span id="total_price" >
+                                     ${ sum_format_js(ShoppingCard.subtotal) }   {{SUM}}
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+                        <a class="ps-btn ps-btn--fullwidth" href="/{{ LANGUAGE_CODE }}/orders/checkout/">
+                            {{Proceed_to_Checkout}}
+                        </a>
+                    </div>
+                </div>
+            </div>`
+             $('.shopping-cart-items').html(_html)
+        }
+        else{
+            let _html = `<div class="ps-section__content text-center empty-cart">
+                <img src="${window.location.protocol + "//" + window.location.host}/static/new-template/img/ec3.svg" style="max-width:350px; margin-top:-130px;"/>
+                <p style="font-size:25px;margin-top:-20px;">{{Your_cart_is_empty}}</p>
+            </div>`
+            $('.shopping-cart-items').html(_html)
+        }
+    }
+ function checkout_page_update() {
+        let ShoppingCard = JSON.parse(localStorage.getItem('shopping_card'))
+        let order_detail = ``
+        if (ShoppingCard && ShoppingCard.variants.length>0){
+             let _html = ``;
+             for (let item of ShoppingCard.orderItems){
+                 order_detail += `${item.sku}|${item.quantity};`
+                 _html += `<tr>
+                            <td style="border:2px solid #eaeaea;padding:10px 5px;">
+                                <a href="/{{ LANGUAGE_CODE }}/products/${ item.product_slug }"
+                                   target="_blank">
+                                    <img style="height: 70px;" src="${ django_host }${ item.image }" alt="no-image">
+                                </a>
+                            </td>
+                            <td class="product-name" style="border:2px solid #eaeaea;padding:10px 5px;">
+                                <a href="/{{ LANGUAGE_CODE }}/products/${ item.product_slug }" target="_blank">
+                                    ${ item.product_names[LANGUAGE_CODE] }
+                                </a>
+                                <strong >× ${ item.quantity }</strong>
+                                <br/>
+                                <span class="badge badge-secondary" style="background-color:#D5E5D5;">{{SKU}}: ${ item.sku }</span>
+                                <br/>`
+                 if (item.discount_price>0){
+                     _html += `<span class="cart_price ">${ sum_format_js(item.discount_price) } / {{piece}}</span>`
+                 }
+                 _html += `<br/>`
+                 if (item.retail_price>0) {
+                     _html += ` <span class="`
+                     if (item.discount_price>0) {
+                         _html += `card_old_price `
+                     }
+                     else {
+                         _html += `cart_price`
+                     }
+                    _html += `"> ${ sum_format_js(item.retail_price) } / {{piece}}
+                                </span>`
+                 }
+                 _html += `</td>
+                            <td class="amount" style="border:2px solid #eaeaea;padding:10px 5px;">`
+                 if (item.discount_price>0){
+                     _html += `${ sum_format_js(item.discount_price*item.quantity) } {{SUM}}`
+                 }
+                 else{
+                     _html += `${ sum_format_js(item.retail_price*item.quantity) } {{SUM}}`
+                 }
+                 _html += `</td></tr>`
+             }
+
+             $('#checkout_tbody').html(_html)
+             $('#total_price_checkout').text(sum_format_js(ShoppingCard.subtotal))
+             $('#subtotal').val(sum_format_js(ShoppingCard.subtotal))
+             $('#order_detail').val(order_detail)
+        }
+        else{
+            $('#checkout_tbody').html('')
+        }
+    }
+ function shopping_cart_badge_update() {
+        let ShoppingCard = JSON.parse(localStorage.getItem('shopping_card'))
+        if (ShoppingCard && ShoppingCard.variants.length>0){
+             let _html = `<div class="ps-cart__content">
+                <div class="ps-cart__items">`;
+
+             for (let item of ShoppingCard.orderItems){
+                 _html += `<div class="ps-product--cart-mobile">
+                                <div class="ps-product__thumbnail">
+                                    <a href="/{{ LANGUAGE_CODE }}/products/${ item.product_slug }">
+                                        <img src="${ django_host }${ item.image }" alt="no-image">
+                                    </a>
+                                </div>
+                            <div class="ps-product__content">
+                                <a class="ps-product__remove" onclick="Remove_item(${item.variant})" title="{{Remove_this_item}}" href="javascript:void(0)">
+                                <i class="icon-cross"></i></a> <a href="/{{ LANGUAGE_CODE }}/products/${ item.product_slug }" target="_blank">${ item.product_names[LANGUAGE_CODE] }</a>
+                                <br>
+                                <span class="badge badge-secondary">{{SKU}}: ${ item.sku }</span>
+                                <br>`
+                 if (item.discount_price>0){
+                     _html += `<span class="cart_price ">${ item.quantity } x ${ sum_format_js(item.discount_price) }</span>`
+                 }
+                 if (item.retail_price>0) {
+                     _html += `<span class="`
+                     if (item.discount_price>0) {
+                         _html += `card_old_price`
+                     }
+                     else {
+                         _html += `cart_price`
+                     }
+                    _html += `">${ item.quantity } x ${ sum_format_js(item.retail_price) } </span>`
+                 }
+                 _html += `</div>
+                    </div>`
+
+             }
+             _html += `</div>
+                    <div class="ps-cart__footer">
+                        <h3>{{Sub_Total}}:<strong> ${ sum_format_js(ShoppingCard.subtotal) } {{SUM}}</strong>
+                        </h3>
+                        <figure>
+                            <a class="ps-btn" href="/{{ LANGUAGE_CODE }}/orders/shopping-cart/">
+                                {{View_Cart}}
+                            </a>
+                            <a class="ps-btn" href="/{{ LANGUAGE_CODE }}/orders/checkout/">
+                                {{Checkout}}
+                            </a>
+                        </figure>
+                    </div>
+                </div>`
+             $('.badge_order').html(_html)
+             $(".badge-count").text(ShoppingCard.itemCount)
+        }
+        else{
+            let _html = `<div class="ps-cart__content empty">
+                            <div class="ps-cart__items pt-0 pb-4 text-center">
+                                <img src="${window.location.protocol + "//" + window.location.host}/static/new-template/img/ec3.svg"/>
+                                <p class='mb-0'> {{Your_cart_is_empty}}</p>
+                            </div>
+                        </div>`
+            $('.badge_order').html(_html)
+            $(".badge-count").text(0)
+        }
+    }
+
+
+</script>

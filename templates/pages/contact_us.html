@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="ps-page--single" id="contact-us">
+
+    <!-- breadcrumb area | START -->
+    <div class="ps-breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/{{ LANGUAGE_CODE }}">{{ Home }}</a></li>
+                <li>{{ Contact_Us }}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- breadcrumb area | END -->
+
+    <div class="ps-contact-info">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <form class="ps-form--contact-us pf-contact-form" method="POST"
+                          action="/{{ LANGUAGE_CODE }}/pages/contact-us">
+                        <div class="contact_title">
+                            {% if messages %}
+                                {% if error %}
+                                <div class="alert alert-danger" role="alert">
+                                    <ul>
+                                        {% for msg in messages %}
+                                            <li>{{ msg }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                    {% else %}
+                                     <div class="alert alert-success" role="alert">
+                                    <ul>
+                                        {% for msg in messages %}
+                                            <li>{{ msg }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                    {% endif %}
+                            {% endif %}
+                            <h2 style="font-size:28px;font-weight:600;margin-bottom:24px;">{{ Connect_with_us }}</h2>
+                        </div>
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 ">
+                                <div class="form-group">
+                                    <input class="form-control" name="name" placeholder="{{ Name }} *"
+                                           type="text" required>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 ">
+                                <div class="form-group">
+                                    <input class="form-control" name="phone" type="tel" placeholder="+998901234567" required>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <div class="form-group">
+                                    <input class="form-control" name="subject" type="text"
+                                           placeholder="{{ Subject }} *" required>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <div class="form-group">
+                                    <textarea class="form-control" name="message" rows="5"
+                                              placeholder="{{ Message }} *" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group submit">
+                            <button class="ps-btn" type="submit">{{ Send_message }}</button>
+                        </div>
+                        <div class="col-12">
+                            {% if form_result %}
+                                <p class="form-messege">{{ Email_sent }}</p>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="contact_info_wrapper" style="font-size:1.5rem;">
+                        <div class="contact_title">
+                            <h4 style="font-size:28px;font-weight:600;margin-bottom:24px;">{{ Contact_information }}</h4>
+                        </div>
+                        <div class="contact_info mb-15">
+                            <p style="font-size:1.5rem;">{{ If_you_have_any_questions}}</p>
+                        </div>
+                        <div class="contact_info mb-15">
+                            <ul style="color:#666;list-style:none;padding-left:0;">
+                                <li style="padding:15px 0;border-top:1px solid #52505059;"><i
+                                        class="fa fa-fax mr-10"></i> {{ Address_full}}
+                                </li>
+                                <li style="padding:15px 0;border-top:1px solid #52505059;"><i
+                                        class="fa fa-phone mr-10"></i> <a href="tel:+998909488684">+99890 948-86-84</a>
+                                </li>
+                                <li style="padding:15px 0;border-top:1px solid #52505059;"><i
+                                        class="fa fa-phone mr-10"></i> <a href="tel:+998909205925">+99890 920-59-25</a>
+                                </li>
+                                <li style="padding:15px 0;border-top:1px solid #52505059;"><i
+                                        class="fa fa-envelope-o mr-10"></i>GoSia.uz@gmail.com
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="contact_info mb-15">
+                            <h3 style="margin-bottom:15px;text-align:left;"><strong
+                                    style="font-size:28px; font-weight:600;">{{ Our_working_time }}</strong></h3>
+                            <p style="font-size:1.6rem;"><strong>{{ Monday_Sunday }}</strong>: 08AM – 22PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

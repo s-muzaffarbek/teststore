@@ -1,0 +1,32 @@
+<div class="ps-product__rating">
+{#    {% comment %} <select class="ps-rating" data-read-only="true">#}
+{#        {% for i in product.rating %}#}
+{#            <option value="{{i}}">{{forloop.counter}}</option>#}
+{#        {% endfor %}#}
+{#    </select><span>{{product.review_set.count}}</span> {% endcomment %}#}
+    <form style='margin-bottom:5.5px;'>
+        <fieldset class="rate lr">
+            <input type="radio" {% if product.rating_star == 5 %}checked{% endif %}/>
+            <label></label>
+            <input type="radio" {% if product.rating_star == 4.5 %}checked{% endif %}/>
+            <label class="half"></label>
+            <input type="radio" {% if product.rating_star == 4 %}checked{% endif %}/>
+            <label></label>
+            <input type="radio" {% if product.rating_star == 3.5 %}checked{% endif %}/>
+            <label class="half"></label>
+            <input type="radio" {% if product.rating_star == 3 %}checked{% endif %}/>
+            <label></label>
+            <input type="radio" {% if product.rating_star == 2.5 %}checked{% endif %}/>
+            <label class="half"></label>
+            <input type="radio" {% if product.rating_star == 2 %}checked{% endif %}/>
+            <label></label>
+            <input type="radio" {% if product.rating_star == 1.5 %}checked{% endif %}/>
+            <label class="half"></label>
+            <input type="radio" {% if product.rating_star == 1 %}checked{% endif %}/>
+            <label></label>
+            <input type="radio" {% if product.rating_star == 0.5 %}checked{% endif %}/>
+            <label class="half"></label>
+        </fieldset>
+{#        {% comment %} <span>{{product.reviews_count}}</span> {% endcomment %}#}
+    </form>
+</div>

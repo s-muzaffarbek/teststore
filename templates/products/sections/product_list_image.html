@@ -1,0 +1,8 @@
+
+<a href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+    {% if product.image %}
+        <img src="{{ django_host }}{{ product.image }}" alt="{{ product.names[LANGUAGE_CODE] }}" class="lazyload"/>
+    {% else %}
+        <img src="{{ url_for('static', path='/assets/img/product/product11.jpg') }}" alt="{{ product.names[LANGUAGE_CODE] }}"/>
+    {% endif %}
+</a>

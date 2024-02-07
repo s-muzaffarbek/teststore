@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ Write_a_review }}{% endblock %}
+
+{% block content %}
+
+    <!-- breadcump menu | START -->
+    <!-- breadcump menu | END -->
+
+    <section class="ps-section--account">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <!-- nav tabs | START -->
+                    {% include 'users/sections/account-menu.html' %}
+                    <!-- nav tabs | END -->
+                </div>
+                <div class="col-lg-9 mt-20">
+                    <div class="ps-section__right">
+                        <h3>{{ Write_a_review_to_the_product }}</h3>
+                        <div class="ps-section__content">
+                            <div class="row">
+                                <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12 ">
+                                    <div class="ps-block--average-rating">
+                                        <div class="ps-block__header product-info">
+                                            {% include 'products/sections/product_list_image.html' %}
+                                            <div class="ps-product__content">
+                                                <a class="ps-product__title"
+                                                   href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}"
+                                                   style='display:block'>
+                                                    {{ product.names[LANGUAGE_CODE] }}
+                                                </a>
+                                                <p class="ps-product__price sale mr-15" style="display:inline-block;">
+                                                    {{ product.discount_price|sum_format }} {{ SUM }}
+                                                </p>
+                                                <div class="ps-product__rating" style="display:inline-block;">
+                                                    <form style='margin-bottom:5.5px;'>
+                                                        <fieldset class="rate lr">
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 5 %}checked{% endif %}/>
+                                                            <label></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 4.5 %}checked{% endif %}/>
+                                                            <label class="half"></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 4 %}checked{% endif %}/>
+                                                            <label></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 3.5 %}checked{% endif %}/>
+                                                            <label class="half"></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 3 %}checked{% endif %}/>
+                                                            <label></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 2.5 %}checked{% endif %}/>
+                                                            <label class="half"></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 2 %}checked{% endif %}/>
+                                                            <label></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 1.5 %}checked{% endif %}/>
+                                                            <label class="half"></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 1 %}checked{% endif %}/>
+                                                            <label></label>
+                                                            <input type="radio"
+                                                                   {% if product.rating_star == 0.5 %}checked{% endif %}/>
+                                                            <label class="half"></label>
+                                                        </fieldset>
+{#                                                        <span> {{ product.review_set.count }}</span>#}
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12 ">
+                                    <form class="ps-form--review" enctype="multipart/form-data" action=""
+                                          method="POST">{{ csrf_token }}
+                                        <div class="form-group form-group__rating">
+                                            <label>{{ Your_rating_of_this_product }}</label>
+                                            <fieldset class="rate wr" name='rating' style="min-width:155px;">
+                                                <input type="radio" id="rating10" name="rating" class="wr" value="5"/>
+                                                <label for="rating10" class="wr" title="5 stars"></label>
+                                                <input type="radio" id="rating8" name="rating" class="wr" value="4"/>
+                                                <label for="rating8" class="wr" title="4 stars"></label>
+                                                <input type="radio" id="rating6" name="rating" class="wr" value="3"/>
+                                                <label for="rating6" class="wr" title="3 stars"></label>
+                                                <input type="radio" id="rating4" name="rating" class="wr" value="2"/>
+                                                <label for="rating4" class="wr" title="2 stars"></label>
+                                                <input type="radio" id="rating2" name="rating" class="wr" value="1"/>
+                                                <label for="rating2" class="wr" title="1 star"></label>
+                                            </fieldset>
+                                        </div>
+                                        <div class="form-group" style='margin-bottom:10px;'>
+                                            <textarea class="form-control" rows="6" name='comment'
+                                                      placeholder="{{ Write_your_review_here }}"></textarea>
+                                        </div>
+                                        <input name="owner" value="{{ request.user.id }}" hidden/>
+                                        <input name="product" value="{{ product.id }}" hidden/>
+                                        <output id="images-list"></output>
+                                        <div class="input-group mb-3">
+                                            <div class="custom-file">
+                                                <input type="file" name="images" class="custom-file-input"
+                                                       style="cursor:pointer;"
+                                                       multiple id="inputGroupFile01"
+                                                       aria-describedby="inputGroupFileAddon01">
+                                                <label class="custom-file-label" id='choose-img'
+                                                       for="inputGroupFile01">{{ Choose_files}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group submit">
+                                            <button class="ps-btn">{{ Save }}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        #choose-img::after {
+            content: "{{Upload}}";
+        }
+    </style>
+{% endblock content %}
+
+
+{% block scripts %}
+    <script>
+        function handleFileSelect(evt) {
+            var files = evt.target.files;
+            var output = document.getElementById('images-list')
+            // removw old images
+            while (output.firstChild) {
+                output.removeChild(output.firstChild);
+            }
+            // Show output element.
+            if (files.length > 0) {
+                output.style.width = '100%';
+            }
+            // if (files.length > 5) {
+            //    alert("You can select only 5 image");
+            //    return;
+            // }
+            // Loop through the FileList and render image files as thumbnails.
+            for (var i = 0, f; f = files[i]; i++) {
+
+                // Only process image files.
+                if (!f.type.match('image.*')) {
+                    alert("{{Please_choose_only_images}}");
+                    return;
+                }
+                if (i > 4) {
+                    alert("{{You_can_upload_a_maximum_of_5_images}}");
+                    document.getElementById('choose-img-1').style.color = 'transparent';
+                    return;
+                }
+                var reader = new FileReader();
+
+                // Closure to capture the file information.
+                reader.onload = (function (theFile) {
+                    return function (e) {
+                        // Render thumbnail.
+                        var span = document.createElement('span');
+                        span.innerHTML =
+                            [
+                                '<img style="height:75px;max-width:19%;border:0.5px solid #666;margin:5px 2px;border-radius:6px" src="',
+                                e.target.result,
+                                '" title="', escape(theFile.name),
+                                '"/>'
+                            ].join('');
+
+                        document.getElementById('images-list').insertBefore(span, null);
+                    };
+                })(f);
+
+                // Read in the image file as a data URL.
+                reader.readAsDataURL(f);
+            }
+            ;
+            document.getElementById('choose-img').innerHTML = '{{Choose_other_files}}';
+        }
+
+        document.getElementById('inputGroupFile01').addEventListener('change', handleFileSelect, false);
+    </script>
+{% endblock scripts %}

@@ -1,0 +1,82 @@
+<div class="main_menu_inner">
+    <div class="main_menu d-none d-lg-block">
+        <nav>
+            <ul>
+                <li><a href="/{{ LANGUAGE_CODE }}/">{{ Home }}</a></li>
+
+                {% if brand_list %}
+                    <li class="dropdown_item"><a href="/{{ LANGUAGE_CODE }}/products">{{ Brand }} <i
+                            class="fa fa-angle-down"></i></a>
+                        <ul class="sub_menu">
+                            {% for brand in brand_list %}
+                                <li>
+                                    <a href="/{{ LANGUAGE_CODE }}/products/?brand_id={{ brand.id }}">{{ brand.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if collection_list %}
+                    <li class="dropdown_item"><a href="/{{ LANGUAGE_CODE }}/products">{{ Collections }} <i
+                            class="fa fa-angle-down"></i></a>
+                        <ul class="sub_menu">
+                            {% for collection in collection_list %}
+                                <li>
+                                    <a href="/{{ LANGUAGE_CODE }}/products/?collection_id={{ collection.id }}">{{ collection.names[LANGUAGE_CODE] }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    <div class="mobile-menu portfolio_mobail about d-lg-none">
+        <nav>
+            <ul>
+                <li><a href="/{{ LANGUAGE_CODE }}/">{{ Home }}</a></li>
+                {% if category_all %}
+                    {% for category in category_list %}
+                        <li class="dropdown_item">
+                            <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}">{{ category.names[LANGUAGE_CODE] }}
+                                <i class="fa fa-angle-down"></i></a>
+                            <ul class="sub_menu">
+                                {% for child in category_all %}
+                                    {% if child.parent_id == category.id %}
+                                        <li>
+                                            <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}/{{ child.slug }}">{{ child.names[LANGUAGE_CODE] }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+                {% if brand_list %}
+                    <li class="dropdown_item"><a href="/{{ LANGUAGE_CODE }}/products">{{ Brand }} <i
+                            class="fa fa-angle-down"></i></a>
+                        <ul class="sub_menu">
+                            {% for brand in brand_list %}
+                                <li>
+                                    <a href="/{{ LANGUAGE_CODE }}/products/?brand_id={{ brand.id }}">{{ brand.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if collection_list %}
+                    <li><a href="/{{ LANGUAGE_CODE }}/products">{{ Collections }}</a>
+                        <ul>
+                            {% for collection in collection_list %}
+                                <li>
+                                    <a href="/{{ LANGUAGE_CODE }}/products/?collection_id={{ collection.id }}">{{ collection.names[LANGUAGE_CODE] }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>

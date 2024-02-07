@@ -1,0 +1,38 @@
+<div class="ps-section__left">
+    <aside class="ps-widget--account-dashboard">
+        <div class="ps-widget__header">
+            <figure>
+                <figcaption style="font-size:20px;">{{ Hello }}</figcaption>
+                <p style="font-size:20px;">{{ current_user.first_name }} {{ current_user.last_name }}</p>
+            </figure>
+        </div>
+        <div class="ps-widget__content">
+            <ul>
+                <li><a href="/{{ LANGUAGE_CODE }}/orders/" class="user-menu"><i
+                        class="icon-papers"></i> {{ My_Orders }}</a></li>
+                <li><a href="/{{ LANGUAGE_CODE }}/users/profile" class="user-menu"><i
+                        class="icon-user"></i> {{ My_profile }}</a></li>
+                <li><a href="/{{ LANGUAGE_CODE }}/users/address-list" class="user-menu"><i
+                        class="icon-map-marker"></i> {{ My_Addresses }}</a></li>
+                <li><a href="/{{ LANGUAGE_CODE }}/rqa/my-reviews" class="user-menu"><i
+                        class="icon-bubble-text"></i>{{ My_Reviews }}</a></li>
+                <li><a href="/{{ LANGUAGE_CODE }}/users/logout" class="user-menu"><i
+                        class="icon-power-switch"></i>{{ Logout }}</a></li>
+            </ul>
+        </div>
+    </aside>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+
+        const currentPath = location.pathname;
+        const navLinks = Array.from(document.querySelectorAll('a.user-menu'));
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.parentElement.classList.add('active');
+            }
+        })
+        console.log('salom');
+    })
+</script>

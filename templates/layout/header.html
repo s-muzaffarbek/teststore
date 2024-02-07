@@ -1,0 +1,39 @@
+
+<!-- standart header for large screens | START -->
+<header class="header header--standard header--market-place-2" data-sticky="true">
+
+    <!-- header top | START-->
+    {% include 'section/header_top.html' %}
+    <!-- header top | END-->
+
+    <!-- header main content | START-->
+    {% include 'tag-templates/header_content.html' %}
+    <!-- header main content | END-->
+
+    <!-- header navigation menu | START-->
+    {% include 'section/header_main_menu.html' %}
+    <!-- header navigation menu | END-->
+
+</header>
+<!-- standart header for large screens | END -->
+
+<!-- header for smaller screens | START -->
+<header class="header header--mobile header--mobile-categories" data-sticky="true">
+
+    <!-- header top | START -->
+    {% include 'tag-templates/header_top_mobile.html' %}
+    <!-- header top | END -->
+
+    <!-- header navigation menu | START -->
+    {% include 'tag-templates/header_navigation_mobile.html' %}
+    <!-- header navigation menu | END -->
+
+    <!-- header search | START -->
+    {% include 'tag-templates/header_search_mobile.html' %}
+    <!-- header search | END -->
+
+    {% if object_list %}
+        {% include 'tag-templates/mobile_header_filter.html' %}
+    {% endif %}
+</header>
+<!-- header for smaller screens | END -->

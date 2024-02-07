@@ -1,0 +1,10 @@
+
+{% if product.discount_price and product.discount_price < product.retail_price and product.sale > 0 %}
+    <div class="ps-product__badge">
+        {% if product.sale %}
+            -{{ product.sale }}%
+        {% else %}
+            -{{ product.get_calculated_sale }}%
+        {% endif %}
+    </div>
+{% endif %}

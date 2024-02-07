@@ -1,0 +1,19 @@
+{% if brand_list %}
+    <div class="brand_logo mb-40">
+        <div class="container">
+            <div class="row brand_padding">
+                <div class="brand_active owl-carousel">
+                    {% for brand in brand_list %}
+                        <div class="col-lg-2">
+                            <div class="single_brand">
+                                <a href="/{{ LANGUAGE_CODE }}/products/?brand_id={{ brand.id }}">
+                                    <img src="/cdn/media/{{ brand.logo }}" alt="{{ brand.name }}">
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

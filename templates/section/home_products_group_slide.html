@@ -1,0 +1,69 @@
+<div class="ps-product-list">
+    <div class="container">
+        <div class="ps-section__header">
+            <h3>{{ group.names[LANGUAGE_CODE] }}</h3>
+            <ul class="ps-section__links">
+                {% for category in group.header_categories %}
+                    <li>
+                        <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}">{{ category.names[LANGUAGE_CODE] }}</a>
+                    </li>
+                {% endfor %}
+                <li><a class="view-all" href="/{{ LANGUAGE_CODE }}/products?{{ group.category_ids }}">{{ View_All }}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="ps-section__content">
+            <div class="ps-carousel--nav owl-slider" data-owl-auto="false" data-owl-loop="false" data-owl-speed="10000"
+                 data-owl-gap="22" data-owl-nav="true" data-owl-dots="true" data-owl-item="5" data-owl-item-xs="2"
+                 data-owl-item-sm="2" data-owl-item-md="3" data-owl-item-lg="4" data-owl-item-xl="5"
+                 data-owl-duration="1000" data-owl-mousedrag="on">
+
+                {% for product in group.products %}
+                    <div class="ps-product ps-product--inner">
+                        <div class="ps-product__thumbnail">
+
+                            <!-- product image | START -->
+                            {% include 'products/sections/product_list_image.html' %}
+                            <!-- product image | END -->
+
+                            <!-- product sale badge | START -->
+                            {% include 'products/sections/product_sale_badge.html' %}
+                            <!-- product sale badge | END -->
+
+                            <!-- product hover action/ compare button | START -->
+                            {% include 'tag-templates/product_hover_action.html' %}
+                            <!-- product hover action/ compare button | END -->
+                        </div>
+
+                        <div class="ps-product__container">
+                            <a class="ps-product__vendor" href="#">
+                            </a>
+                            <div class="ps-product__content">
+                                <a class="ps-product__title"
+                                   href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                                    {{ product.names[LANGUAGE_CODE] }}
+                                </a>
+                                <!-- product price | START -->
+                                {% include 'products/sections/product_list_price.html' %}
+                                <!-- product price | END -->
+
+                                <!-- product rating | START -->
+                                {% include 'products/sections/product_list_rating.html' %}
+                                <!-- product rating | END -->
+                            </div>
+                            <div class="ps-product__content hover">
+                                <a class="ps-product__title"
+                                   href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                                    {{ product.names[LANGUAGE_CODE] }}
+                                </a>
+                                <!-- product price | START -->
+                                {% include 'products/sections/product_list_price.html' %}
+                                <!-- product price | END -->
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

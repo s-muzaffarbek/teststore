@@ -1,0 +1,53 @@
+
+<div class="menu--product-categories">
+    <div class="menu__toggle">
+        <i class="icon-menu"></i>
+        <span>{{ Categories }}</span>
+    </div>
+    <div class="menu__content">
+        {% if categories %}
+            <ul class="menu--dropdown">
+                {% for category in categories %}
+                    {% if category.children %}
+                        <li class="menu-item-has-children has-mega-menu">
+                            <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}">
+                                {{ category.get_icon|safe }}
+                                {{ category.names[LANGUAGE_CODE] }}
+                                <span style="float: right"><i class="icon-chevron-right"></i></span>
+                            </a>
+                            <div class="mega-menu">
+                                {% for childItem in category.children %}
+                                    <div class="mega-menu__column">
+                                        <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}/{{ childItem.slug }}"
+                                           style="cursor:pointer;">
+                                            <i class="{{ childItem.icon2 }}" style="font-size:16px;"></i>
+                                            {{ childItem.names[LANGUAGE_CODE] }}
+                                        </a>
+
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}">
+                                {{ category.get_icon|safe }}
+                                {{ category.names[LANGUAGE_CODE] }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    megaMenus = document.querySelectorAll('.mega-menu')
+    megaMenus.forEach((element, i) => {
+        element.style.top = `calc(10px + ${i}*30px)`;
+        if (i === 0) {
+            element.style.top = 0;
+        }
+    });
+</script>

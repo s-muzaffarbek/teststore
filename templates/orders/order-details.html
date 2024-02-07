@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ My_Orders}}{% endblock %}
+
+{% block content %}
+
+    <!-- breadcump menu | START -->
+    <!-- breadcump menu | END -->
+
+    <section class="ps-section--account">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <!-- nav tabs | START -->
+                    {% include 'users/sections/account-menu.html' %}
+                    <!-- nav tabs | END -->
+                </div>
+                <div class="col-lg-9 mt-20">
+                    <div class="ps-section__right">
+
+                        <h3>Order
+                            {% if order_item.status == 'Pending' or order_item.status == 'Awaiting_Payment' %}
+                                <a href="{{ order_item.get_payment_url }}" class='paybtn' target='_blank'>
+                                    <i class='icon-receipt' style='font-weight:inherit;'></i> {{ Make_payment}}
+                                </a>
+                            {% endif %}
+                        </h3>
+
+                        <div class="ps-section__content">
+                            <div class="table-responsive my-orders">
+                                <table class="table ps-table--shopping-cart">
+                                    <thead>
+                                    <tr>
+                                        <th>{{ PRODUCT_NAME }}</th>
+                                        <th>{{ PRICE }}</th>
+                                        <th>{{ QUANTITY }}</th>
+                                        <th>{{ TOTAL }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                    {% for order_child_item in order_item.item %}
+                                        <tr>
+                                            <td style='max-width:415px;'>
+                                                <div class="ps-product--cart">
+                                                    <div class="ps-product__thumbnail">
+                                                        <a href="/{{ LANGUAGE_CODE }}/products/{{ order_child_item.variant.product.slug }}"
+                                                           target="_blank">
+                                                            <img src="{{ django_host }}{{ order_child_item.variant.image }}" height="50" />
+                                                        </a>
+                                                    </div>
+                                                    <div class="ps-product__content p-0">
+                                                        <a href="/{{ LANGUAGE_CODE }}/products/{{ order_child_item.variant.product.slug }}"
+                                                           target="_blank">
+                                                            {% if order_child_item.variant.product.names %}
+                                                                {{ order_child_item.variant.product.names[LANGUAGE_CODE] }}{% else %}
+                                                                {{ order_child_item.product_name }}{% endif %}
+                                                        </a>
+                                                        <p>
+                                                            <strong style="color:#079811;font-size:11px;background:beige;border-radius:3px;padding:2px;">
+                                                                {{ SKU }}: {{ order_child_item.variant.sku }}
+                                                            </strong>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="price" style='line-height:0.8;'>
+                                                {% if order_child_item.discount_price %}
+                                                    <span class="cart_price">
+                                                            {{ order_child_item.discount_price|sum_format }} / {{ piece }}
+                                                        </span>
+                                                    <br>
+                                                    <span class="card_old_price">
+                                                            {{ order_child_item.retail_price|sum_format }} / {{ piece }}
+                                                        </span>
+                                                {% else %}
+                                                    <span class="cart_price">{{ order_child_item.retail_price|sum_format }} / {{ piece }}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {{ order_child_item.quantity }}
+                                            </td>
+                                            <td style="color:#00A000;font-weight:600;text-align:center;">
+                                                {{ order_child_item.item_total_price|sum_format }}
+                                                    <small style="display:block;font:message-box;font-weight:600;color:#aa0587;">
+                                                        <a style="font-weight:600;font-size:inherit;"
+                                                           href="/{{ LANGUAGE_CODE }}/rqa/{{ order_child_item.variant.product_id }}/wreview"><i
+                                                                class="icon-pencil"
+                                                                style='font-weight:inherit;'></i> {{ write_review}}
+                                                        </a></small>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="ps-section__footer mt-20">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mt-20">
+                                    <table class="table orders" style="font-size:16px;">
+                                        <thead style="border:1px solid #bfbfbf;">
+                                        <tr class="table-secondary  th-bold">
+                                            <th>{{ SHIPMENT_INFORMATION }}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody style="border:1px solid #bfbfbf;">
+                                        {% if shipping_address %}
+                                        <tr>
+                                            <td>
+                                                <strong>
+                                                    {{ shipping_address.user.first_name }} {{ shipping_address.user.last_name }}
+                                                </strong>
+                                                <address class="mt-10">
+                                                    {{ shipping_address.get_regions[LANGUAGE_CODE] }}
+                                                    {{ shipping_address.get_cities[LANGUAGE_CODE] }}<br>
+                                                    {{ shipping_address.street_address_1 }}<br>
+                                                    {{ shipping_address.note }}
+                                                </address>
+                                                <a href="tel: {{ shipping_address.phone }}">{{ shipping_address.phone }}</a>
+                                            </td>
+                                        </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mt-20">
+                                    <div class="ps-block--shopping-total bg-white pt-15">
+                                        <div class="ps-block__header order-summary">
+                                            <p style="font-weight:600;color:black;">{{ ORDER_SUMMARY }}</p>
+                                        </div>
+                                        <div class="ps-block__header">
+                                            <p>
+                                                {{ Subtotal }}
+                                                <span style="white-space: break-spaces;">{{ order_item.subtotal|sum_format }}</span>
+                                            </p>
+                                        </div>
+                                        <div class="ps-block__header">
+                                            <p>
+                                                {{ Discount }}
+                                                <span style="white-space: break-spaces;">-{{ order_item.total_discount|sum_format }}</span>
+                                            </p>
+                                        </div>
+                                        <div class="ps-block__content">
+                                            <h3>{{ Total }} <span
+                                                    style="white-space: break-spaces;">{{ total|sum_format }}</span>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

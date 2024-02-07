@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block title %}GoSia.uz - {{ All_Categories }}{% endblock %}
+
+
+{% block metadata %}
+    <meta property="og:title" content="GoSia.uz - All Categories">
+    <meta name="description"
+          content="site_global_description">
+    <meta property="og:description"
+          content="site_global_description">
+    <meta property='og:image' content='/cdn/static/assets/img/logo/bx-meta-logo.png'/>
+    <meta name="keywords"
+          content="site_global_keywords">
+    <style>.ps-block--shop-features div.owl-stage-outer {
+        height: auto;
+    }</style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="ps-page--shop">
+        <div class="ps-container pt-3">
+            <!-- brands with logo | START -->
+            <div class="ps-shop-brand owl-slider" data-owl-auto="true"
+                 data-owl-loop="true" data-owl-speed="2000" data-owl-gap="22"
+                 data-owl-nav="false" data-owl-dots="false" data-owl-item="6"
+                 data-owl-item-xs="3" data-owl-item-sm="4" data-owl-item-md="5"
+                 data-owl-item-lg="7" data-owl-item-xl="8" data-owl-duration="1000"
+                 data-owl-mousedrag="on">
+                {% for brand in brand_list %}
+                    {% if brand.logo %}
+                        <a href="/{{ LANGUAGE_CODE }}/products/?brand_id={{ brand.id }}">
+                            <img data-src="{{ django_host }}{{ brand.logo }}" alt="XbrandX" class="lazyload"
+                                 style="max-height:90px;">
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <!-- brands with logo | END-->
+
+            <!-- category boxes | START -->
+            <div class="ps-shop-categories">
+                <div class="row align-content-lg-stretch">
+                    {% for category in top_categories %}
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 ">
+                            <div class="ps-block--category-2" data-mh="categories">
+                                <div class="ps-block__thumbnail">
+                                    <img data-src="{{ django_host }}{{ category.image }}" alt="XimageX" class="lazyload">
+                                </div>
+                                <div class="ps-block__content">
+                                    <h4>{{ category.names[LANGUAGE_CODE] }}</h4>
+                                    <ul>
+                                        {% for subcategory in category.subcategory %}
+                                            <li>
+                                                <a href="/{{ LANGUAGE_CODE }}/category/{{ subcategory.slug }}">
+                                                    {{ subcategory.names[LANGUAGE_CODE] }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- category boxes | END -->
+
+            <div class="ps-layout--shop">
+                <!-- product filter / left tab | START -->
+                {% include 'products/sections/product_filter-new.html' %}
+                <!-- product filter / left tab | END -->
+
+                <div class="ps-layout__right">
+                    <div class="ps-block--shop-features">
+                        <div class="ps-block__header">
+                            <h3>{{ Best_Sale_Items }}</h3>
+                            <div class="ps-block__navigation">
+                                <a class="ps-carousel__prev" href="#recommended1">
+                                    <i class="icon-chevron-left"></i>
+                                </a>
+                                <a class="ps-carousel__next" href="#recommended1">
+                                    <i class="icon-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ps-block__content">
+                            <div class="owl-slider" id="recommended1" data-owl-auto="true"
+                                 data-owl-loop="true" data-owl-speed="10000" data-owl-gap="22"
+                                 data-owl-nav="false" data-owl-dots="false" data-owl-item="6"
+                                 data-owl-item-xs="2" data-owl-item-sm="2" data-owl-item-md="3"
+                                 data-owl-item-lg="4" data-owl-item-xl="5" data-owl-duration="1000"
+                                 data-owl-mousedrag="on">
+
+                                {% for product in sale_products %}
+                                    {% include 'tag-templates/product_list_item.html' %}
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ps-block--shop-features">
+                        <div class="ps-block__header">
+                            <h3>{{ Featured_Products }}</h3>
+                            <div class="ps-block__navigation">
+                                <a class="ps-carousel__prev" href="#recommended">
+                                    <i class="icon-chevron-left"></i>
+                                </a>
+                                <a class="ps-carousel__next" href="#recommended">
+                                    <i class="icon-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ps-block__content">
+                            <div class="owl-slider" id="recommended" data-owl-auto="true"
+                                 data-owl-loop="true" data-owl-speed="10000" data-owl-gap="22"
+                                 data-owl-nav="false" data-owl-dots="false" data-owl-item="6"
+                                 data-owl-item-xs="2" data-owl-item-sm="2" data-owl-item-md="3"
+                                 data-owl-item-lg="4" data-owl-item-xl="5" data-owl-duration="1000"
+                                 data-owl-mousedrag="on">
+                                {% for product in featured_products %}
+                                    {% include 'tag-templates/product_list_item.html' %}
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ps-shopping ps-tab-root">
+                        <!-- product listing top toolbar | START -->
+                        {% include 'products/sections/product_top_toolbar-new.html' %}
+                        <!-- product listing top toolbar | END -->
+
+                        {% if object_list %}
+                            <div class="ps-tabs">
+                                <div class="ps-tab active" id="tab-1">
+                                    <div class="ps-shopping-product">
+                                        <div class="row">
+                                            {% for product in object_list %}
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 ">
+                                                    <div class="ps-product ps-product--inner">
+                                                        <div class="ps-product__thumbnail">
+
+                                                            <!-- product image | START -->
+                                                            {% include 'products/sections/product_list_image.html' %}
+                                                            <!-- product image | END -->
+
+                                                            <!-- product sale badge | START -->
+                                                            {% include 'products/sections/product_sale_badge.html' %}
+                                                            <!-- product sale badge | END -->
+
+                                                            <!-- product hover effect/compare button | START -->
+                                                            {% include 'tag-templates/product_hover_action.html' %}
+                                                            <!-- product hover effect/compare button | END -->
+
+                                                        </div>
+
+                                                        <div class="ps-product__container">
+                                                            <a class="ps-product__vendor" href="#"></a>
+                                                            <div class="ps-product__content">
+                                                                <a class="ps-product__title"
+                                                                   href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                                                                    {{ product.names[LANGUAGE_CODE] }}
+                                                                </a>
+                                                                <!-- product price | START -->
+                                                                {% include 'products/sections/product_list_price.html' %}
+                                                                <!-- product price | END -->
+
+                                                                <!-- product rating | START -->
+                                                                {% include 'products/sections/product_list_rating.html' %}
+                                                                <!-- product rating | END -->
+                                                            </div>
+                                                            <div class="ps-product__content hover">
+                                                                <a class="ps-product__title"
+                                                                   href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                                                                    {{ product.names[LANGUAGE_CODE] }}
+                                                                </a>
+                                                                <!-- product price | START -->
+                                                                {% include 'products/sections/product_list_price.html' %}
+                                                                <!-- product price | END -->
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <!-- pagination | START -->
+                                    {% include 'section/pagination.html' %}
+                                    <!-- pagination | END -->
+
+                                </div>
+
+                                <div class="ps-tab" id="tab-2">
+
+                                    <!-- pagination | START -->
+                                    {% include 'section/pagination.html' %}
+                                    <!-- pagination | END -->
+
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="ps-tabs">
+                                <h2>{{ Not_found_products }}</h2>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="shop-filter-lastest" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="list-group">
+                                <a class="list-group-item list-group-item-action" href="#">{{ Sort_by }}</a>
+                                <a class="list-group-item list-group-item-action" href="#">{{ Sort_by_average_rating }}</a>
+                                <a class="list-group-item list-group-item-action" href="#">{{ Sort_by_latest }}</a>
+                                <a class="list-group-item list-group-item-action" href="#">{{ Sort_by_price_low_to_high }}</a>
+                                <a class="list-group-item list-group-item-action" href="#">{{ Sort_by_price_high_to_low}}</a>
+                                <a class="list-group-item list-group-item-action text-center" href="#"
+                                   data-dismiss="modal">
+                                    <strong>{{ Close }}</strong></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

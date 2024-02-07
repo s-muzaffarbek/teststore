@@ -1,0 +1,23 @@
+<a class="add-to-compare add-to-compare-{{ product.id }}" data-id="{{ product.id }}"
+   data-toggle="tooltip" data-placement="top" title="{{ Add_to_Compare}}">
+
+    <i class="icon-chart-bars"></i>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function (event) {
+            const STORAGE_KEY_FOR_COMPARISON_IDS = 'comparison_added_products';
+            const addToCompareLink = document.querySelector("a.add-to-compare-{{ product.id }}")
+            const addedProducts = JSON.parse(window.localStorage.getItem(STORAGE_KEY_FOR_COMPARISON_IDS) || "[]");
+            const productId = "{{ product.id }}";
+
+            if (addedProducts.indexOf(productId) > -1) {
+                addToCompareLink.classList.add("added-for-comparison");
+            }
+
+        });
+
+    </script>
+
+</a>
+

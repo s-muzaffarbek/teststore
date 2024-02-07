@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block title %}{{ My_Addresses }}{% endblock %}
+
+{% block metadata %}
+    <meta property="og:title" content="{{ My_Addresses }}">
+    <meta name="description"
+          content="{{ Online_store_GoSia }}">
+    <meta property="og:description"
+          content="{{ Online_store_GoSia }}">
+    <meta property='og:image' content='/cdn/static/assets/img/logo/logo_sia.jpg'/>
+{% endblock %}
+
+
+
+{% block content %}
+
+    <section class="ps-section--account">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <!-- sidebar menu | START -->
+                    {% include 'users/sections/account-menu.html' %}
+                    <!-- sidebar menu | END -->
+                </div>
+                <div class="col-lg-9">
+                    <div class="ps-section__right">
+                        <div class="ps-section--account-setting">
+                            <div class="ps-section__header">
+                                <p>{{ The_following_addresses }}</p>
+                                <h3>
+                                    {{ Delivery_Address_List }}
+                                    <a class="ps-btn add-new-address"
+                                       href="/{{ LANGUAGE_CODE }}/users/address-list/add">
+                                        <i class="fa fa-plus"></i> {{ Add_new }}
+                                    </a>
+                                </h3>
+                            </div>
+                            <div class="ps-section__content">
+                                {% if user_addresses %}
+                                    <div class="row">
+                                        {% for address in user_addresses %}
+                                            <div class="col-md-6 col-12 mb-20" id="add-{{ address.id }}">
+                                                <figure class="ps-block--address" style="padding-right: 45px;">
+                                                    <figcaption>
+                                                        <p class="d-flex justify-content-between align-items-center">
+                                                            <a href="/{{ LANGUAGE_CODE }}/users/address-list/{{ address.id }}/edit"
+                                                               class="cl-yellow" style="font-size:1.8rem;">
+                                                                {{ Edit }}
+                                                            </a>
+                                                            <a href="javascript:;"
+                                                               onclick="removeAddress({{ address.id }})"
+                                                               class="cl-yellow rm-icon">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                        </p>
+                                                        <p>
+                                                            <strong>
+                                                                {{ address.user.first_name }} {{ address.user.last_name }}
+                                                            </strong>
+                                                        </p>
+                                                    </figcaption>
+                                                    <div class="ps-block__content">
+                                                        <address style="font-size:1.6rem;">
+                                                            {{ address.get_regions[LANGUAGE_CODE] }}<br>
+                                                            {{ address.get_cities[LANGUAGE_CODE] }}<br>
+                                                            {{ address.street_address_1 }}<br>
+{#                                                            {% comment %} {{ address.street_address_2 }}<br> {% endcomment %}#}
+                                                            {{ address.note }}<br>
+                                                        </address>
+                                                        <p style="font-size:1.6rem;">
+                                                            <a class="cl-yellow"
+                                                               href="tel: {{ address.phone }}">{{ address.phone }}</a>
+                                                        </p>
+                                                    </div>
+                                                    <hr>
+                                                </figure>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function removeAddress(address_id) {
+            console.log('bosildi')
+            $.ajax({
+                url: `/{{ LANGUAGE_CODE }}/users/address-list?remove=true&address_id=${address_id}`,
+                type: "get",
+                success: function (res) {
+                    if (res.ok) {
+                        console.log(res, res.ok)
+                        $(`#add-${address_id}`).remove();
+                    }
+                },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR);
+                    // error handling logic here..
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

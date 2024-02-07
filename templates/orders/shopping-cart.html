@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ Shopping_Cart}}{% endblock %}
+
+
+{% block content %}
+    <div class="ps-section--shopping ps-shopping-cart">
+        <div class="container" id="shopping_cart_details">
+            <div class="ps-section__header">
+                <h1>{{ Shopping_Cart}}</h1>
+            </div>
+            <div class="shopping-cart-items">
+            <div class="ps-section__content text-center empty-cart">
+                <img src="{{ url_for('static', path='new-template/img/ec3.svg') }}" style="max-width:350px; margin-top:-130px;"/>
+                <p style="font-size:25px;margin-top:-20px;">{{ Your_cart_is_empty}}</p>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+
+         $(document).ready(function () {
+            shopping_cart_page_update();
+
+    })
+
+
+
+
+    </script>
+{% endblock content %}

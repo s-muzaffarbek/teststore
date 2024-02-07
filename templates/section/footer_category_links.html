@@ -1,0 +1,15 @@
+
+<div class="ps-footer__links">
+    <p>
+
+        {% for category in  categories %}
+            <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}"
+               title="{{ category.names[LANGUAGE_CODE] }}"> {{ category.names[LANGUAGE_CODE] }} </a>
+        {% endfor %}
+        {% for collection in  collection_list %}
+            <a href="/{{ LANGUAGE_CODE }}/products/?collection_id={{ collection.id }}"
+               title="{{ collection.names[LANGUAGE_CODE] }}"> {{ collection.names[LANGUAGE_CODE] }} </a>
+        {% endfor %}
+
+    </p>
+</div>

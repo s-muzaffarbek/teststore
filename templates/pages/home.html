@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div id="homepage-4">
+        <!-- slider and ads banner | START -->
+        {% include 'section/home_slider.html' %}
+        <!-- slider and ads banner | END -->
+
+        <!-- products in sale | START -->
+        {% include 'section/home_sale_products.html' %}
+        <!-- products in sale | END -->
+
+        <!-- top categories | START -->
+        {% include 'additional_parts/top_categories.html' %}
+        <!-- top categories | END -->
+
+        <!-- Product promotion banner | START -->
+        {% if banner %}
+            <div class="ps-promotions">
+                <div class="container">
+                    <a class="ps-collection" href="#">
+                        <img src="#" alt="">
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+        <!-- Product promotion banner | END -->
+
+        <!-- new arrived products list | START-->
+        {% include 'section/home_new_arrived_products.html'  %}
+        <!--new arrived products list | END-->
+
+        <!-- featured products list | START -->
+        {% include 'section/home_featured_products.html' %}
+        <!-- featured products list | END -->
+
+        {% for group in group_list %}
+            <!-- custome product categories | START -->
+            {% include 'section/home_products_group_slide.html' %}
+            <!-- custome product categories | END -->
+        {% endfor %}
+    </div>
+{% endblock %}

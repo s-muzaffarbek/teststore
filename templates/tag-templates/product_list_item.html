@@ -1,0 +1,43 @@
+
+<div class="ps-product ps-product--inner">
+    <div class="ps-product__thumbnail">
+        <!-- product image | START -->
+        {% include 'products/sections/product_list_image.html' %}
+        <!-- product image | END -->
+
+        <!-- product sale badge | START -->
+        {% include 'products/sections/product_sale_badge.html' %}
+        <!-- product sale badge | END -->
+
+        <!-- product hover action/ compare button | START -->
+        {% include 'tag-templates/product_hover_action.html' %}
+        <!-- product hover action/ compare button | END -->
+    </div>
+
+    <div class="ps-product__container">
+        <a class="ps-product__vendor" href="#">
+        </a>
+        <div class="ps-product__content">
+            <a class="ps-product__title" href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                {{ product.names[LANGUAGE_CODE] }}
+            </a>
+
+                <!-- product rat ing | START -->
+                {% include 'products/sections/product_list_rating.html' %}
+                <!-- product rating | END -->
+
+                <!-- product price | START -->
+                {% include 'products/sections/product_list_price.html' %}
+                <!-- product price | END -->
+
+        </div>
+        <div class="ps-product__content hover">
+            <a class="ps-product__title" href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                {{ product.names[LANGUAGE_CODE] }}
+            </a>
+            <!-- product price | START -->
+            {% include 'products/sections/product_list_price.html' %}
+            <!-- product price | END -->
+        </div>
+    </div>
+</div>

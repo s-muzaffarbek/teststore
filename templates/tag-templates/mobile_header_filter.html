@@ -1,0 +1,84 @@
+
+<div class="header__filter">
+    <button class="ps-shop__filter-mb" id="filter-sidebar">
+        <i class="icon-equalizer"></i><span>{{ Filter }}</span>
+    </button>
+    <div class="header__sort"><i class="icon-sort-amount-desc"></i>
+        <select class="ps-select select2-hidden-accessible" data-select2-id="1" tabindex="-1"
+                onchange="sortSelectListener2()" id="sort_select" aria-hidden="true">
+        </select>
+    </div>
+</div>
+
+<script>
+    const SORT_BY = [
+        {
+            code: 'id',
+            title: '{{Default}}'
+        },
+        {
+            code: 'desc_id',
+            title: '{{Newest}}'
+        },
+        {
+            code: 'price',
+            title: '{{Price_Lowest_to_Highest}}'
+        },
+        {
+            code: 'desc_price',
+            title: '{{Price_high_to_low}}'
+        },
+        {
+            code: 'name',
+            title: '{{Name_A_Z}}'
+        },
+        {
+            code: 'desc_name',
+            title: '{{Name_Z_A}}'
+        }
+    ];
+
+    const selectBox2 = document.getElementById("sort_select");
+    const qs2 = queryParse(location.search);
+    const currentSortKey2 = qs2['sort_key']
+    const hostpath2 = location.origin + location.pathname;
+
+    SORT_BY.forEach(item => {
+        let option = document.createElement("option");
+        option.text = item.title;
+        option.value = item.code;
+
+        qs2['sort_key'] = item.code;
+        if (item.code === currentSortKey2) {
+            option.selected = true
+        }
+        option.setAttribute('data-href', hostpath2 + '?' + queryStringify(qs2));
+        option.setAttribute('data-select2-id', item.code + '2');
+
+        selectBox2.appendChild(option)
+    });
+
+    function sortSelectListener2() {
+        console.log(selectBox2.value)
+        const selectedItem = selectBox2.options[selectBox2.selectedIndex]
+        location.replace(decodeURI(selectedItem.dataset.href))
+    }
+
+    function queryParse(queryString) {
+        const query = {};
+        if (queryString) {
+            const pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
+            for (let i = 0; i < pairs.length; i++) {
+                const pair = pairs[i].split('=');
+                query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+            }
+        }
+        return query;
+    }
+
+    function queryStringify(params) {
+        return Object.keys(params).map((key) => {
+            return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
+        }).join('&');
+    }
+</script>

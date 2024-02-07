@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ My_Reviews }}{% endblock %}
+
+{% block content %}
+
+    <!-- breadcump menu | START -->
+    <!-- breadcump menu | END -->
+
+    <section class="ps-section--account">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <!-- nav tabs | START -->
+                    {% include 'users/sections/account-menu.html' %}
+                    <!-- nav tabs | END -->
+                </div>
+                <div class="col-lg-9 mt-20">
+                    <div class="ps-section__right my-reviews">
+
+                        <h3>{{ Reviews_and_ratings }}</h3>
+                        <div class="ps-section__content">
+                            <div class="table-responsive">
+                                <table class="table ps-table--shopping-cart">
+                                    <thead>
+                                    <tr>
+                                        <th>{{ PRODUCT }}</th>
+                                        <th>{{ RATING }}</th>
+                                        <th>{{ REVIEW }}</th>
+                                        <th>{{ DATE }}</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="text-center my-reviews">
+                                    {% for review in reviews %}
+                                        <tr>
+                                            <td>
+                                                <div class="ps-product--cart">
+                                                    <div class="ps-product__thumbnail">
+                                                        <a href="/{{ LANGUAGE_CODE }}/products/{{ review.product.slug }}"
+                                                           data-toggle="tooltip"
+                                                           data-placement="top" title=""
+                                                           data-original-title="{{ review.product_name }}">
+                                                            <img src="{{ django_host }}{{ review.product.image }}"
+                                                                 height="50" alt="{{ review.product.names[LANGUAGE_CODE] }}"/>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="br-wrapper br-theme-fontawesome-stars">
+                                                    <select class="ps-rating" data-read-only="true"
+                                                            style="display: none;">
+                                                        <option value="{% if review.rating >= 1 %}1{% else %}2{% endif %}">
+                                                            1
+                                                        </option>
+                                                        <option value="{% if review.rating >= 2 %}1{% else %}2{% endif %}">
+                                                            2
+                                                        </option>
+                                                        <option value="{% if review.rating >= 3 %}1{% else %}2{% endif %}">
+                                                            3
+                                                        </option>
+                                                        <option value="{% if review.rating >= 4 %}1{% else %}2{% endif %}">
+                                                            4
+                                                        </option>
+                                                        <option value="{% if review.rating == 5 %}1{% else %}2{% endif %}">
+                                                            5
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td style="position:relative;">
+                                                <div {% if review.comment %} class='review-content'{% endif %}
+                                                     data-id="{{ review.id }}">
+                                                     {{ review.comment }}
+                                                </div>
+                                            </td>
+                                            <td style="min-width:110px;text-align:center;">
+                                                {{ review.created_date|date("%m-%d-%Y %H:%M") }}
+                                            </td>
+                                            <td>
+                                                <a class="edit-review-btn"
+                                                   href="/{{ LANGUAGE_CODE }}/rqa/my-reviews/{{ review.id }}/edit">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="ps-section__footer mt-20">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Modal to show full review text -->
+    <div class="modal" tabindex="-1" role="dialog" id="modalReview" style="top:80px;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            style="margin-top:-5px;">
+                        <span aria-hidden="true" style="font-size:30px;">&times;</span>
+                    </button>
+                    <p id="modalReviewText" style="padding:13px 17px 4px;color:black;font-size:15px;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+
+        function checkOverflow(element) {
+            var curOverflow = element.style.overflow;
+
+            if (!curOverflow || curOverflow === "visible")
+                element.style.overflow = "hidden";
+
+            var isOverflowing = element.clientWidth < element.scrollWidth
+                || element.clientHeight < element.scrollHeight;
+
+            element.style.overflow = curOverflow;
+
+            return isOverflowing;
+        }
+
+        function showReview(reviewId) {
+            var reviewText = $("[data-id='" + reviewId + "']").text();
+            $('#modalReviewText').text(reviewText);
+            $('#modalReview').modal('show');
+        };
+
+        // check reviews and add "show all" btn if content overflows
+        $(document).ready(function () {
+            $('.review-content').each(function () {
+                if (checkOverflow(this)) {
+                    $(this).parent().append(`
+                   <span class="show-full-review-btn">
+                       <span>... </span>
+                       <i class="fa fa-chevron-circle-down show-review" 
+                                    onclick="showReview(${$(this).attr('data-id')})"></i>
+                   </span>
+                `)
+                }
+            })
+        });
+
+    </script>
+{% endblock scripts %}

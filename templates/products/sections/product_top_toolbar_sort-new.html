@@ -1,0 +1,79 @@
+
+
+<select class="ps-select select2-hidden-accessible" data-placeholder="{{ Sort_Items }}"
+        data-select2-id="4" tabindex="-1" aria-hidden="true" id="product_sort_select"
+        onchange="sortSelectListener()">
+</select>
+
+<script>
+    const SORT_LIST = [
+        {
+            code: 'id',
+            title: '{{Default}}'
+        },
+        {
+            code: 'desc_id',
+            title: '{{Newest}}'
+        },
+        {
+            code: 'price',
+            title: '{{Price_Lowest_to_Highest}}'
+        },
+        {
+            code: 'desc_price',
+            title: '{{Price_high_to_low}}'
+        },
+        {
+            code: 'name',
+            title: '{{Name_A_Z}}'
+        },
+        {
+            code: 'desc_name',
+            title: '{{Name_Z_A}}'
+        }
+    ];
+
+    const selectBox = document.getElementById("product_sort_select");
+    const qs = queryParse(location.search);
+    const currentSortKey = qs['sort_key'];
+    const hostpath = location.origin + location.pathname;
+
+    SORT_LIST.forEach(item => {
+        let option = document.createElement("option");
+        option.text = item.title;
+        option.value = item.code;
+
+        qs['sort_key'] = item.code;
+        if (item.code === currentSortKey) {
+            option.selected = true;
+        }
+        option.setAttribute('data-href', hostpath + '?' + queryStringify(qs));
+        option.setAttribute('data-select2-id', item.code);
+
+        selectBox.appendChild(option)
+    });
+
+    function sortSelectListener() {
+        console.log(selectBox.value)
+        const selectedItem = selectBox.options[selectBox.selectedIndex]
+        location.replace(decodeURI(selectedItem.dataset.href))
+    }
+
+    function queryParse(queryString) {
+        const query = {};
+        if (queryString) {
+            const pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
+            for (let i = 0; i < pairs.length; i++) {
+                const pair = pairs[i].split('=');
+                query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+            }
+        }
+        return query;
+    }
+
+    function queryStringify(params) {
+        return Object.keys(params).map((key) => {
+            return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
+        }).join('&');
+    }
+</script>

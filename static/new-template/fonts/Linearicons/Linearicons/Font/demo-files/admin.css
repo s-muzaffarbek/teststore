@@ -1,0 +1,125 @@
+@media (max-width: 1100px) {
+    h1 {
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 440px) {
+    #sidebar-icons {
+        width: 50vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: 0;
+        background: white;
+        overflow-y: scroll;
+        display: none;
+    }
+
+    .glyph {
+        width: 1.5em;
+        margin-right: 0px;
+    }
+
+    span {
+        padding: 15px;
+    }
+
+    #icon-back {
+        padding: 0 7px;
+        border-radius: 5px;
+    }
+}
+
+@media (max-width: 440px) {
+    #sidebar-icons {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: 0;
+        background: white;
+        overflow-y: scroll;
+        display: none;
+    }
+
+    .glyph {
+        width: 1em;
+        margin: 3px;
+        padding: 0px;
+
+    }
+
+    span {
+        padding: 2px;
+    }
+
+    .pbs {
+        padding: 0px;
+        font-size: 35px;
+    }
+
+    h1 {
+        font-size: 16px;
+    }
+
+    #icon-back {
+        padding: 8px;
+        border-radius: 5px;
+        font-weight: 800;
+    }
+}
+
+
+#sidebar-icons.active {
+    display: block;
+}
+
+#cur-icon {
+    margin-right: 15px;
+    font-size: 30px;
+
+}
+
+#icon-back {
+    color: #79aec8;
+    border: 1px solid;
+}
+
+#icon-back:hover {
+    cursor: pointer;
+    color: #4197c1;
+    border-width: 2px;
+}
+
+.mhmm {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 38px;
+}
+
+.bgc1 {
+    position: sticky;
+    top: 0;
+}
+
+span:hover {
+    color: #fcb800;
+    cursor: pointer;
+}
+
+a#change {
+    font-style: normal;
+    font-weight: 600;
+    color: #87c352;
+    border: 1px solid;
+    border-radius: 3px;
+    padding: 6px;
+    text-decoration: none;
+}
+
+a#change:hover {
+    cursor: pointer;
+    color: #568d25;
+}

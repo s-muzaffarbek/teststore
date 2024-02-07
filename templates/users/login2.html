@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+{% block title %}{{ Login }}{% endblock %}
+
+
+{% block metadata %}
+    <meta property="og:title" content="{{ Login }}">
+    <meta name="description"
+          content="{{ Online_store_GoSia }}">
+    <meta property="og:description"
+          content="{{ Online_store_GoSia }}">
+    <meta property='og:image' content='/cdn/static/assets/img/logo/logo_sia.jpg'/>
+    <style>
+        ul.ps-tab-list li:not(.active) {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+
+    <!--breadcrumbs area start-->
+
+
+    <!--breadcrumbs area end-->
+
+    <!-- accont area start -->
+
+    <div class="ps-my-account pb-20">
+        <div class="container">
+            <div class="ps-form--account ps-tab-root" style="max-width:700px;">
+                <ul class="ps-tab-list">
+                    <li class=" {% if login %}active{% endif %} login">
+                        <p><a>{{ Login }}</a></p>
+                    </li>
+                    <li class="{% if register %}active{% endif %} register-start">
+                        <p>
+                            <a> {{ Login }} </a>
+
+                        </p>
+                    </li>
+                    <li class="{% if rfinish or 'reg-finish' in request.path %}active{% endif %} register-finish">
+                        <p><a>{{ Register }}</a></p>
+                    </li>
+                </ul>
+                <div class="ps-tabs">
+                    <div class="ps-tab {% if login %} active {% endif %} login"
+                         style="max-width:430px;margin:auto;">
+                        <form class="ps-form--account ps-tab-root pt-0 pb-10" action="/{{ LANGUAGE_CODE }}/users/login"
+                              method="post">
+                            <div class="ps-form__content"> {{ csrf_token }}
+                                <h5 class='mb-4'>{{ Log_In_Your_Account }}</h5>
+                                {% if errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        <ul>
+                                            {% for error in errors %}
+                                                <li>{{ Something_error }}  {{ Please_try_again_later }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                <div class="form-group">
+                                    <input class="form-control" name="phone" type="tel"
+                                           placeholder="{{ Phone_number }}" requeried value="{{ phone }} " pattern="^[\+]{1}?[0-9]{5}?[\s]{1}?[0-9]{3}?[\s]{1}?[0-9]{2}?[\s]{1}?[0-9]{2}$">
+                                </div>
+                                <div class="form-group form-forgot">
+                                    <input class="form-control" name="password" type="password"
+                                           placeholder="{{ Password }}" requeried value="{{ pass }}">
+                                    <a href="/{{ LANGUAGE_CODE }}/users/reset-password">{{ Forgot }}</a>
+                                </div>
+                                <div class="form-group">
+                                    <div class="ps-checkbox">
+                                        <input class="form-control" type="checkbox" id="remember-me" name="remember_me">
+                                        <label for="remember-me">{{ Remember_me }}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group submtit  mb-0">
+                                    <button class="ps-btn ps-btn--fullwidth" type="submit">{{ Login }}</button>
+                                </div>
+                            </div>
+                        </form>
+                        <p class="text-center pl-20 pr-20 pb-20 login">{{ Are_you_new_in_our_site }}
+                            <a href="javascript:;" onclick='register()'>
+                                <span class="cl-yellow">{{ Register }}</span>
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="ps-tab {% if register %} active {% endif %} register-start"
+                         style="max-width:430px;margin:auto;">
+                        <form class="ps-form--account ps-tab-root pt-0 pb-10" action="/{{ LANGUAGE_CODE }}/users/register-start"
+                              method="post">
+                            <div class="ps-form__content"> {{ csrf_token }}
+                                <h5 class='mb-4'>{{ Input_your_phone_number }}</h5>
+                                {% if errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        <ul>
+                                            {% for error in errors %}
+                                                <li>{{ Something_error }}  {{ Please_try_again_later }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                <div class="form-group">
+                                    <input class="form-control" name="phone" type="tel"
+                                           placeholder="{{ Phone_number }}" requeried value="{{ phone }}" pattern="^[\+]{1}?[0-9]{5}?[\s]{1}?[0-9]{3}?[\s]{1}?[0-9]{2}?[\s]{1}?[0-9]{2}$">
+                                </div>
+                                <div class="form-group submit  mb-3 register">
+                                    <button class="ps-btn ps-btn--fullwidth"
+                                            type="submit">{{ Continue }}</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="ps-tab {% if rfinish %} active {% endif %} register-finish">
+                        <form id="register_form" name="register_form" action="/{{ LANGUAGE_CODE }}/users/reg-finish"
+                              method="post"> {{ csrf_token }}
+                            <div class="ps-form__content">
+                                <h5 class='mb-4'>
+                                    {{ Please_update_your_profile_info }}
+                                    <a href='/{{ LANGUAGE_CODE }}/'
+                                       style='float:right;color:blue;'>{{ Skip }}</a>
+                                </h5>
+                                {% if errors %}
+                                    <div class="alert alert-danger" role="alert">
+
+                                        <ul>
+                                            {% for error in errors %}
+                                                <li>{{ Something_error }} {{ Please_try_again_later }} {{ Or_contact_us }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="first_name" id="first_name"
+                                                   value="{% if customer %}{{ customer.first_name|default('', true) }}{% else %}{% endif %}" required
+                                                   placeholder="{{ First_Name }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="last_name" id="last_name"
+                                                   value="{% if customer %}{{ customer.last_name|default('', true) }}{% else %}{% endif %}" required
+                                                   placeholder="{{ Last_Name }}">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <select name="region" id="regions" class="form-control region" required>
+                                                <option value=""> --- {{ Please_select_region}} ---</option>
+                                                {% for key, value in regions %}
+                                                        <option value="{{ key }}">{{ value }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <select name="city" id="city" class="form-control" required>
+                                                <option value=""> --- {{ Please_select_district }} ---</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="street_address_1"
+                                                   id="street_address_1"
+                                                   value="{% if address %}{{ address.street_address_1|default('', true) }}{% else %}{% endif %}" required
+                                                   placeholder="{{ Street_address }}">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group submtit mb-0">
+                                    <button class="ps-btn ps-btn--fullwidth" type="submit">{{ Save }}</button>
+                                </div>
+                                <br>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+
+
+        $('#regions').click(function (){
+        console.log('salom')
+            var val = this.value;
+            var cities = JSON.parse('{{cities|safe}}')
+            console.log(cities)
+            cur_cities = cities[val];
+            $('#city').html('<option value=""> --- {{Please_select_district}} ---</option>');
+            for (var key in cur_cities) {
+                if (cur_cities.hasOwnProperty(key)) {
+                    $('#city').append(`<option value="${key}">${cur_cities[key]}</option>`);
+                }}
+
+        })
+
+    </script>
+{% endblock content %}

@@ -1,0 +1,9 @@
+
+<p class="ps-product__price sale">
+    {% if product.discount_price and product.discount_price < product.retail_price %}
+        {{ product.discount_price|sum_format }} {{ SUM }}<br>
+        <del>{{ product.retail_price|sum_format }} {{ SUM }}</del>
+    {% else %}
+        {{ product.retail_price|sum_format }} {{ SUM }}
+    {% endif %}
+</p>

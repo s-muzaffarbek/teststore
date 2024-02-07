@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="google-site-verification" content="ARTmyaDUVGWFPvNCeKngjPqtM7BZWbNCp3P6mZvI0gk" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="keywords" content="onlayn do'kon, internet magazin, интернет магазин, 
+        узбекистан, ташкент, рассрочка, скидка, телефоны и гаджеты, компьютеры и оргтехника, 
+        для геймеров, бытовая техника, телевизоры, видео и аудио, посуда, мебель, для дома и офиса, 
+        инструменты и автотовары, игрушки, подарки и аксессуары, одежда, обувь и аксессуары, детские товары">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="GoSia.uz">
+    <meta property="og:url" content="{{ request.get_full_path }}">
+
+    {% block metadata %}
+        <meta property="og:title"
+              content="{{ Gosia_online_store }}">
+        <meta name="description"
+              content="{{ Online_store_GoSia }}">
+        <meta property="og:description"
+              content="{{ Online_store_GoSia }}">
+        <meta property='og:image' content='/cdn/static/assets/img/logo/logo_sia.jpg'/>
+    {% endblock %}
+
+    <title>{% block title %}{{ site_global_title }}{% endblock %}</title>
+    <link rel="canonical" href="{{ request.get_full_path }}"/>
+    <link rel="icon" type="image/gif" href="#"/>
+
+
+    <!-- all common css and font links | START -->
+    {% include 'layout/head.html' %}
+    <!-- all common css and font links | END -->
+    {% include 'layout/js_in_html.html' %}
+
+</head>
+
+<body class="loaded">
+<!-- Add your site or application content here -->
+
+{% block header %}
+
+    <!-- header section | START -->
+    {% include 'layout/header.html' %}
+    <!-- header section | END-->
+
+{% endblock header %}
+
+<!-- mobile sidebar | START -->
+
+<!-- mobile shopping cart preview | START -->
+{% include 'tag-templates/sidebar_panel_mobile_cart.html' %}
+<!-- mobile shopping cart preview | END -->
+
+<!-- mobile sidebar categories | START -->
+{% include 'tag-templates/sidebar_panel_mobile_navigation.html' %}
+<!-- mobile sidebar categories | END -->
+
+<!-- mobile footer navigation menu | START -->
+{% include 'tag-templates/mobile_navigation_list.html' %}
+<!-- mobile footer navigation menu | END -->
+
+<!-- sidebar search form | START -->
+{% include 'tag-templates/sidebar_panel_mobile_search.html' %}
+<!-- sidebar search form | END -->
+
+<!-- sidebar menu | START -->
+{% include 'tag-templates/sidebar_panel_mobile_menu.html' %}
+<!-- sidebar menu | END -->
+
+
+<!-- mobile sidebar | END -->
+
+{% block content %}{% endblock content %}
+<!--footer section | START-->
+{% include 'layout/footer.html' %}
+<!--footer section | END-->
+
+{% if object_list %}
+    {% include 'tag-templates/mobile_filter_toggle.html' %}
+{% endif %}
+
+{% include 'layout/notification.html' %}
+<!-- all common js files/scripts | START -->
+{% include 'layout/foot.html' %}
+<!-- all common js files/scripts | END -->
+{% block scripts %}{% endblock scripts %}
+
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+
+{% if top_categories %}
+    <div class="ps-home-categories mt-4">
+        <div class="container">
+            <div class="ps-section__header">
+                <h3>{{ Top_Categories_Of_The_Month }}</h3>
+            </div>
+            <div class="ps-section__content">
+                <div class="row align-content-lg-stretch">
+                    {% for category in top_categories %}
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 ">
+                            <div class="ps-block--category-2" data-mh="categories">
+                                <div class="ps-block__thumbnail">
+                                    <img data-src="{{ django_host }}{{ category.image }}" alt="an-image" class="lazyload">
+                                </div>
+                                <div class="ps-block__content">
+                                    <h4>{{ category.names[LANGUAGE_CODE] }}</h4>
+                                    {% if category.subcategory %}
+                                    <ul>
+                                        {% for subcategory in category.subcategory %}
+                                            <li>
+                                                <a href="/{{ LANGUAGE_CODE }}/category/{{ subcategory.slug }}">
+                                                    {{ subcategory.names[LANGUAGE_CODE] }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,63 @@
+
+<div class="ps-footer__widgets">
+    <aside class="widget widget_footer widget_contact-us">
+        <h4 class="widget-title">{{ Connect_with_us}}</h4>
+        <div class="widget_content">
+            <p>{{ Call_us }}</p>
+            <h3>+99899 319-11-19</h3>
+            <p>{{ For_supply_and_demand }}</p>
+            <h3>+99899 319-11-19</h3>
+            <p><i class="fa fa-home" style='margin-right:5px;'></i>
+                {{ Address_full }}<br>
+                <a href="mailto:GoSia.uz@gmail.com">
+                    <i class="fa fa-envelope-square" style='margin-right:5px;'></i>orders.gosia@gmail.com
+                </a>
+            </p>
+        </div>
+    </aside>
+    <aside class="widget widget_footer">
+        <h4 class="widget-title">{{ Information }}</h4>
+        <ul class="ps-list--link">
+            <li><a href="/{{ LANGUAGE_CODE }}/pages/about-us">{{ About_us }}</a></li>
+            <li>
+                <a href="/{{ LANGUAGE_CODE }}/pages/terms-and-conditions">{{ Terms_Conditions }}</a>
+            </li>
+            <li><a href="/{{ LANGUAGE_CODE }}/pages/payment-and-delivery">{{ Payment_and_delivery}}</a>
+            </li>
+            <li><a href="/{{ LANGUAGE_CODE }}/pages/how-to-order">{{ How_to_order }}</a></li>
+            <li><a href="/{{ LANGUAGE_CODE }}/pages/faq">{{ Question_answer }}</a></li>
+        </ul>
+    </aside>
+    <aside class="widget widget_footer">
+        <h4 class="widget-title">{{ My_account }}</h4>
+        <ul class="ps-list--link">
+            {% if request %}
+                <li>
+                    <a href="/{{ LANGUAGE_CODE }}/users/orders">
+                        {{ My_Orders }}
+                    </a>
+                </li>
+                <li>
+                    <a href="/{{ LANGUAGE_CODE }}/users/profile">
+                        {{ My_profile }}
+                    </a>
+                </li>
+            {% else %}
+                <li><a href="/{{ LANGUAGE_CODE }}/users/login">{{ Login }}</a></li>
+                <li><a href="/{{ LANGUAGE_CODE }}/users/register">{{ Register }}</a></li>
+            {% endif %}
+            <li><a href="/{{ LANGUAGE_CODE }}/orders/shopping-cart">{{ Cart }}</a></li>
+            <!-- <li><a href="/{{ LANGUAGE_CODE }}/orders/checkout">Оформить заказ'%}</a></li> -->
+            <li><a href="/{{ LANGUAGE_CODE }}/pages/contact-us">{{ Contact }}</a></li>
+        </ul>
+    </aside>
+    <aside class="widget widget_footer">
+        <h4 class="widget-title">{{ We_are_in_social_networks }}</h4>
+        <ul class="ps-list--social">
+            <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+            <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+            <li><a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a></li>
+            <li><a class="instagram" href="#"><i class="fa fa-instagram"></i></a></li>
+        </ul>
+    </aside>
+</div>

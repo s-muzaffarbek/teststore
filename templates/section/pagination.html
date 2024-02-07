@@ -1,0 +1,49 @@
+
+
+{% if paginator.max_page >= 1 %}
+
+    <div class="ps-pagination">
+        <ul class="pagination">
+            <li {% if not paginator.prev %} class="deactivated" {% endif %}>
+                <a {% if paginator.prev %}
+                    data-href="page={{ paginator.prev }}" {% endif %}>
+                    <i class="icon-chevron-left"></i> <!-- Previous page -->
+                </a>
+            </li>
+
+            {% for page in paginator.pages %}
+                <li class="
+                        {% if page.prev5 %}prev {% endif %}
+                        {% if page.next5 %}next{% endif %}
+                        {% if page.url == paginator.page %}active{% endif %}">
+                    <a data-href="page={{ page.url }}" title="
+                            {% if page.prev5 %}previous 5 pages{% endif %}{% if page.next5 %}next 5 pages{% endif %}">
+                        {{ page.str }}
+                    </a>
+                </li>
+            {% endfor %}
+
+            <li {% if not paginator.next %} class="deactivated" {% endif %}>
+                <a {% if paginator.next %} data-href="page={{ paginator.next }}" {% endif %}>
+                    <!-- Next page --><i class="icon-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <script>
+        var url = window.location.href;
+        var links = document.querySelectorAll('ul.pagination li a');
+        url = url.replace(/&page=\d+/g, '')
+        url = url.replace(/page=\d+/g, '')
+        links.forEach(function (link) {
+            let page = link.getAttribute('data-href')
+            if (page) {
+                if (url.indexOf('?') > 0) {
+                    link.setAttribute('href', url + '&' + page)
+                } else {
+                    link.setAttribute('href', url + '?' + page)
+                }
+            }
+        })
+    </script>
+{% endif %}

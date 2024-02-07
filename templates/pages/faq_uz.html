@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="ps-page--single">
+
+    <div class="ps-breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/{{ LANGUAGE_CODE }}">{{ Home }}</a></li>
+                <li>Savol-Javoblar</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="ps-faqs">
+        <div class="container">
+            <div class="ps-section__header">
+                <h1>Tez-tez berilib turiladigan savollar</h1>
+            </div>
+            <div class="ps-section__content">
+                <div class="table-responsive">
+                    <table class="table ps-table--faqs">
+                        <tbody>
+                        <tr>
+                            <td class="heading" rowspan="4"><h4>MAHSULOT</h4></td>
+                            <td class="question">Mahsulotning xususiyatlarini qayerdan ko'ra olaman?</td>
+                            <td>Mahsulot sahifasidagi "To'liq ma'lumot" va "Mahsulot xususiyatlari" bo'limlarini
+                                tanlang.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="question">Bir nechta mahsulotlarni qanday taqqoslash mumkin?</td>
+                            <td>Sichqonchani mahsulot rasmi ustiga elting va paydo bo'lgan tugmalar orasidan
+                                "Taqqoslash" tugmasini bosing (yoki mahsulot sahifasidagi "Taqqoslash" tugmasini).
+                                Taqqoslanadigan mahsulotlar tanlangach "Taqqoslash" sahifasiga o'ting.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="question">Avvalroq sotib olgan mahsulotimni nimaga qayta sotib ololmayapman?</td>
+                            <td>Savatchangizda saqlangan ba'zi mahsulotlar bizning omborimizda tugab qolishi oqibatida
+                                shunday muammoga duch kelishingiz mumkin. Bunday holatda "Mijozlarni qo'llab quvvatlash
+                                xizmati"ga (90) 948-86-84 telefon ga qo'ng'iroq qilishingiz mumkin. Va biz ushbu
+                                mahsulot olib kelinishi bilan sizga ma'lum qilishga harakat qilamiz.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="question">Men xohlagan mahsulot saytda topilmadi, shunaqa mahsulotga buyurma
+                                bersam bo'ladimi?(Qanday qilib?)
+                            </td>
+                            <td>Albatta ha! Bizning "Mijozlarni qo'llab quvvatlash xizmati"ga (90) 948-86-84 telefon
+                                raqamiga qo'g'iroq qilib kerakli ma'lumotlarni berishingiz mumkin. Biz sizga ushbu
+                                mahsulotni yaqin orada yetkazib berish imkoniyati haqida ma'lumot beramiz.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="heading" rowspan="4"><h4>TO'LOV & YETKAZISH </h4></td>
+                            <td class="question">Buyurtmani qanday qabul qilib olish mumkin?</td>
+                            <td>Buyurtmani rasmiylashtirish davomida sizdan yetkazib berish turini tanlash so'raladi.
+                                Sizga uyingizgacha yetkazib berishni yoki «pick-up point» ga yetkazilishini tanlashingiz
+                                mumkin.
+                                «Pick-up point» ga yetkazilishi tanlanganda saytda hududlardagi mavjud "olib ketish
+                                nuqtalari" ro'yxati chiqariladi va siz o'zingizga qulayini tanlashingiz mumkin.
+                                Ko'proq ma'lumot <a href='/{{ LANGUAGE_CODE }}/pages/payment-and-delivery'>«To'lov
+                                    va yetkazib berish»</a> sahifasida.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="question">Qanday to'lov turlari mavjud?</td>
+                            <td>Naqd ("pick-up-point" tanlanganda) va onlayn pul o'tkazmalari orqali to'lash mumkin. Biz
+                                Click va Payme xizmatlari orqali onlayn to'lovlarni qabul qilamiz.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="question">Mahsulotni qachon olib ketishim mumkinligi haqida qanday xabardor
+                                bo'laman?
+                            </td>
+                            <td>Buyurtmani rasmiylashtirish davomida sizdan ism-familyangiz, pochta manzili va telefon
+                                raqamingiz kabi ma'lumotlarni kirtish so'raladi. Sizning mahsulotingiz kerakli nuqtaga
+                                yetkazilgach biz sizga SMS xabarnoma jo'natamiz va shu bilan birga buyurtma statusini
+                                «GoSia.uz» saytidagi "shaxsiy kabinet"ingizdan tekshirishingiz mumkin.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="question">Buyurtmaga to'lov qilib bo'lgach fikrim o'zgarib qolsa nima qilishim
+                                mumkin?
+                            </td>
+                            <td>Batafsil ma'lumot uchun quyidagi sahifaga o'ting: <a
+                                    href='/{{ LANGUAGE_CODE }}/pages/payment-and-delivery'>«To'lov va yetkazib
+                                berish»</a></td>
+                        </tr>
+                        <tr>
+                            <td class="heading" rowspan="4"><h4>BUYURTMA</h4></td>
+                            <td class="question">Buyurtma qanday rasmiylashtiriladi?</td>
+                            <td>Batafsil ma'lumot uchun quyidagi sahifaga o'ting: <a
+                                    href='/{{ LANGUAGE_CODE }}/pages/how-to-order'>«Buyurtma berish tartibi»</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="question">Buyurtmani qanday qilib bekor qilish mumkin?</td>
+                            <td>Batafsil ma'lumot uchun quyidagi sahifaga o'ting: <a
+                                    href='/{{ LANGUAGE_CODE }}/pages/how-to-order'>«Buyurtma berish tartibi»</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ps-call-to-action">
+        <div class="container">
+            <h3>Qo'shimcha savollar uchun biz bilan <a href="/{{ LANGUAGE_CODE }}/pages/contact-us/">
+                bog'laning.</a></h3>
+        </div>
+    </div>
+</div>
+{% endblock %}

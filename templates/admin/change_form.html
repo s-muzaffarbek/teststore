@@ -1,0 +1,194 @@
+{% extends "admin/change_form.html" %}
+
+
+{% block extrastyle %}{{ block.super }}
+    {% if opts.model_name == 'category' %}
+        <link rel="stylesheet"
+              href="{% static 'new-template/fonts/Linearicons/Linearicons/Font/demo-files/demo.css' %}">
+        <link rel="stylesheet"
+              href="{% static 'new-template/fonts/Linearicons/Linearicons/Font/demo-files/admin.css' %}">
+    {% endif %}
+{% endblock %}
+
+{% block after_related_objects %}
+    {{ block.super }}
+
+    {#show telegram post for only Product#}
+    {% comment %} {% if opts.model_name == 'product' %}
+        <div class="submit-row">
+            <input type="submit" value="Post to Telegram" name="_telegram_post">
+        </div>
+    {% endif %} {% endcomment %}
+
+    {% if opts.model_name == 'category' %}
+        {% include 'admin/select-icon.html' %}
+    {% endif %}
+
+{% endblock %}
+
+{% block admin_change_form_document_ready %}
+    {{ block.super }}
+
+    {% if opts.model_name == 'category' %}
+        <script src="{{ url_for('static', path='new-template/fonts/Linearicons/Linearicons/Font/demo-files/liga.js') }}"></script>
+        <script src="{{ url_for('static', path='new-template/fonts/Linearicons/Linearicons/Font/demo-files/demo2.js') }}"></script>
+    {% endif %}
+
+    {% if opts.model_name == 'product' %}
+        <script>
+            (function ($) {
+                if (document.getElementById('id_actual_price')) {
+                    document.getElementById('id_actual_price').onkeyup = function () {
+                        document.getElementById("id_retail_price").value = this.value;
+                    };
+                    document.getElementById('id_actual_price').onchange = function () {
+                        document.getElementById("id_retail_price").value = this.value;
+                    };
+                }
+                // Product Edit Page
+                // Add help_text to image upload inputs
+                $('.app-products.change-form #product_images-group .field-image').append(
+                    `<div class="help">Required image size: 300x300 px, File size max: 500 kB</div>`
+                )
+
+                let observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (!mutation.addedNodes) return
+
+                        for (let i = 0; i < mutation.addedNodes.length; i++) {
+                            // do things to your newly added nodes here
+                            let node = mutation.addedNodes[i]
+                            if (node.nodeName == 'TR') {
+                                console.log('found')
+                                if ($('.app-products.change-form #variants-group .add-row a').length > 0) {
+                                    $('.app-products.change-form #variants-group .add-row a').remove();
+                                    $('.app-products.change-form #variants-group .add-row td').append(
+                                        `<input type="button" id='addVariant' value="Добавить новый вариант" name="_add_variant"/>`
+                                    );
+                                    observer.disconnect()
+                                    // check if product is editing or creating newly by url
+                                    var cUrl = window.location.href
+                                    if (cUrl.search('product/add') !== -1) {
+                                        console.log('its creating newly')
+                                        $('#addVariant').on('click', function () {
+                                            const url = new URL(window.location.href);
+                                            var target = `/admin/products/productvariant/add/`
+                                            url.searchParams.set('next', target);
+                                            window.history.replaceState(null, null, url);
+                                            $('[name="_continue"]').click()
+                                        })
+                                    } else {
+                                        console.log('its updating')
+                                        let pathname = window.location.pathname
+                                        var rgx = /product\/([0-9]*)\/change/g;
+                                        var id = rgx.exec(pathname)
+                                        // const params = new URLSearchParams(window.location.search)
+                                        target = `${window.location.protocol}//${window.location.host}/admin/products/productvariant/add/`
+                                        var url = new URL(target)
+                                        url.searchParams.set('callback', cUrl)
+                                        url.searchParams.set('pname', encodeURIComponent($('[name="name_uz"]').val()))
+                                        url.searchParams.set('pid', id[1])
+                                        $('#addVariant').on('click', function () {
+                                            window.location.href = url.toString();
+                                        })
+                                        const curUrl = new URL(window.location.href);
+                                    }
+                                }
+                            }
+                        }
+                    })
+                })
+
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                    attributes: false,
+                    characterData: false
+                })
+
+                //
+
+
+            })(django.jQuery);
+        </script>
+    {% endif %}
+
+    {% if opts.model_name == 'productvariant' %}
+        <script>
+            (function ($) {
+                $('.field-product').css('display', 'none');
+                var url = new URL(window.location.href)
+                if (url.pathname.includes('/admin/products/productvariant/add')) {
+                    $('.field-product_name div.readonly').text(
+                        decodeURIComponent(url.searchParams.get('pname'))
+                    );
+                    $('#id_product').val(url.searchParams.get('pid'));
+                }
+                // Add help_text to image upload inputs
+                $('.model-productvariant.change-form #variant_images-group .field-image').append(
+                    `<div class="help">Required image size: 300x300 px, File size max: 500 kB</div>`
+                )
+                // remove some buttons
+                $('[name="_addanother"]').remove();
+                $('[name="_continue"]').remove();
+                $('[name="_saveasnew"]').remove();
+
+                // remove link to variants from breadcrumbs
+                $('.model-productvariant.change-form .breadcrumbs a').last().attr(
+                    'href', 'javascript:;').css('color', '#c4dce8');
+
+                // show attribute values matching to selected attribute
+                let attrs = JSON.parse(`{{attrs|safe}}`);
+                $('#productattribute_set-group').on('change', function (e) {
+                    var target = e.target
+                    if (target.nodeName == 'SELECT') {
+                        if ($(target).parents('.field-attribute').length > 0) {
+                            var parentOfSelects = $(target).parents('.field-attribute')[0]
+                            var attr_id = $(target).val()
+                            var attr_values = Array(attrs[attr_id])[0]
+                            console.log(attr_values, typeof (attr_values))
+                            if (!attr_values) {
+                                // if there is not value for this attribute hide all attribute values
+                                var selectsParent = $(target).parents('.dynamic-productattribute_set')[0]
+                                $(selectsParent).find('.field-attribute_value option').each(function () {
+                                    if (!$(this).attr('value')) {
+                                        $(this).css('display', 'block').attr('selected', true);
+                                    } else {
+                                        $(this).css('display', 'none');
+                                    }
+                                });
+                            } else
+                                // hide values which are not value for selected attr
+                            if (attr_id) {
+                                var selectsParent = $(target).parents('.dynamic-productattribute_set')[0]
+                                $(selectsParent).find('.field-attribute_value option').each(function () {
+                                    if (!attr_values.includes($(this).attr('value'))) {
+                                        $(this).css('display', 'none');
+                                    } else {
+                                        $(this).css('display', 'block');
+                                    }
+                                    if (!$(this).attr('value')) {
+                                        var attrValueSelect = $(selectsParent).find('.field-attribute_value select');
+                                        if (!attr_values.includes($(attrValueSelect).val())) {
+                                            $(this).css('display', 'block').attr('selected', true);
+                                        }
+                                    }
+                                })
+                            }
+                            ;
+                        }
+                        ;
+                    }
+                    ;
+                });
+
+            })(django.jQuery);
+        </script>
+    {% endif %}
+
+    {% if opts.model_name == 'attributevalue' %}
+        <script src="{{ url_for('static', path='new-template/js/admin.js') }}"></script>
+    {% endif %}
+
+
+{% endblock %}

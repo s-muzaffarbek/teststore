@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}{{ Checkout_confirmation }}{% endblock %}
+
+{% block content %}
+
+    <!--breadcrumbs area start-->
+    <!--breadcrumbs area end-->
+
+    <!--Checkout page section-->
+    <section class="ps-section--account">
+        <div class="container">
+            <div class="ps-block--payment-success text-center">
+                <p>
+                    {{ We_will_contact }}
+                        <strong>
+                            <a href="/{{ LANGUAGE_CODE }}/orders">{{ profile }}</a>
+                        </strong>
+                </p>
+                {% if order.get_payment_url != '#' %}
+                    <a class='ps-btn' href="{{ order.get_payment_url }}" style="width:200px;padding:15px;"
+                       target="_blank">
+                        <i class='icon-receipt'></i> {{ Make_payment}}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <!--Checkout page section end-->
+    <script>
+        $(document).ready(function (){
+            localStorage.removeItem('shopping_card')
+            $(".badge-count").text(0)
+        })
+    </script>
+{% endblock content %}

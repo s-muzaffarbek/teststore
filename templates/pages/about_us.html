@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="ps-page--single" id="contact-us">
+
+    <!-- breadcrumb area | START -->
+    <div class="ps-breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/{{ LANGUAGE_CODE }}">{{ Home }}</a></li>
+                <li>{{ About_us }}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- breadcrumb area | END -->
+
+
+    <div class="ps-contact-info">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <img src="{{url_for('static', path='assets/img/services/service-long-1.jpg') }}" alt="">
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="about_content" style="font-size:1.5rem;">
+                        <h1>{{ OUR_MISSION }}</h1>
+                        <p>
+
+                            <strong>GoSia.uz</strong> {{OUR_MISSION_Text1}}</p>
+
+
+                        <p> {{ OUR_MISSION_Text2 }}</p>
+
+
+                        <p> {{ OUR_MISSION_Text3 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

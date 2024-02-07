@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block metadata %}
+    <meta property="og:title" content="{{ page.title }}">
+    <meta name="description"
+          content="{{ page.meta_description }}">
+    <meta property="og:description"
+          content="{{ page.meta_description }}">
+    <meta property='og:image' content='/cdn/static/assets/img/logo/bx-meta-logo.png'/>
+    <meta name="keywords"
+          content="{{ page.meta_keywords }}">
+
+{% endblock %}
+
+
+{% block content %}
+
+    {% autoescape off %}
+        {{ content }}
+    {% endautoescape %}
+
+{% endblock %}

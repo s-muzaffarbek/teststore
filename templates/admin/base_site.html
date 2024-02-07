@@ -1,0 +1,23 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | GoSia.uz {% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+    {% if opts.model_name == 'category' %}
+        <link rel="stylesheet"
+              href="{{ url_for('static', path='new-template/fonts/Linearicons/Linearicons/Font/demo-files/demo.css') }}">
+        <link rel="stylesheet"
+              href="{{ url_for('static', path='new-template/fonts/Linearicons/Linearicons/Font/demo-files/admin.css') }}">
+    {% endif %}
+    <style>
+        tr.model-productvariant {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">Администрирование Thinkstore</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

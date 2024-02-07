@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ My_Wishlist }}{% endblock %}
+
+{% block content %}
+
+    <!-- breadcump menu | START -->
+    <!-- breadcump menu | END -->
+
+    <section class="ps-section--account">
+        <div class="container">
+            <div class="row">
+                {% if current_user %}
+                    <div class="col-lg-3 mb-5">
+                        <!-- nav tabs | START -->
+                        {% include 'users/sections/account-menu.html' %}
+                        <!-- nav tabs | END -->
+                    </div>
+                {% endif %}
+                <div class="{% if current_user %}col-lg-9{% else %}col-12{% endif %}">
+                    <div class="ps-section__right">
+                        <h3>{{ My_Wishlist }}</h3>
+
+                        <div class="ps-layout__right">
+                            <div class="ps-shopping ps-tab-root">
+
+                                {% if object_list2 %}
+
+                                    <div class="ps-tabs">
+                                        <div class="ps-tab active" id="tab-1">
+                                            <div class="ps-shopping-product">
+                                                <div class="row">
+                                                    {% for product in object_list2 %}
+                                                        <div {% if current_user %}class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6"
+                                                             {% else %}class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6"{% endif %}>
+                                                            <div class="ps-product ps-product--inner">
+                                                                <div class="ps-product__thumbnail">
+
+                                                                    <!-- product image | START -->
+                                                                    {% include 'products/sections/product_list_image.html' %}
+                                                                    <!-- product image | END -->
+
+                                                                    <!-- product sale badge | START -->
+                                                                    {% include 'products/sections/product_sale_badge.html' %}
+                                                                    <!-- product sale badge | END -->
+
+                                                                    <!-- product hover effect/compare button | START -->
+                                                                    <ul class="ps-product__actions" style="background-color: transparent">
+                                                                        <li>{% include 'products/sections/product_add_copm.html' %}</li>
+                                                                        <li>
+                                                                            <a class="add-to-wishlist add-to-wishlist-{{ product.id }} remove-from-wishlist"
+                                                                               data-toggle="tooltip"
+                                                                               data-id="{{ product.id }}"
+                                                                               data-placement="top"
+                                                                               title="{{ Add_to_Whishlist }}">
+                                                                                <i class="icon-heart"></i>
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <!-- product hover effect/compare button | END -->
+
+                                                                </div>
+
+                                                                <div class="ps-product__container">
+                                                                    <a class="ps-product__vendor" href="#"></a>
+                                                                    <div class="ps-product__content">
+                                                                        <a class="ps-product__title"
+                                                                           href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                                                                            {{ product.names[LANGUAGE_CODE] }}
+                                                                        </a>
+                                                                        <!-- product rating | START -->
+                                                                        {% include 'products/sections/product_list_rating.html' %}
+                                                                        <!-- product rating | END -->
+
+                                                                        <!-- product price | START -->
+                                                                        {% include 'products/sections/product_list_price.html' %}
+                                                                        <!-- product price | END -->
+                                                                    </div>
+                                                                    <div class="ps-product__content hover">
+                                                                        <a class="ps-product__title"
+                                                                           href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                                                                            {{ product.names[LANGUAGE_CODE] }}
+                                                                        </a>
+                                                                        <!-- product price | START -->
+                                                                        {% include 'products/sections/product_list_price.html' %}
+                                                                        <!-- product price | END -->
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+
+                                            <!-- pagination | START -->
+{#                                            <!-- {% include 'section/pagination.html' %} -->#}
+                                            <!-- pagination | END -->
+
+                                        </div>
+                                    </div>
+
+                                {% else %}
+                                    <div class="ps-tabs">
+                                        <h2>{{ Not_found_products }}</h2>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

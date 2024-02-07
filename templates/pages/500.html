@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="ps-page--404">
+        <div class="container">
+            <div class="ps-section__content">
+                <div id='page-500'>
+                    <img src="{{ url_for('static', path='new-template/img/500..png') }}" alt="">
+                    <span class="cl-yellow" style="font-size:60px;">{{ Opps }}...<br> 500</span>
+                </div>
+                <h3>{{ opps_internal_server_error }}</h3>
+                <p>{{ It_seems_there_is_an_error }} <a
+                        href="/{{ LANGUAGE_CODE }}">{{ Homepage }}</a></p>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

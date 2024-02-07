@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="ps-page--single">
+
+    <div class="ps-breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/{{ LANGUAGE_CODE }}">{{ Home }}</a></li>
+                <li>Buyurtma berish tartibi</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="ps-ordering">
+        <div class="container">
+            <div class="ps-ordering__header">
+                <h1>Buyurtmani rasmiylashtirish</h1>
+            </div>
+            <div class="ps-section__content">
+                <div class="ps-ordering__content">
+                    <ul>
+                        <li><a href='#h_1'>Mahsulot qanday buyurtma qilinadi?</a></li>
+                        <li><a href='#h_2'>Buyurtma qanday bekor qilinadi?</a></li>
+                        <li><a href='#h_3'>Buyurtma holatini qanday tekshirish mumkin?</a></li>
+                    </ul>
+                    <h3 id="h_1">Mahsulot qanday buyurtma qilinadi?</h3>
+                    <ol>
+                        <li>Mahsulotni tanlang va uni savatchaga qo'shing</li>
+                        <li>"Savatcha" sahifasiga o'ting va buyurtma ma'lumotlarini yana bir marta tekshiring</li>
+                        <li>"Savatcha" sahifasidagi "Buyurtma qilish" tugmasini bosing.</li>
+                        <li>Ochilgan sahifada kerakli ma'lumotlarni kiriting.</li>
+                        <li>Yetkazish manzilini tanlang.</li>
+                        <li>Yetkazish hamda to'lov turlarini tanlang.</li>
+                        <li>"Buyurtmani tasdiqlash" ni bosing.</li>
+                        <li>Agar online to'lov turlarini tanlagan bo'lsangiz to'lov qilish sahifasi ochiladi.</li>
+                        <li>To'lovni amalga oshiring va buyurtma rasmiylashtiriladi.</li>
+                    </ol>
+                    <p> Buyurtma berishda qiynalsangiz bizning (90) 948-86-84 yoki (90) 920-59-25 raqamlarimizga telefon
+                        qiling.</p>
+
+                    <h3 id="h_2">Buyurtma qanday bekor qilinadi?</h3>
+                    <ol>
+                        <li>Shaxsiy kabinetingizga kiring.</li>
+                        <li>"Mening buyurtmalarim" bo'limiga o'ting.</li>
+                        <li>Buyurtmani tanlang va "Bekor qilish" tugmasini bosing.</li>
+                        <li>Bekor qilish sababini ko'rsating va u bekor qilinadi.</li>
+                    </ol>
+                    <h3 id="h_3">Buyurtma holatini qanday tekshirish mumkin?</h3>
+                    <ol>
+                        <li>Shaxsiy kabinetingizga kiring.</li>
+                        <li>"Mening buyurtmalarim" bo'limiga o'ting.</li>
+                        <li>Ushbu sahifada buyurtmalaringiz holatini ko'rishingiz mumkin.</li>
+                    </ol>
+                    <p>Agar buyurtmangiz o'z vaqtida yetkazilmagan bo'lsa bizning (90) 948-86-84 yoki (90) 920-59-25
+                        raqamlarimizga telefon qiling.</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

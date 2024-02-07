@@ -1,0 +1,18 @@
+<form class="ps-form--quick-search mb-0" action="/{{ LANGUAGE_CODE }}/products">
+    {% if categories %}
+        <div class="form-group--icon">
+            <i class="icon-chevron-down"></i>
+            <select name="category_id" class="form-control" style="width:160px;">
+                <option value="">{{ View_All }}</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id == category_id %}selected{% endif %}>
+                        {{ category.names[LANGUAGE_CODE] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    {% endif %}
+    <input name="search_key" value="{{ search_key }}" type="text"
+           class="form-control" placeholder="{{ Write_a_keyword }}...">
+    <button type="submit">{{ Search }}</button>
+</form>

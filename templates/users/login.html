@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% get_current_language as LANGUAGE_CODE %}
+{% block title %}Login{% endblock %}
+
+
+{% block metadata %}
+    <meta property="og:title" content="Login">
+    <meta name="description"
+          content="Интернет-магазин GoSia.uz — низкие цены и широкий ассортимент! Телефоны и гаджеты, компьютеры и оргтехника, для геймеров, бытовая техника, телевизоры, видео и аудио, посуда, мебель, для дома и офиса, инструменты и автотовары, игрушки, подарки и аксессуары, одежда, обувь и аксессуары, детские товарыи много другое. Быстрая доставка по Узбекистану.">
+    <meta property="og:description"
+          content="Интернет-магазин GoSia.uz — низкие цены и широкий ассортимент! Телефоны и гаджеты, компьютеры и оргтехника, для геймеров, бытовая техника, телевизоры, видео и аудио, посуда, мебель, для дома и офиса, инструменты и автотовары, игрушки, подарки и аксессуары, одежда, обувь и аксессуары, детские товарыи много другое. Быстрая доставка по Узбекистану.">
+    <meta property='og:image' content='/cdn/static/assets/img/logo/logo_sia.jpg'/>
+{% endblock %}
+
+
+{% block content %}
+
+    <!--breadcrumbs area start-->
+
+
+    <!--breadcrumbs area end-->
+
+    <!-- accont area start -->
+    <div class="ps-my-account pb-20">
+        <div class="container">
+            <div class="ps-form--account ps-tab-root" style="max-width:700px;">
+                <ul class="ps-tab-list">
+                    {% if 'login' in request.path or code %}
+                        <li class="active">
+                            <p><a>Login</a></p>
+                        </li>
+                    {% else %}
+                        <li class="active">
+                            <p><a>Register</a></p>
+                        </li>
+                    {% endif %}
+                </ul>
+                <div class="ps-tabs">
+                    <div class="ps-tab {% if 'login' in request.path or code %} active {% endif %}"
+                         style="max-width:430px;margin:auto;">
+                        <form class="ps-form--account ps-tab-root pt-0 pb-10" action="/{{ LANGUAGE_CODE }}/users/login"
+                              method="post">
+                            <div class="ps-form__content"> {% csrf_token %}
+                                <h5>Log In Your Account</h5>
+                                {% if errors %}
+                                    <div class="alert alert-danger" role="alert">
+
+                                        <ul>
+                                            {% for error in errors %}
+                                                <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                <div class="form-group">
+                                    <input class="form-control" name="phone" type="tel"
+                                           placeholder="Phone number" requeried value="{{ phone }}">
+                                </div>
+                                <div class="form-group form-forgot">
+                                    <input class="form-control" name="password" type="password"
+                                           placeholder="Password" requeried value="{{ pass }}">
+                                    <a href="/{{ LANGUAGE_CODE }}/users/reset-password">Forgot?</a>
+                                </div>
+                                {% if code %}
+                                    <input id="code_token" name="code_token" value="{{ code.code_token }}"
+                                           type="hidden">
+                                    <div class="form-group">
+                                        <label>SMS Code<span>*</span></label>
+                                        <input class="form-control" name="sms_code" type="sms_code">
+                                    </div>
+                                {% endif %}
+                                <div class="form-group">
+                                    <div class="ps-checkbox">
+                                        <input class="form-control" type="checkbox" id="remember-me" name="remember_me">
+                                        <label for="remember-me">Remember me</label>
+                                    </div>
+                                </div>
+                                <div class="form-group submtit  mb-0">
+                                    <button class="ps-btn ps-btn--fullwidth" type="submit">Login</button>
+                                </div>
+                            </div>
+                        </form>
+                        <p class="text-center pl-20 pr-20 pb-20">Are you new in our site?
+                            <a href="/{{ LANGUAGE_CODE }}/users/register">
+                                <span class="cl-yellow">Register</span>
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="ps-tab {% if 'login' not in request.path and not code %} active {% endif %}">
+                        <form id="register_form" name="register_form" action="/{{ LANGUAGE_CODE }}/users/register"
+                              method="post"> {% csrf_token %}
+                            <div class="ps-form__content">
+                                <h5>Register An Account</h5>
+                                {% if errors %}
+                                    <div class="alert alert-danger" role="alert">
+
+                                        <ul>
+                                            {% for error in errors %}
+                                                <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="first_name" id="first_name"
+                                                   value="{{ customer.first_name|default:"" }}" required
+                                                   placeholder="First name">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="last_name" id="last_name"
+                                                   value="{{ customer.last_name|default:"" }}" required
+                                                   placeholder="Last name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input class="form-control" type="tel" name="phone" id="phone" required
+                                                   value="{{ customer.phone|default:"" }}"
+                                                   placeholder="Phone number">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input class="form-control" type="password" name="password" id="password"
+                                                   required placeholder="Password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="street_address_1"
+                                           id="street_address_1"
+                                           value="{{ address.street_address_1|default:"" }}" required
+                                           placeholder="Street address">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="street_address_2"
+                                           id="street_address_2"
+                                           value="{{ address.street_address_2|default:"" }}"
+                                           placeholder="Additional address">
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="city" id="city" required
+                                                   value="{{ address.city|default:"" }}"
+                                                   placeholder="City">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <select name="region" id="region" class="form-control" required>
+                                                <option value=""> --- Please select ---</option>
+                                                {% for key, value in regions %}
+                                                    {% if key == address.region %}
+                                                        <option selected="selected"
+                                                                value="{{ key }}">{{ value }}</option>
+                                                    {% else %}
+                                                        <option value="{{ key }}">{{ value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="email" name="email" id="email"
+                                           value="{{ customer.email|default:"" }}"
+                                           placeholder="Email address">
+                                </div>
+                                <div class="form-group submtit mb-0">
+                                    <button class="ps-btn ps-btn--fullwidth"
+                                            type="submit">Register</button>
+                                </div>
+                                <br>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        {% if clear_shopping_cart %}
+            $(function () {
+                shoppingCartModel.clearShoppingCard();
+            });
+        {% endif %}
+    </script>
+{% endblock content %}

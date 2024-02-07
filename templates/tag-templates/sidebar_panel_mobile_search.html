@@ -1,0 +1,12 @@
+<div class="ps-panel--sidebar" id="search-sidebar">
+    <div class="ps-panel__header">
+        <form class="ps-form--search-mobile" action="/{{ LANGUAGE_CODE }}/products" method="get">
+            <div class="form-group--nest">
+                <input class="form-control" name="search_key" value="{{ search_key }}" type="text"
+                       placeholder="{{ Search }}...">
+                <button><i class="icon-magnifier"></i></button>
+            </div>
+        </form>
+    </div>
+    <div class="navigation__content"></div>
+</div>

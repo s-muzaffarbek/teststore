@@ -1,0 +1,167 @@
+
+<div id="shopping_card">
+    <span data-bind="text: shoppingCartModel.orderQty()" class="cart__quantity"></span>
+    <div class="mini_cart cart_left">
+        <!-- ko foreach: shoppingCartModel.variants() -->
+        <div class="cart_item">
+            <div class="cart_img">
+                <a data-bind="attr:{'href': '/{{ LANGUAGE_CODE }}/products/' + product_id()}"
+                   target="_blank"><img
+                        data-bind="attr:{'src': images()[0].imageUrl()}" alt="no-image"></a>
+            </div>
+            <div class="cart_info">
+                <a data-bind="attr:{'href': '/{{ LANGUAGE_CODE }}/products/' + product_id()}, text: product_name()"
+                   target="_blank"></a>
+                <span class="badge badge-secondary" data-bind="text: 'SKU: ' + sku()"></span>
+                <!-- ko if: discount_price() > 0 -->
+                <span data-bind="text: '$' + discount_price_formatted()+ ' / piece'"
+                      class="cart_price "></span>
+                <!-- /ko -->
+                <!-- ko if: retail_price() > 0 -->
+                <span data-bind="attr:{'class': discount_price() > 0 ? 'card_old_price': 'cart_price'}, text:retail_price_formatted() + ' / piece'"
+                      class="card_old_price"></span>
+                <!-- /ko -->
+                <span data-bind="text: 'piece: ' + order_qty()" class="quantity"></span>
+            </div>
+            <div class="cart_remove">
+                <a data-bind="click: $root.removeFromCard" title="Remove this item" href="javascript:void(0)"><i
+                        class="fa fa-times-circle"></i></a>
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="cart_total">
+            <span> Total </span>
+            <span data-bind="text: shoppingCartModel.format_number(totalAmount()) + ' SUM'"
+                  class="prices"></span>
+        </div>
+        <div class="cart_button pt-20">
+            <a data-bind="attr:{'href': totalAmount() > 0 ? '/{{ LANGUAGE_CODE }}/orders/shopping-cart/': '#'}"> Shopping Cart</a>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    {# TODO: we can use: https://github.com/marcuswestin/store.js/tree/master/storages#}
+
+    function ShoppingCartModel() {
+        var self = this
+
+        self.variants = ko.observableArray();
+        self.totalAmount = ko.observable();
+        self.orderQty = ko.observable();
+        self.order_detail = ko.observable();
+
+        self.addToCard = function (selectedVariant) {
+            var is_variant_added_to_card = false;
+            shoppingCartModel.variants().forEach(function (shopping_card_variant) {
+                if (shopping_card_variant.sku() == selectedVariant.sku()) {
+                    shopping_card_variant.order_qty(shopping_card_variant.order_qty() + selectedVariant.order_qty());
+                    is_variant_added_to_card = true;
+                }
+            });
+
+            if (!is_variant_added_to_card) {
+                shoppingCartModel.variants.push(selectedVariant);
+            }
+
+            self.finalCalculation();
+            self.storeShoppingCard();
+            self.notify();
+        }
+
+        self.notify = function () {
+            $(".addToCart").notify("Product added to cart", "success");
+        }
+
+        self.removeFromCard = function (selectedVariant) {
+            for (var i = 0; i < self.variants().length; i++) {
+                if (self.variants()[i].variant_id() == selectedVariant.variant_id()) {
+                    self.variants().splice(i, 1);
+                }
+            }
+            self.variants(self.variants());
+
+            self.finalCalculation();
+            self.storeShoppingCard();
+        }
+
+        self.finalCalculation = function () {
+            var total_amount = 0;
+            var order_qty = 0;
+            var order_detail = '';
+            shoppingCartModel.variants().forEach(function (shopping_card_variant) {
+                if (shopping_card_variant.discount_price() > 0) {
+                    total_amount += shopping_card_variant.order_qty() * shopping_card_variant.discount_price();
+                } else {
+                    total_amount += shopping_card_variant.order_qty() * shopping_card_variant.retail_price();
+                }
+                order_qty += shopping_card_variant.order_qty();
+                order_detail += shopping_card_variant.sku() + '|' + shopping_card_variant.order_qty() + ';'
+            });
+            self.totalAmount(total_amount);
+            self.orderQty(order_qty);
+            self.order_detail(order_detail);
+        }
+
+        self.storeShoppingCard = function () {
+            var jsonObj = ko.toJSON(self.variants);
+            localStorage.setItem('shopping_card', jsonObj);
+        }
+
+        self.loadShoppingCard = function () {
+            var jsonObj = localStorage.getItem('shopping_card')
+            if (jsonObj) {
+                self.variants = ko.wrap.fromJS(JSON.parse(jsonObj));
+            }
+        }
+
+        self.clearShoppingCard = function () {
+            localStorage.removeItem('shopping_card');
+            self.variants({});
+            self.totalAmount(0);
+            self.orderQty(0);
+            self.order_detail('');
+        }
+
+        self.updateQuantity = function (selectedVariant, obj) {
+            var qty = $(obj.target).val();
+
+            var max_qty = parseInt($(obj.target).attr('max'))
+            if (max_qty < qty) {
+                $(obj.target).val(max_qty);
+                qty = max_qty;
+                alert('Maximum available quantity of product is ' + qty + '')
+            }
+            if (qty <= 0) {
+                qty = 1;
+                $(obj.target).val(qty);
+                // alert('Minimum available quantity of product is ' + qty + '')
+            }
+
+            selectedVariant.order_qty(parseInt(qty));
+
+            self.finalCalculation();
+            self.storeShoppingCard();
+        }
+
+        self.format_number = function (number) {
+            return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
+        }
+
+        self.init = function () {
+            self.loadShoppingCard();
+            self.finalCalculation();
+        }
+    }
+
+    $(document).ready(function () {
+        alert('sddsfdsf');
+        shoppingCartModel = new ShoppingCartModel();
+        alert('1');
+        shoppingCartModel.init();
+        alert('2');
+        ko.applyBindings(shoppingCartModel, document.getElementById('shopping_card'));
+
+    });
+</script>

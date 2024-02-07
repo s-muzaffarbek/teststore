@@ -1,0 +1,51 @@
+
+
+<div class="navigation--mobile">
+    <div class="navigation__left">
+        <a class="ps-logo" href="/{{ LANGUAGE_CODE }}/">
+            <img src="{{ url_for('static', path='assets/img/logo/logo_sia.jpg') }}" alt='site_global_title'>
+        </a>
+    </div>
+    <div class="navigation__right">
+        <div class="header__actions">
+            <a class="header__extra" id='wishlist_products_link2' href="#">
+                <svg width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.5014 2.56416C20.3771 -0.972715 26.3665 -0.855322 30.1004 2.94652C33.8326 6.75004 33.9613 12.8075 30.4898 16.7586L16.4981 31L2.50961 16.7586C-0.961922 12.8075 -0.831574 6.73998 2.89901 2.94652C6.63619 -0.850291 12.614 -0.977747 16.5014 2.56416ZM27.764 5.31617C25.2891 2.79726 21.2962 2.69497 18.7057 5.05959L16.503 7.06868L14.2986 5.06126C11.6999 2.69329 7.71527 2.79726 5.23371 5.31953C2.77526 7.81831 2.65151 11.818 4.91692 14.4611L16.4997 26.2523L28.0825 14.4627C30.3495 11.818 30.2258 7.82334 27.764 5.31617Z"
+                          fill="white"/>
+                </svg>
+                <span><i class="wishlist__quantity">0</i></span>
+            </a>
+            <a class="header__extra" id="compare_products_link2" href="#">
+                <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 29.4286C4 31.401 3.10457 33 2 33C0.895431 33 0 31.401 0 29.4286V16.5714C0 14.599 0.895431 13 2 13C3.10457 13 4 14.599 4 16.5714V29.4286Z"
+                          fill="white"/>
+                    <path d="M13.8948 30.8289C13.8948 32.028 12.9228 33 11.7238 33C10.5247 33 9.55273 32.028 9.55273 30.8289V2.17105C9.55273 0.972012 10.5247 0 11.7238 0C12.9228 0 13.8948 0.972012 13.8948 2.17105V30.8289Z"
+                          fill="white"/>
+                    <path d="M23 30.5C23 31.8807 22.1046 33 21 33C19.8954 33 19 31.8807 19 30.5V13.5C19 12.1193 19.8954 11 21 11C22.1046 11 23 12.1193 23 13.5V30.5Z"
+                          fill="white"/>
+                    <path d="M33 30.5C33 31.8807 32.1046 33 31 33C29.8954 33 29 31.8807 29 30.5V5.5C29 4.11929 29.8954 3 31 3C32.1046 3 33 4.11929 33 5.5V30.5Z"
+                          fill="white"/>
+                </svg>
+                <span><i class="cart__quantity comparison__quantity">0</i></span>
+            </a>
+            <!-- shopping cart with dropdown preview | START-->
+            {% include 'section/shopping-cart-2.html' %}
+            <!-- shopping cart with dropdown preview | END-->
+
+            <div class="ps-block--user-header">
+                <div class="ps-block__left">
+                    {% if not current_user %}
+                        <a href="/{{ LANGUAGE_CODE }}/users/register-start" class="header-sm-login">
+                            <i class="icon-user"></i> <span class='login-text'>{{ Login }}</span>
+                        </a>
+                    {% else %}
+                        <a href="/{{ LANGUAGE_CODE }}/users/profile" class="header-sm-login">
+                            <i class="icon-user" style="font-size:28px;"></i>
+                        </a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

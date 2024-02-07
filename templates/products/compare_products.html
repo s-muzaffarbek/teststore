@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ Compare_products }}{% endblock %}
+
+{% block metadata %}
+    <meta property="og:title" content="{{ Compare_products }}">
+    <meta name="description"
+          content="{{ Online_store_GoSia }}">
+    <meta property="og:description"
+          content="{{ Online_store_GoSia }}">
+    <meta property='og:image' content='/cdn/static/assets/img/logo/logo_sia.jpg'/>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="ps-compare ps-section--shopping">
+        <div class="container">
+
+            <div class="ps-section__header">
+                <h1>{{ Compare_products }}</h1>
+            </div>
+
+            <div class="ps-section__content">
+                <div class="table-responsive">
+                    <table class="table ps-table--compare">
+                        <tbody>
+
+                        <tr>
+                            <td class="heading" rowspan="2">{{ Product }}</td>
+                            {% for product in product_list %}
+                                <td style="text-align:center"><b>{{ Product }} {{ loop.index }}</b></td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            {% for product in product_list %}
+                                <td>
+                                    <div class="ps-product--compare">
+                                        <div class="ps-product__thumbnail">
+                                            <!-- product image | START -->
+                                            {% include 'products/sections/product_list_image.html' %}
+                                            <!-- product image | END -->
+                                        </div>
+                                        <div class="ps-product__content">
+                                            <a href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
+                                                {{ product.names[LANGUAGE_CODE] }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td class="heading">{{ Price }}</td>
+                            {% for product in product_list %}
+                                <td>
+                                    <h4 class="price sale">
+                                        {% if product.discount_price and product.discount_price < product.retail_price %}
+                                            {{ product.discount_price|sum_format }}
+                                            <del>{{ product.retail_price|sum_format }}</del>
+                                            <small>(-{{ product.sale }}%)</small>
+                                        {% else %}
+                                            {{ product.retail_price|sum_format }}
+                                        {% endif %}
+                                    </h4></td>
+                            {% endfor %}
+                        </tr>
+
+                        {% for param in product_params %}
+                            <tr>
+                                <td class="heading">{{ param.title }}</td>
+                                {% for product in product_list %}
+                                    <td>{% if product[param.code] %}
+                                        {{ product[param.code]|description_image(django_host)|safe}}
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+
+                        {% for key, products_values in attribute_params_dict.items() %}
+                            <tr>
+                                <td class="heading">{{ key }}</td>
+                                {% for values in products_values %}
+                                    <td class="params_name">
+                                        {% if values %}
+                                            {% for value in values %}
+                                                {{ value.name }},
+                                            {% endfor %}
+                                        {% else %}
+                                            ---
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td class="heading"></td>
+                            {% for product in product_list %}
+                                <td class="pt-3 pb-2">
+                                    <a class="ps-btn add-to-compare add-to-compare-{{ product.id }} remove-from-compare"
+                                       data-id="{{ product.id }}">
+                                        {{ Remove }}
+                                    </a>
+                                </td>
+                            {% endfor %}
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

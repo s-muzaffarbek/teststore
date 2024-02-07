@@ -1,0 +1,56 @@
+
+
+<div class="ps-panel--sidebar" id="navigation-mobile">
+    <div class="ps-panel__header">
+        <h3>{{ Categories }}</h3>
+    </div>
+    <div class="ps-panel__content">
+        {% if categories %}
+            <ul class="menu--mobile">
+                {% for categoryItem in categories %}
+                    {% if categoryItem.children %}
+                        <li class="menu-item-has-children has-mega-menu">
+                            <a href="/{{ LANGUAGE_CODE }}/category/{{ categoryItem.slug }}">
+                                {{ categoryItem.get_icon|safe }}
+                                {{ categoryItem.names[LANGUAGE_CODE] }}
+                            </a>
+                            <span class="sub-toggle"></span>
+                            <div class="mega-menu">
+                                {% for childItem in categoryItem.children %}
+                                    <div class="mega-menu__column">
+                                        <h4>
+                                            <a href="/{{ LANGUAGE_CODE }}/category/{{ categoryItem.slug }}/{{ childItem.slug }}">
+                                                <i class="{{ childItem.icon2 }}" style="font-size:16px;"></i>
+                                                {{ childItem.names[LANGUAGE_CODE] }}
+                                            </a>
+                                            {% if childItem.children %}
+                                                <span class="sub-toggle"></span></h4>
+                                                <ul class="mega-menu__list">
+                                                    {% for childSubItem in childItem.children %}
+                                                        <li>
+                                                            <a href="/{{ LANGUAGE_CODE }}/category/{{ categoryItem.slug }}/{{ childItem.slug }}/{{ childSubItem.slug }}">
+                                                                {{ childSubItem.names[LANGUAGE_CODE]}}
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                </h4>
+                                            {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="/{{ LANGUAGE_CODE }}/category/{{ categoryItem.slug }}">
+                                {{ categoryItem.get_icon|safe }}
+                                {{ categoryItem.name }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
