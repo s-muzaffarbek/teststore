@@ -38,9 +38,9 @@
                                 {% include 'tag-templates/sale_product_price.html' %}
                                 <!-- product sale price | END -->
                                 <div class="ps-product__content">
-                                    <a class="ps-product__title" title="{{ product.names[LANGUAGE_CODE] }}"
+                                    <a class="ps-product__title" title="{{ product.names }}"
                                        href="/{{ LANGUAGE_CODE }}/products/{{ product.slug }}">
-                                        {{ product.names[LANGUAGE_CODE] }}
+                                        {{ product.names }}
                                     </a>
                                     <!-- product rating | START -->
                                     {% include 'products/sections/product_list_rating.html' %}

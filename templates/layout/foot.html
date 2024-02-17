@@ -1,4 +1,4 @@
-
+{% load static %}
 <!-- SPETSZAKAZ Modal | START -->
 {#{%  include 'additional_parts/spetszakaz_modal.html' %}#}
 <!-- SPETSZAKAZ Modal | END -->
@@ -13,22 +13,22 @@
     <div class="loader-section section-left"></div>
     <div class="loader-section section-right"></div>
 </div>
-<script src="{{ url_for('static', path='new-template/plugins/jquery.min.js')}}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/nouislider/nouislider.min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/popper.min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/owl-carousel/owl.carousel.min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/imagesloaded.pkgd.min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/masonry.pkgd.min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/isotope.pkgd.min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/jquery.matchHeight-min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/slick/slick/slick.min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/jquery-bar-rating/dist/jquery.barrating.min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/slick-animation.min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/lightGallery-master/dist/js/lightgallery-all.min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/sticky-sidebar/dist/sticky-sidebar.min.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/plugins/select2/dist/js/select2.full.min.js') }}"></script>
-<!-- <script src="{{ url_for('static', path='new-template/plugins/gmap3.min.js')}}"></script> -->
+<script src="{% static 'new-template/plugins/jquery.min.js' %}"></script>
+<script src="{% static 'new-template/plugins/nouislider/nouislider.min.js' %}"></script>
+<script src="{% static 'new-template/plugins/popper.min.js' %}"></script>
+<script src="{% static 'new-template/plugins/owl-carousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'new-template/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'new-template/plugins/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'new-template/plugins/masonry.pkgd.min.js' %}"></script>
+<script src="{% static 'new-template/plugins/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'new-template/plugins/jquery.matchHeight-min.js' %}"></script>
+<script src="{% static 'new-template/plugins/slick/slick/slick.min.js' %}"></script>
+<script src="{% static 'new-template/plugins/jquery-bar-rating/dist/jquery.barrating.min.js' %}"></script>
+<script src="{% static 'new-template/plugins/slick-animation.min.js' %}"></script>
+<script src="{% static 'new-template/plugins/lightGallery-master/dist/js/lightgallery-all.min.js'%}"></script>
+<script src="{% static 'new-template/plugins/sticky-sidebar/dist/sticky-sidebar.min.js' %}"></script>
+<script src="{% static 'new-template/plugins/select2/dist/js/select2.full.min.js'%}"></script>
+<!-- <script src="{% static 'new-template/plugins/gmap3.min.js' %}"></script> -->
 <!-- custom scripts-->
-<script src="{{ url_for('static', path='new-template/js/main.js') }}"></script>
-<script src="{{ url_for('static', path='new-template/js/old-main.js') }}"></script>
+<script src="{% static 'new-template/js/main.js'%}"></script>
+<script src="{% static 'new-template/js/old-main.js' %}"></script>

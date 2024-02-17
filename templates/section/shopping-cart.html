@@ -1,5 +1,5 @@
 
-
+{% load static %}
 <div class="ps-cart--mini" id="shopping_card">
     <a class="header__extra" href="/{{ LANGUAGE_CODE }}/orders/shopping-cart/">
         <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -11,7 +11,7 @@
     <div class="badge_order">
     <div class="ps-cart__content empty">
         <div class="ps-cart__items pt-0 pb-4 text-center">
-            <img src="{{ url_for('static', path='new-template/img/ec3.svg')}}"/>
+            <img src="{% static 'new-template/img/ec3.svg' %}"/>
             <p class='mb-0'> {{ Your_cart_is_empty }}</p>
         </div>
     </div>

@@ -6,7 +6,7 @@
                 <option value="">{{ View_All }}</option>
                 {% for category in categories %}
                     <option value="{{ category.id }}" {% if category.id == category_id %}selected{% endif %}>
-                        {{ category.names[LANGUAGE_CODE] }}
+{#                        {{ category.names[LANGUAGE_CODE] }}#}
                     </option>
                 {% endfor %}
             </select>

@@ -4,11 +4,11 @@
 
         {% for category in  categories %}
             <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}"
-               title="{{ category.names[LANGUAGE_CODE] }}"> {{ category.names[LANGUAGE_CODE] }} </a>
+               title="{{ category.names }}"> {{ category.names }} </a>
         {% endfor %}
         {% for collection in  collection_list %}
             <a href="/{{ LANGUAGE_CODE }}/products/?collection_id={{ collection.id }}"
-               title="{{ collection.names[LANGUAGE_CODE] }}"> {{ collection.names[LANGUAGE_CODE] }} </a>
+               title="{{ collection.names}}"> {{ collection.names }} </a>
         {% endfor %}
 
     </p>

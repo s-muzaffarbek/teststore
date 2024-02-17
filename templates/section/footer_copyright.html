@@ -1,14 +1,14 @@
-
+{% load static %}
 <div class="ps-footer__copyright">
     <p>© Gosia.uz. {{ All_rights_reserved}}</p>
     <p class="d-flex">
         <span>{{ Easy_and_convenient_payment_methods }}</span>
         <span class="d-flex flex-wrap justify-content-center align-items-center payment-services">
-        <a><img src="{{ url_for('static', path='assets/img/Payme.svg') }}" alt=""></a>
-        <a><img src="{{ url_for('static', path='assets/img/click.png') }}" style="height:30px"></a>
-        <a><img src="{{ url_for('static', path='assets/img/apelsin.png') }}" style="height:30px"></a>
-        <a><img src="{{ url_for('static', path='assets/img/humo.png') }}" style="height:32px"></a>
-        <a><img src="{{ url_for('static', path='assets/img/uzcard.png') }}" style="height:18px"></a>
+        <a><img src="{% static 'assets/img/Payme.svg' %}" alt=""></a>
+        <a><img src="{% static 'assets/img/click.png' %}" style="height:30px"></a>
+        <a><img src="{% static 'assets/img/apelsin.png' %}" style="height:30px"></a>
+        <a><img src="{% static 'assets/img/humo.png' %}" style="height:32px"></a>
+        <a><img src="{% static 'assets/img/uzcard.png' %}" style="height:18px"></a>
         </span>
     </p>
 </div>

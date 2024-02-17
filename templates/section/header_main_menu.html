@@ -8,14 +8,14 @@
             {% for category in top_category_list %}
                 <li class="item">
                     <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}">
-                        {{ category.names[LANGUAGE_CODE] }}
+{#                        {{ category.names[LANGUAGE_CODE] }}#}
                     </a>
                 </li>
             {% endfor %}
             {% for collection in top_collection_list %}
                 <li class="item">
                     <a href="/{{ LANGUAGE_CODE }}/products/?collection_id={{ collection.id }}">
-                        {{ collection.names[LANGUAGE_CODE] }}
+{#                        {{ collection.names[LANGUAGE_CODE] }}#}
                     </a>
                 </li>
             {% endfor %}

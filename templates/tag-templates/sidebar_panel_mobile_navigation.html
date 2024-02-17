@@ -12,7 +12,7 @@
                         <li class="menu-item-has-children has-mega-menu">
                             <a href="/{{ LANGUAGE_CODE }}/category/{{ categoryItem.slug }}">
                                 {{ categoryItem.get_icon|safe }}
-                                {{ categoryItem.names[LANGUAGE_CODE] }}
+{#                                {{ categoryItem.names[LANGUAGE_CODE] }}#}
                             </a>
                             <span class="sub-toggle"></span>
                             <div class="mega-menu">
@@ -21,7 +21,7 @@
                                         <h4>
                                             <a href="/{{ LANGUAGE_CODE }}/category/{{ categoryItem.slug }}/{{ childItem.slug }}">
                                                 <i class="{{ childItem.icon2 }}" style="font-size:16px;"></i>
-                                                {{ childItem.names[LANGUAGE_CODE] }}
+{#                                                {{ childItem.names[LANGUAGE_CODE] }}#}
                                             </a>
                                             {% if childItem.children %}
                                                 <span class="sub-toggle"></span></h4>
@@ -29,7 +29,7 @@
                                                     {% for childSubItem in childItem.children %}
                                                         <li>
                                                             <a href="/{{ LANGUAGE_CODE }}/category/{{ categoryItem.slug }}/{{ childItem.slug }}/{{ childSubItem.slug }}">
-                                                                {{ childSubItem.names[LANGUAGE_CODE]}}
+{#                                                                {{ childSubItem.names[LANGUAGE_CODE]}}#}
                                                             </a>
                                                         </li>
                                                     {% endfor %}

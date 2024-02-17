@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-48l06v7bt==jn3k$j_l#!6i8)rcf-q7-7#6o!5p#qnv7)+*g3u
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'users.User'
 # Application definition
 
 INSTALLED_APPS = [
@@ -105,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'uz'
 
 TIME_ZONE = 'UTC'
 

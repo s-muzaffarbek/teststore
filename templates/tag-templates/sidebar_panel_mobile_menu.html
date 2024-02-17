@@ -13,12 +13,14 @@
             </li>
             {% for category in top_category_list %}
                 <li class="current-menu-item">
-                    <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}">{{ category.names[LANGUAGE_CODE] }}</a>
+{#                    <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}">{{ category.names[LANGUAGE_CODE] }}</a>#}
+                    <a href="/{{ LANGUAGE_CODE }}/category/{{ category.slug }}">uz</a>
                 </li>
             {% endfor %}
             {% for collection in top_collection_list %}
                 <li class="current-menu-item ">
-                    <a href="/{{ LANGUAGE_CODE }}/products/?collection_id={{ collection.id }}">{{ collection.names[LANGUAGE_CODE] }}</a>
+{#                    <a href="/{{ LANGUAGE_CODE }}/products/?collection_id={{ collection.id }}">{{ collection.names[LANGUAGE_CODE] }}</a>#}
+                    <a href="/{{ LANGUAGE_CODE }}/products/?collection_id={{ collection.id }}">uz</a>
                 </li>
             {% endfor %}
 

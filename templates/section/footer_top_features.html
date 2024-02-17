@@ -1,8 +1,8 @@
-
+{% load static %}
 <div class="ps-block--site-features ps-block--site-features-2">
     <div class="ps-block__item">
         <div class="ps-block__left">
-            <img src="{{ url_for('static', path='assets/img/icon/Truck.svg') }}"/>
+            <img src="{% static 'assets/img/icon/Truck.svg' %}"/>
         </div>
         <div class="ps-block__right">
             <h4>{{ Free_delivery_within_Uzbekistan }}</h4>
@@ -11,7 +11,7 @@
     </div>
     <div class="ps-block__item">
         <div class="ps-block__left">
-            <img src="{{ url_for('static', path='assets/img/icon/Refresh.svg') }}"/>
+            <img src="{% static 'assets/img/icon/Refresh.svg' %}"/>
         </div>
         <div class="ps-block__right">
             <h4>{{ Return }}</h4>
@@ -20,7 +20,7 @@
     </div>
     <div class="ps-block__item">
         <div class="ps-block__left">
-            <img src="{{ url_for('static', path='assets/img/icon/Lock.svg') }}"/>
+            <img src="{% static 'assets/img/icon/Lock.svg' %}"/>
         </div>
         <div class="ps-block__right">
             <h4>{{ Secure_Payment }}</h4>
@@ -29,7 +29,7 @@
     </div>
     <div class="ps-block__item">
         <div class="ps-block__left">
-            <img src="{{ url_for('static', path='assets/img/icon/Chat.svg') }}"/>
+            <img src="{% static 'assets/img/icon/Chat.svg' %}"/>
         </div>
         <div class="ps-block__right">
             <h4>12/7 {{ Customer_service }}</h4>

@@ -1,10 +1,10 @@
-
+{% load static %}
 <div class="header__content pt-3 pb-4">
     <div class="container align-items-center">
 
         <div class="header__content-left">
             <a class="ps-logo" href="/{{ LANGUAGE_CODE }}/">
-                <img src="{{ url_for('static', path='assets/img/logo/psd.jpg') }}" alt="site_global_title">
+                <img src="{% static 'assets/img/logo/psd.jpg'%}" alt="site_global_title">
             </a>
             <!-- category drop-down menu | START-->
             {% include 'section/header_category_menu.html' %}

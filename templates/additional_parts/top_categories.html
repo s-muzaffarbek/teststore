@@ -14,13 +14,13 @@
                                     <img data-src="{{ django_host }}{{ category.image }}" alt="an-image" class="lazyload">
                                 </div>
                                 <div class="ps-block__content">
-                                    <h4>{{ category.names[LANGUAGE_CODE] }}</h4>
+                                    <h4>{{ category.names }}</h4>
                                     {% if category.subcategory %}
                                     <ul>
                                         {% for subcategory in category.subcategory %}
                                             <li>
                                                 <a href="/{{ LANGUAGE_CODE }}/category/{{ subcategory.slug }}">
-                                                    {{ subcategory.names[LANGUAGE_CODE] }}
+                                                    {{ subcategory.names }}
                                                 </a>
                                             </li>
                                         {% endfor %}

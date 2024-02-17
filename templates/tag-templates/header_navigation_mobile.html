@@ -1,9 +1,9 @@
 
-
+{% load static %}
 <div class="navigation--mobile">
     <div class="navigation__left">
         <a class="ps-logo" href="/{{ LANGUAGE_CODE }}/">
-            <img src="{{ url_for('static', path='assets/img/logo/logo_sia.jpg') }}" alt='site_global_title'>
+            <img src="{% static 'assets/img/logo/logo_sia.jpg' %}" alt='site_global_title'>
         </a>
     </div>
     <div class="navigation__right">

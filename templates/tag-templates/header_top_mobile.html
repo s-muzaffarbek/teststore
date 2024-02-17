@@ -1,4 +1,4 @@
-
+{% load static %}
 <div class="header__top pt-2 pb-2">
     <div class="header__left">
         <p>{{ Welcome_to_Sonora_Online_Store }}</p>
@@ -29,14 +29,14 @@
                             {% if LANGUAGE_CODE == 'uz' %}
                                <img style="height: 20px; margin-right:5px"
 
-                                         src="{{ url_for('static', path='/assets/img/logo/uz.png') }}"
+                                         src="{% static '/assets/img/logo/uz.png' %}"
 
                                          alt="">
                             {{ Uzbek }}
                             {% else %}
                                 <img style="height: 20px; margin-right:5px"
 
-                                         src="{{ url_for('static', path='/assets/img/logo/ru.png') }}"
+                                         src="{% static '/assets/img/logo/ru.png' %}"
 
                                          alt="">
                             {{ Russian }}
@@ -48,7 +48,7 @@
                                     <a href="#" onclick="goToLang('{{ LANGUAGE_CODE }}', 'uz')"
                                        class="hv-yellow ac-yellow">
                                         <img style="height: 20px"
-                                             src="{{ url_for('static', path='/assets/img/logo/uz.png') }}"
+                                             src="{% static '/assets/img/logo/uz.png' %}"
                                              alt="uz">
                                         {{ Uzbek }}
                                     </a>
@@ -57,7 +57,7 @@
                                     <a href="#" onclick="goToLang('{{ LANGUAGE_CODE }}', 'ru')"
                                        class="hv-yellow ac-yellow">
                                         <img style="height: 20px"
-                                             src="{{ url_for('static', path='/assets/img/logo/ru.png') }}"
+                                             src="{% static '/assets/img/logo/ru.png'%}"
                                              alt="ru">
                                         {{ Russian }}
                                     </a>
